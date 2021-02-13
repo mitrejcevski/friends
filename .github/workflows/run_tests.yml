@@ -1,6 +1,8 @@
 name: Run tests
 
 on:
+  push:
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
@@ -18,4 +20,4 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Run microtests
-      run: ./gradlew testDebug
+      run: ./gradlew clean testDebug
