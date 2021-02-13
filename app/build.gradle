@@ -17,20 +17,10 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    signingConfigs {
-        release {
-            storeFile file(System.getenv("HOME") + "/keystores/jovmit")
-            storePassword System.getenv("KEYSTORE_PASSWORD")
-            keyAlias System.getenv("FRIENDS_KEY_ALIAS")
-            keyPassword System.getenv("FRIENDS_KEY_PASSWORD")
-        }
-    }
-
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
         }
     }
 
