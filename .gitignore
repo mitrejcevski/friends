@@ -16,6 +16,7 @@ local.properties
 /.idea/modules.xml
 /.idea/workspace.xml
 /.idea/navEditor.xml
+/.idea/misc.xml
 /.idea/assetWizardSettings.xml
 *.iml
 
