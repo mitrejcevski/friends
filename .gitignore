@@ -18,6 +18,7 @@ local.properties
 /.idea/navEditor.xml
 /.idea/misc.xml
 /.idea/assetWizardSettings.xml
+/.idea/jarRepositories.xml
 *.iml
 
 # Update localization script needs node modules
