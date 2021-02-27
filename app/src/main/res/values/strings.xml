@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Friends</string>
+    <string name="appName">Friends</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="signUp">Sign up</string>
