@@ -19,6 +19,7 @@ local.properties
 /.idea/misc.xml
 /.idea/assetWizardSettings.xml
 /.idea/jarRepositories.xml
+/.idea/deploymentTargetDropDown.xml
 *.iml
 
 # Update localization script needs node modules
