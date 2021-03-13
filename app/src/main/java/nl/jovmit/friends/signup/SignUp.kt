@@ -19,6 +19,8 @@ import nl.jovmit.friends.ui.theme.typography
 @Composable
 @Preview(device = Devices.PIXEL_4)
 fun SignUp() {
+  var email by remember { mutableStateOf("") }
+  var password by remember { mutableStateOf("") }
   Column(
     modifier = Modifier
       .fillMaxSize()
@@ -26,8 +28,6 @@ fun SignUp() {
   ) {
     ScreenTitle(R.string.createAnAccount)
     Spacer(modifier = Modifier.height(16.dp))
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
     EmailField(
       value = email,
       onValueChange = { email = it }
@@ -80,29 +80,41 @@ private fun PasswordField(
   onValueChange: (String) -> Unit
 ) {
   var isVisible by remember { mutableStateOf(false) }
+  val visualTransformation = if (isVisible) {
+    VisualTransformation.None
+  } else {
+    PasswordVisualTransformation()
+  }
   OutlinedTextField(
     modifier = Modifier
       .fillMaxWidth()
       .testTag(stringResource(id = R.string.password)),
     value = value,
     trailingIcon = {
-      IconButton(onClick = {
+      VisibilityToggle(isVisible) {
         isVisible = !isVisible
-      }) {
-        Icon(
-          painter = painterResource(id = R.drawable.ic_visibility),
-          contentDescription = stringResource(id = R.string.toggleVisibility)
-        )
       }
     },
-    visualTransformation = if (isVisible) {
-      VisualTransformation.None
-    } else {
-      PasswordVisualTransformation()
-    },
+    visualTransformation = visualTransformation,
     label = {
       Text(text = stringResource(id = R.string.password))
     },
     onValueChange = onValueChange
   )
+}
+
+@Composable
+private fun VisibilityToggle(
+  isVisible: Boolean,
+  onToggle: () -> Unit
+) {
+  IconButton(onClick = {
+    onToggle()
+  }) {
+    val resource = if (isVisible) R.drawable.ic_invisible else R.drawable.ic_visible
+    Icon(
+      painter = painterResource(id = resource),
+      contentDescription = stringResource(id = R.string.toggleVisibility)
+    )
+  }
 }
