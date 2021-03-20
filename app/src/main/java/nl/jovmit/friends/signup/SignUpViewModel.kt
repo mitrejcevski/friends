@@ -20,10 +20,11 @@ class SignUpViewModel {
     val passwordRegex = """^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*+=\-]).{8,}$"""
     val passwordPattern = Pattern.compile(passwordRegex)
 
-    if(!emailPattern.matcher(email).matches()) {
-      _mutableSignUpState.value = SignUpState.BadEmail
+    val state = if(!emailPattern.matcher(email).matches()) {
+       SignUpState.BadEmail
     } else if(!passwordPattern.matcher(password).matches()) {
-      _mutableSignUpState.value = SignUpState.BadPassword
-    }
+       SignUpState.BadPassword
+    } else TODO()
+    _mutableSignUpState.value = state
   }
 }
