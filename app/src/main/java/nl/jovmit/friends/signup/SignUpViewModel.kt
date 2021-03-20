@@ -3,6 +3,7 @@ package nl.jovmit.friends.signup
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import nl.jovmit.friends.signup.state.SignUpState
+import java.util.regex.Pattern
 
 class SignUpViewModel {
 
@@ -14,6 +15,12 @@ class SignUpViewModel {
     password: String,
     about: String
   ) {
-    _mutableSignUpState.value = SignUpState.BadEmail
+    val emailRegex = """[a-zA-Z0-9+._%\-]{1,64}@[a-zA-Z0-9][a-zA-Z0-9\-]{1,64}(\.[a-zA-Z0-9][a-zA-Z0-9\-]{1,25})"""
+    val emailPattern = Pattern.compile(emailRegex)
+    if(!emailPattern.matcher(email).matches()) {
+      _mutableSignUpState.value = SignUpState.BadEmail
+    } else if(password == "") {
+      _mutableSignUpState.value = SignUpState.BadPassword
+    }
   }
 }

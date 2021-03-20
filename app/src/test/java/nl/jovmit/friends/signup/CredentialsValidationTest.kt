@@ -3,6 +3,7 @@ package nl.jovmit.friends.signup
 import nl.jovmit.friends.InstantTaskExecutorExtension
 import nl.jovmit.friends.signup.state.SignUpState
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
@@ -25,5 +26,14 @@ class CredentialsValidationTest {
     viewModel.createAccount(email, ":password:", ":about:")
 
     assertEquals(SignUpState.BadEmail, viewModel.signUpState.value)
+  }
+
+  @Test
+  fun invalidPassword() {
+    val viewModel = SignUpViewModel()
+
+    viewModel.createAccount("anna@friends.com", "", ":about:")
+
+    assertEquals(SignUpState.BadPassword, viewModel.signUpState.value)
   }
 }
