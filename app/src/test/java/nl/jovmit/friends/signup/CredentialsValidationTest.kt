@@ -1,6 +1,8 @@
 package nl.jovmit.friends.signup
 
 import nl.jovmit.friends.InstantTaskExecutorExtension
+import nl.jovmit.friends.domain.user.InMemoryUserCatalog
+import nl.jovmit.friends.domain.user.UserRepository
 import nl.jovmit.friends.domain.validation.CredentialsValidationResult
 import nl.jovmit.friends.domain.validation.RegexCredentialsValidator
 import nl.jovmit.friends.signup.state.SignUpState
@@ -23,7 +25,10 @@ class CredentialsValidationTest {
     "'     '",
   )
   fun invalidEmail(email: String) {
-    val viewModel = SignUpViewModel(RegexCredentialsValidator())
+    val viewModel = SignUpViewModel(
+      RegexCredentialsValidator(),
+      UserRepository(InMemoryUserCatalog())
+    )
 
     viewModel.createAccount(email, ":password:", ":about:")
 
@@ -41,7 +46,10 @@ class CredentialsValidationTest {
     "'ABCDEF78#$'",
   )
   fun invalidPassword(password: String) {
-    val viewModel = SignUpViewModel(RegexCredentialsValidator())
+    val viewModel = SignUpViewModel(
+      RegexCredentialsValidator(),
+      UserRepository(InMemoryUserCatalog())
+    )
 
     viewModel.createAccount("anna@friends.com", password, ":about:")
 

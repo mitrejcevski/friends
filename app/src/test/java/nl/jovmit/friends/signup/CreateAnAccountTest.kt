@@ -1,7 +1,9 @@
 package nl.jovmit.friends.signup
 
 import nl.jovmit.friends.InstantTaskExecutorExtension
+import nl.jovmit.friends.domain.user.InMemoryUserCatalog
 import nl.jovmit.friends.domain.user.User
+import nl.jovmit.friends.domain.user.UserRepository
 import nl.jovmit.friends.domain.validation.RegexCredentialsValidator
 import nl.jovmit.friends.signup.state.SignUpState
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -14,7 +16,10 @@ class CreateAnAccountTest {
   @Test
   fun accountCreated() {
     val maya = User("mayaId", "maya@friends.com", "about Maya")
-    val viewModel = SignUpViewModel(RegexCredentialsValidator())
+    val viewModel = SignUpViewModel(
+      RegexCredentialsValidator(),
+      UserRepository(InMemoryUserCatalog())
+    )
 
     viewModel.createAccount(maya.email, "MaY@2021", maya.about)
 
@@ -24,7 +29,10 @@ class CreateAnAccountTest {
   @Test
   fun anotherAccountCreated() {
     val bob = User("bobId", "bob@friends.com", "about Bob")
-    val viewModel = SignUpViewModel(RegexCredentialsValidator())
+    val viewModel = SignUpViewModel(
+      RegexCredentialsValidator(),
+      UserRepository(InMemoryUserCatalog())
+    )
 
     viewModel.createAccount(bob.email, "Ple@seSubscribe1", bob.about)
 
@@ -35,7 +43,10 @@ class CreateAnAccountTest {
   fun createDuplicateAccount() {
     val anna = User("annaId", "anna@friends.com", "about Anna")
     val password = "AnNaPas$123"
-    val viewModel = SignUpViewModel(RegexCredentialsValidator()).also {
+    val viewModel = SignUpViewModel(
+      RegexCredentialsValidator(),
+      UserRepository(InMemoryUserCatalog())
+    ).also {
       it.createAccount(anna.email, password, anna.about)
     }
 
