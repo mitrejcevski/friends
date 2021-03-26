@@ -49,21 +49,6 @@ class SignUpViewModel(
     }
   }
 
-  val userCatalog = InMemoryUserCatalog()
-
-  private fun signUp(
-    email: String,
-    password: String,
-    about: String
-  ): SignUpState {
-    return try {
-      val user = userCatalog.createUser(email, password, about)
-      SignUpState.SignedUp(user)
-    } catch (duplicateAccount: DuplicateAccountException) {
-      SignUpState.DuplicateAccount
-    }
-  }
-
   class InMemoryUserCatalog(
     private val usersForPassword: MutableMap<String, MutableList<User>> = mutableMapOf()
   ) {
