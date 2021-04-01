@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
@@ -14,13 +15,30 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nl.jovmit.friends.R
+import nl.jovmit.friends.domain.user.InMemoryUserCatalog
+import nl.jovmit.friends.domain.user.UserRepository
+import nl.jovmit.friends.domain.validation.RegexCredentialsValidator
+import nl.jovmit.friends.signup.state.SignUpState
 import nl.jovmit.friends.ui.theme.typography
 
 @Composable
 @Preview(device = Devices.PIXEL_4)
-fun SignUp() {
+fun SignUp(
+  onSignedUp: () -> Unit
+) {
+
+  val credentialsValidator = RegexCredentialsValidator()
+  val userRepository = UserRepository(InMemoryUserCatalog())
+  val signUpViewModel = SignUpViewModel(credentialsValidator, userRepository)
+
   var email by remember { mutableStateOf("") }
   var password by remember { mutableStateOf("") }
+  val signUpState by signUpViewModel.signUpState.observeAsState()
+
+  if (signUpState is SignUpState.SignedUp) {
+    onSignedUp()
+  }
+
   Column(
     modifier = Modifier
       .fillMaxSize()
@@ -39,7 +57,9 @@ fun SignUp() {
     Spacer(modifier = Modifier.height(8.dp))
     Button(
       modifier = Modifier.fillMaxWidth(),
-      onClick = { }
+      onClick = {
+        signUpViewModel.createAccount(email, password, "")
+      }
     ) {
       Text(text = stringResource(id = R.string.signUp))
     }
