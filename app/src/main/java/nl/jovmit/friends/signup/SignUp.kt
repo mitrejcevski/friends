@@ -33,6 +33,7 @@ fun SignUp(
 
   var email by remember { mutableStateOf("") }
   var password by remember { mutableStateOf("") }
+  var about by remember { mutableStateOf("") }
   val signUpState by signUpViewModel.signUpState.observeAsState()
 
   if (signUpState is SignUpState.SignedUp) {
@@ -54,11 +55,15 @@ fun SignUp(
       value = password,
       onValueChange = { password = it }
     )
+    AboutField(
+      value = about,
+      onValueChange = { about = it }
+    )
     Spacer(modifier = Modifier.height(8.dp))
     Button(
       modifier = Modifier.fillMaxWidth(),
       onClick = {
-        signUpViewModel.createAccount(email, password, "")
+        signUpViewModel.createAccount(email, password, about)
       }
     ) {
       Text(text = stringResource(id = R.string.signUp))
@@ -137,4 +142,19 @@ private fun VisibilityToggle(
       contentDescription = stringResource(id = R.string.toggleVisibility)
     )
   }
+}
+
+@Composable
+fun AboutField(
+  value: String,
+  onValueChange: (String) -> Unit
+) {
+  OutlinedTextField(
+    modifier = Modifier.fillMaxWidth(),
+    value = value,
+    label = {
+      Text(text = stringResource(id = R.string.about))
+    },
+    onValueChange = onValueChange
+  )
 }
