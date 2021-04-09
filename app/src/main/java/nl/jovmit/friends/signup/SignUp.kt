@@ -22,7 +22,6 @@ import nl.jovmit.friends.signup.state.SignUpState
 import nl.jovmit.friends.ui.theme.typography
 
 @Composable
-@Preview(device = Devices.PIXEL_4)
 fun SignUp(
   onSignedUp: () -> Unit
 ) {
