@@ -1,6 +1,7 @@
 package nl.jovmit.friends.signup
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -30,35 +31,50 @@ fun SignUpScreen(
   if (signUpState is SignUpState.SignedUp) {
     onSignedUp()
   }
-
-  Column(
-    modifier = Modifier
-      .fillMaxSize()
-      .padding(16.dp)
-  ) {
-    ScreenTitle(R.string.createAnAccount)
-    Spacer(modifier = Modifier.height(16.dp))
-    EmailField(
-      value = email,
-      onValueChange = { email = it }
-    )
-    PasswordField(
-      value = password,
-      onValueChange = { password = it }
-    )
-    AboutField(
-      value = about,
-      onValueChange = { about = it }
-    )
-    Spacer(modifier = Modifier.height(8.dp))
-    Button(
-      modifier = Modifier.fillMaxWidth(),
-      onClick = {
-        signUpViewModel.createAccount(email, password, about)
-      }
+  Box(modifier = Modifier.fillMaxSize()) {
+    Column(
+      modifier = Modifier
+        .fillMaxSize()
+        .padding(16.dp)
     ) {
-      Text(text = stringResource(id = R.string.signUp))
+      ScreenTitle(R.string.createAnAccount)
+      Spacer(modifier = Modifier.height(16.dp))
+      EmailField(
+        value = email,
+        onValueChange = { email = it }
+      )
+      PasswordField(
+        value = password,
+        onValueChange = { password = it }
+      )
+      AboutField(
+        value = about,
+        onValueChange = { about = it }
+      )
+      Spacer(modifier = Modifier.height(8.dp))
+      Button(
+        modifier = Modifier.fillMaxWidth(),
+        onClick = {
+          signUpViewModel.createAccount(email, password, about)
+        }
+      ) {
+        Text(text = stringResource(id = R.string.signUp))
+      }
     }
+    if (signUpState is SignUpState.DuplicateAccount) {
+      InfoMessage(R.string.duplicateAccountError)
+    }
+  }
+}
+
+@Composable
+fun InfoMessage(@StringRes stringResource: Int) {
+  Surface(
+    modifier = Modifier
+      .fillMaxWidth()
+      .background(MaterialTheme.colors.secondaryVariant)
+  ) {
+    Text(text = stringResource(id = stringResource))
   }
 }
 

@@ -7,4 +7,5 @@
     <string name="createAnAccount">Create an account</string>
     <string name="toggleVisibility">Toggle visibility</string>
     <string name="about">About</string>
+    <string name="duplicateAccountError">An account with this email already exists</string>
 </resources>
