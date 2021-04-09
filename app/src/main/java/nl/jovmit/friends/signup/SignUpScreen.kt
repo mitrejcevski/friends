@@ -22,7 +22,7 @@ import nl.jovmit.friends.signup.state.SignUpState
 import nl.jovmit.friends.ui.theme.typography
 
 @Composable
-fun SignUp(
+fun SignUpScreen(
   onSignedUp: () -> Unit
 ) {
 

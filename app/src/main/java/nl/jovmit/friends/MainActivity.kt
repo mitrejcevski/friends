@@ -9,7 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
-import nl.jovmit.friends.signup.SignUp
+import nl.jovmit.friends.signup.SignUpScreen
 import nl.jovmit.friends.timeline.Timeline
 import nl.jovmit.friends.ui.theme.FriendsTheme
 
@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
         Surface(color = MaterialTheme.colors.background) {
           NavHost(navController = navController, startDestination = SIGN_UP) {
             composable(SIGN_UP) {
-              SignUp(onSignedUp = { navController.navigate(TIMELINE) })
+              SignUpScreen(onSignedUp = { navController.navigate(TIMELINE) })
             }
             composable(TIMELINE) {
               Timeline()
