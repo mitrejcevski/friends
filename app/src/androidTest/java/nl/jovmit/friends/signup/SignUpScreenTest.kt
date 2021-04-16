@@ -57,10 +57,7 @@ class SignUpScreenTest {
 
   @Test
   fun displayBackendError() {
-    val replaceModule = module {
-      factory<UserCatalog>(override = true) { UnavailableUserCatalog() }
-    }
-    loadKoinModules(replaceModule)
+    replaceUserCatalogWith(UnavailableUserCatalog())
 
     launchSignUpScreen(signUpTestRule) {
       typeEmail("joe@friends.com")
@@ -73,10 +70,7 @@ class SignUpScreenTest {
 
   @Test
   fun displayOfflineError() {
-    val replaceModule = module {
-      factory<UserCatalog>(override = true) { OfflineUserCatalog() }
-    }
-    loadKoinModules(replaceModule)
+    replaceUserCatalogWith(OfflineUserCatalog())
 
     launchSignUpScreen(signUpTestRule) {
       typeEmail("joe@friends.com")
@@ -85,6 +79,13 @@ class SignUpScreenTest {
     } verify {
       offlineErrorIsShown()
     }
+  }
+
+  private fun replaceUserCatalogWith(offlineUserCatalog: UserCatalog) {
+    val replaceModule = module {
+      factory(override = true) { offlineUserCatalog }
+    }
+    loadKoinModules(replaceModule)
   }
 
   @After
