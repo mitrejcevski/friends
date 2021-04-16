@@ -8,4 +8,5 @@
     <string name="toggleVisibility">Toggle visibility</string>
     <string name="about">About</string>
     <string name="duplicateAccountError">An account with this email already exists</string>
+    <string name="createAccountError">Could not create an account</string>
 </resources>
