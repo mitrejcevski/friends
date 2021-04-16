@@ -26,6 +26,7 @@ fun SignUpScreen(
   var email by remember { mutableStateOf("") }
   var isBadEmail by remember { mutableStateOf(false) }
   var password by remember { mutableStateOf("") }
+  var isBadPassword by remember { mutableStateOf(false) }
   var about by remember { mutableStateOf("") }
   val signUpState by signUpViewModel.signUpState.observeAsState()
 
@@ -47,6 +48,7 @@ fun SignUpScreen(
       )
       PasswordField(
         value = password,
+        isError = isBadPassword,
         onValueChange = { password = it }
       )
       AboutField(
@@ -65,6 +67,8 @@ fun SignUpScreen(
     }
     if (signUpState is SignUpState.BadEmail) {
       isBadEmail = true
+    } else if (signUpState is SignUpState.BadPassword) {
+      isBadPassword = true
     } else if (signUpState is SignUpState.DuplicateAccount) {
       InfoMessage(R.string.duplicateAccountError)
     } else if (signUpState is SignUpState.BackendError) {
@@ -120,6 +124,7 @@ private fun EmailField(
 @Composable
 private fun PasswordField(
   value: String,
+  isError: Boolean,
   onValueChange: (String) -> Unit
 ) {
   var isVisible by remember { mutableStateOf(false) }
@@ -133,6 +138,7 @@ private fun PasswordField(
       .fillMaxWidth()
       .testTag(stringResource(id = R.string.password)),
     value = value,
+    isError = isError,
     trailingIcon = {
       VisibilityToggle(isVisible) {
         isVisible = !isVisible
@@ -140,7 +146,8 @@ private fun PasswordField(
     },
     visualTransformation = visualTransformation,
     label = {
-      Text(text = stringResource(id = R.string.password))
+      val resource = if (isError) R.string.badPasswordError else R.string.password
+      Text(text = stringResource(id = resource))
     },
     onValueChange = onValueChange
   )
