@@ -1,10 +1,11 @@
 package nl.jovmit.friends.domain.user
 
+import nl.jovmit.friends.domain.exceptions.BackendException
 import nl.jovmit.friends.domain.exceptions.DuplicateAccountException
 import nl.jovmit.friends.signup.state.SignUpState
 
 class UserRepository(
-  private val userCatalog: InMemoryUserCatalog
+  private val userCatalog: UserCatalog
 ) {
 
   fun signUp(
@@ -17,6 +18,8 @@ class UserRepository(
       SignUpState.SignedUp(user)
     } catch (duplicateAccount: DuplicateAccountException) {
       SignUpState.DuplicateAccount
+    } catch (backendException: BackendException) {
+      SignUpState.BackendError
     }
   }
 }
