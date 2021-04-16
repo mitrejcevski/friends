@@ -9,4 +9,5 @@
     <string name="about">About</string>
     <string name="duplicateAccountError">An account with this email already exists</string>
     <string name="createAccountError">Could not create an account</string>
+    <string name="offlineError">You seem to be offline</string>
 </resources>
