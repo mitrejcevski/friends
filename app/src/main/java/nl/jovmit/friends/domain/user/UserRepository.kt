@@ -1,6 +1,7 @@
 package nl.jovmit.friends.domain.user
 
 import nl.jovmit.friends.domain.exceptions.BackendException
+import nl.jovmit.friends.domain.exceptions.ConnectionUnavailableException
 import nl.jovmit.friends.domain.exceptions.DuplicateAccountException
 import nl.jovmit.friends.signup.state.SignUpState
 
@@ -20,6 +21,8 @@ class UserRepository(
       SignUpState.DuplicateAccount
     } catch (backendException: BackendException) {
       SignUpState.BackendError
+    } catch (offlineException: ConnectionUnavailableException) {
+      SignUpState.Offline
     }
   }
 }
