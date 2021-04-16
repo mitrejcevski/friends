@@ -3,6 +3,7 @@ package nl.jovmit.friends.signup
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import nl.jovmit.friends.MainActivity
 import nl.jovmit.friends.domain.user.InMemoryUserCatalog
+import nl.jovmit.friends.domain.user.UserCatalog
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -17,7 +18,7 @@ class SignUpScreenTest {
 
   private val userCatalog = InMemoryUserCatalog()
   private val signUpModule = module {
-    factory(override = true) { userCatalog }
+    factory<UserCatalog>(override = true) { userCatalog }
   }
 
   @Before
