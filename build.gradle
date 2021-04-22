@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        composeVersion = '1.0.0-beta04'
+        composeVersion = '1.0.0-beta05'
     }
     repositories {
         google()
