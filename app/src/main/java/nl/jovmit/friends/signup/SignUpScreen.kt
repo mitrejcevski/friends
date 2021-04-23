@@ -1,6 +1,13 @@
 package nl.jovmit.friends.signup
 
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -12,6 +19,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import nl.jovmit.friends.R
 import nl.jovmit.friends.signup.state.SignUpState
 import nl.jovmit.friends.ui.theme.typography
@@ -28,16 +37,29 @@ fun SignUpScreen(
   var isBadPassword by remember { mutableStateOf(false) }
   var about by remember { mutableStateOf("") }
   var currentInfoMessage by remember { mutableStateOf(0) }
+  var isInfoMessageShowing by remember { mutableStateOf(false) }
 
+  val coroutineScope = rememberCoroutineScope()
   val signUpState by signUpViewModel.signUpState.observeAsState()
+
+  fun toggleInfoMessage(@StringRes message: Int) = coroutineScope.launch {
+    if (currentInfoMessage != message) {
+      currentInfoMessage = message
+      if (!isInfoMessageShowing) {
+        isInfoMessageShowing = true
+        delay(1500)
+        isInfoMessageShowing = false
+      }
+    }
+  }
 
   when (signUpState) {
     is SignUpState.SignedUp -> onSignedUp()
     is SignUpState.BadEmail -> isBadEmail = true
     is SignUpState.BadPassword -> isBadPassword = true
-    is SignUpState.DuplicateAccount -> currentInfoMessage = R.string.duplicateAccountError
-    is SignUpState.BackendError -> currentInfoMessage = R.string.createAccountError
-    is SignUpState.Offline -> currentInfoMessage = R.string.offlineError
+    is SignUpState.DuplicateAccount -> toggleInfoMessage(R.string.duplicateAccountError)
+    is SignUpState.BackendError -> toggleInfoMessage(R.string.createAccountError)
+    is SignUpState.Offline -> toggleInfoMessage(R.string.offlineError)
   }
 
   Box(modifier = Modifier.fillMaxSize()) {
@@ -72,28 +94,45 @@ fun SignUpScreen(
         Text(text = stringResource(id = R.string.signUp))
       }
     }
-    if (currentInfoMessage != 0) {
-      InfoMessage(stringResource = currentInfoMessage)
-    }
+    InfoMessage(
+      isVisible = isInfoMessageShowing,
+      stringResource = currentInfoMessage
+    )
   }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun InfoMessage(@StringRes stringResource: Int) {
-  Surface(
-    modifier = Modifier.fillMaxWidth(),
-    color = MaterialTheme.colors.error,
-    elevation = 4.dp
+fun InfoMessage(
+  isVisible: Boolean,
+  @StringRes stringResource: Int
+) {
+  AnimatedVisibility(
+    visible = isVisible,
+    enter = slideInVertically(
+      initialOffsetY = { fullHeight -> -fullHeight },
+      animationSpec = tween(durationMillis = 150, easing = FastOutLinearInEasing)
+    ),
+    exit = fadeOut(
+      targetAlpha = 0f,
+      animationSpec = tween(durationMillis = 250, easing = LinearOutSlowInEasing)
+    )
   ) {
-    Row(
+    Surface(
       modifier = Modifier.fillMaxWidth(),
-      horizontalArrangement = Arrangement.Center
+      color = MaterialTheme.colors.error,
+      elevation = 4.dp
     ) {
-      Text(
-        modifier = Modifier.padding(16.dp),
-        text = stringResource(id = stringResource),
-        color = MaterialTheme.colors.onError
-      )
+      Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center
+      ) {
+        Text(
+          modifier = Modifier.padding(16.dp),
+          text = stringResource(id = stringResource),
+          color = MaterialTheme.colors.onError
+        )
+      }
     }
   }
 }
