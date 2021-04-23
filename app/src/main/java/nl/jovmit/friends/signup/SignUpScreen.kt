@@ -19,9 +19,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import nl.jovmit.friends.R
+import nl.jovmit.friends.signup.state.SignUpScreenState
 import nl.jovmit.friends.signup.state.SignUpState
 import nl.jovmit.friends.ui.theme.typography
 
@@ -31,40 +30,17 @@ fun SignUpScreen(
   onSignedUp: () -> Unit
 ) {
 
-  var email by remember { mutableStateOf("") }
-  var isBadEmail by remember { mutableStateOf(false) }
-  var password by remember { mutableStateOf("") }
-  var isBadPassword by remember { mutableStateOf(false) }
-  var about by remember { mutableStateOf("") }
-  var currentInfoMessage by remember { mutableStateOf(0) }
-  var isInfoMessageShowing by remember { mutableStateOf(false) }
-
   val coroutineScope = rememberCoroutineScope()
+  val screenState by remember { mutableStateOf(SignUpScreenState(coroutineScope)) }
   val signUpState by signUpViewModel.signUpState.observeAsState()
-
-  fun toggleInfoMessage(@StringRes message: Int) = coroutineScope.launch {
-    if (currentInfoMessage != message) {
-      currentInfoMessage = message
-      if (!isInfoMessageShowing) {
-        isInfoMessageShowing = true
-        delay(1500)
-        isInfoMessageShowing = false
-      }
-    }
-  }
-
-  fun resetUiState() {
-    currentInfoMessage = 0
-    isInfoMessageShowing = false
-  }
 
   when (signUpState) {
     is SignUpState.SignedUp -> onSignedUp()
-    is SignUpState.BadEmail -> isBadEmail = true
-    is SignUpState.BadPassword -> isBadPassword = true
-    is SignUpState.DuplicateAccount -> toggleInfoMessage(R.string.duplicateAccountError)
-    is SignUpState.BackendError -> toggleInfoMessage(R.string.createAccountError)
-    is SignUpState.Offline -> toggleInfoMessage(R.string.offlineError)
+    is SignUpState.BadEmail -> screenState.isBadEmail = true
+    is SignUpState.BadPassword -> screenState.isBadPassword = true
+    is SignUpState.DuplicateAccount -> screenState.toggleInfoMessage(R.string.duplicateAccountError)
+    is SignUpState.BackendError -> screenState.toggleInfoMessage(R.string.createAccountError)
+    is SignUpState.Offline -> screenState.toggleInfoMessage(R.string.offlineError)
   }
 
   Box(modifier = Modifier.fillMaxSize()) {
@@ -76,33 +52,35 @@ fun SignUpScreen(
       ScreenTitle(R.string.createAnAccount)
       Spacer(modifier = Modifier.height(16.dp))
       EmailField(
-        value = email,
-        isError = isBadEmail,
-        onValueChange = { email = it }
+        value = screenState.email,
+        isError = screenState.isBadEmail,
+        onValueChange = { screenState.email = it }
       )
       PasswordField(
-        value = password,
-        isError = isBadPassword,
-        onValueChange = { password = it }
+        value = screenState.password,
+        isError = screenState.isBadPassword,
+        onValueChange = { screenState.password = it }
       )
       AboutField(
-        value = about,
-        onValueChange = { about = it }
+        value = screenState.about,
+        onValueChange = { screenState.about = it }
       )
       Spacer(modifier = Modifier.height(8.dp))
       Button(
         modifier = Modifier.fillMaxWidth(),
         onClick = {
-          resetUiState()
-          signUpViewModel.createAccount(email, password, about)
+          screenState.resetUiState()
+          with(screenState) {
+            signUpViewModel.createAccount(email, password, about)
+          }
         }
       ) {
         Text(text = stringResource(id = R.string.signUp))
       }
     }
     InfoMessage(
-      isVisible = isInfoMessageShowing,
-      stringResource = currentInfoMessage
+      isVisible = screenState.isInfoMessageShowing,
+      stringResource = screenState.currentInfoMessage
     )
   }
 }
