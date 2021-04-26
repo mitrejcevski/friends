@@ -72,6 +72,18 @@ class SignUpScreenTest {
   }
 
   @Test
+  fun resetBadPasswordError() {
+    launchSignUpScreen(signUpTestRule) {
+      typeEmail("valid@email.com")
+      typePassword("ads")
+      submit()
+      typePassword("newTry")
+    } verify {
+      badPasswordErrorIsNotShown()
+    }
+  }
+
+  @Test
   fun displayDuplicateAccountError() {
     val signedUpUserEmail = "alice@friends.com"
     val signedUpUserPassword = "@l1cePass"

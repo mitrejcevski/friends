@@ -87,4 +87,10 @@ class SignUpVerification(
     rule.onNodeWithText(badEmail)
       .assertDoesNotExist()
   }
+
+  fun badPasswordErrorIsNotShown() {
+    val badPassword = rule.activity.getString(R.string.badPasswordError)
+    rule.onNodeWithText(badPassword)
+      .assertDoesNotExist()
+  }
 }

@@ -58,7 +58,7 @@ fun SignUpScreen(
       )
       PasswordField(
         value = screenState.password,
-        isError = screenState.isBadPassword,
+        isError = screenState.showBadPassword,
         onValueChange = { screenState.password = it }
       )
       AboutField(
