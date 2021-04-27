@@ -1,5 +1,6 @@
 package nl.jovmit.friends.signup
 
+import kotlinx.coroutines.runBlocking
 import nl.jovmit.friends.domain.exceptions.BackendException
 import nl.jovmit.friends.domain.exceptions.ConnectionUnavailableException
 import nl.jovmit.friends.domain.user.User
@@ -12,7 +13,7 @@ import org.junit.jupiter.api.Test
 class FailedAccountCreationTest {
 
   @Test
-  fun backendError() {
+  fun backendError() = runBlocking {
     val userRepository = UserRepository(UnavailableUserCatalog())
 
     val result = userRepository.signUp(":email:", ":password:", ":about:")
@@ -21,7 +22,7 @@ class FailedAccountCreationTest {
   }
 
   @Test
-  fun offlineError() {
+  fun offlineError() = runBlocking {
     val userRepository = UserRepository(OfflineUserCatalog())
 
     val result = userRepository.signUp(":email:", ":password:", ":about:")
@@ -31,14 +32,14 @@ class FailedAccountCreationTest {
 
   class OfflineUserCatalog : UserCatalog {
 
-    override fun createUser(email: String, password: String, about: String): User {
+    override suspend fun createUser(email: String, password: String, about: String): User {
       throw ConnectionUnavailableException()
     }
   }
 
   class UnavailableUserCatalog : UserCatalog {
 
-    override fun createUser(email: String, password: String, about: String): User {
+    override suspend fun createUser(email: String, password: String, about: String): User {
       throw BackendException()
     }
   }

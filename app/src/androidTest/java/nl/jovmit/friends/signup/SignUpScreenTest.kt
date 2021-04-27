@@ -1,6 +1,7 @@
 package nl.jovmit.friends.signup
 
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import kotlinx.coroutines.runBlocking
 import nl.jovmit.friends.MainActivity
 import nl.jovmit.friends.domain.exceptions.BackendException
 import nl.jovmit.friends.domain.exceptions.ConnectionUnavailableException
@@ -84,7 +85,7 @@ class SignUpScreenTest {
   }
 
   @Test
-  fun displayDuplicateAccountError() {
+  fun displayDuplicateAccountError() = runBlocking<Unit> {
     val signedUpUserEmail = "alice@friends.com"
     val signedUpUserPassword = "@l1cePass"
     replaceUserCatalogWith(InMemoryUserCatalog().apply {
@@ -140,14 +141,14 @@ class SignUpScreenTest {
 
   class UnavailableUserCatalog : UserCatalog {
 
-    override fun createUser(email: String, password: String, about: String): User {
+    override suspend fun createUser(email: String, password: String, about: String): User {
       throw BackendException()
     }
   }
 
   class OfflineUserCatalog : UserCatalog {
 
-    override fun createUser(email: String, password: String, about: String): User {
+    override suspend fun createUser(email: String, password: String, about: String): User {
       throw ConnectionUnavailableException()
     }
   }
