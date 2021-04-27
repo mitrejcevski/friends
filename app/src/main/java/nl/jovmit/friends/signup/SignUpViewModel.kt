@@ -13,8 +13,8 @@ class SignUpViewModel(
   private val userRepository: UserRepository
 ) : ViewModel() {
 
-  private val _mutableSignUpState = MutableLiveData<SignUpState>()
-  val signUpState: LiveData<SignUpState> = _mutableSignUpState
+  private val mutableSignUpState = MutableLiveData<SignUpState>()
+  val signUpState: LiveData<SignUpState> = mutableSignUpState
 
   fun createAccount(
     email: String,
@@ -23,16 +23,16 @@ class SignUpViewModel(
   ) {
     when (credentialsValidator.validate(email, password)) {
       is CredentialsValidationResult.InvalidEmail ->
-        _mutableSignUpState.value = SignUpState.BadEmail
+        mutableSignUpState.value = SignUpState.BadEmail
       is CredentialsValidationResult.InvalidPassword ->
-        _mutableSignUpState.value = SignUpState.BadPassword
+        mutableSignUpState.value = SignUpState.BadPassword
       is CredentialsValidationResult.Valid ->
         proceedWithSignUp(email, password, about)
     }
   }
 
   private fun proceedWithSignUp(email: String, password: String, about: String) {
-    _mutableSignUpState.value = SignUpState.Loading
-    _mutableSignUpState.value = userRepository.signUp(email, password, about)
+    mutableSignUpState.value = SignUpState.Loading
+    mutableSignUpState.value = userRepository.signUp(email, password, about)
   }
 }
