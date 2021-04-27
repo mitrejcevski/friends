@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import nl.jovmit.friends.app.TestDispatchers
+import nl.jovmit.friends.app.CoroutineDispatchers
 import nl.jovmit.friends.domain.user.UserRepository
 import nl.jovmit.friends.domain.validation.CredentialsValidationResult
 import nl.jovmit.friends.domain.validation.RegexCredentialsValidator
@@ -15,7 +15,7 @@ import nl.jovmit.friends.signup.state.SignUpState
 class SignUpViewModel(
   private val credentialsValidator: RegexCredentialsValidator,
   private val userRepository: UserRepository,
-  private val dispatchers: TestDispatchers
+  private val dispatchers: CoroutineDispatchers
 ) : ViewModel() {
 
   private val mutableSignUpState = MutableLiveData<SignUpState>()
