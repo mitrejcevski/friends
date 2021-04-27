@@ -3,6 +3,10 @@ package nl.jovmit.friends.signup
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import nl.jovmit.friends.domain.user.UserRepository
 import nl.jovmit.friends.domain.validation.CredentialsValidationResult
 import nl.jovmit.friends.domain.validation.RegexCredentialsValidator
@@ -32,7 +36,11 @@ class SignUpViewModel(
   }
 
   private fun proceedWithSignUp(email: String, password: String, about: String) {
-    mutableSignUpState.value = SignUpState.Loading
-    mutableSignUpState.value = userRepository.signUp(email, password, about)
+    viewModelScope.launch {
+      mutableSignUpState.value = SignUpState.Loading
+      mutableSignUpState.value = withContext(Dispatchers.Unconfined) {
+        userRepository.signUp(email, password, about)
+      }
+    }
   }
 }
