@@ -35,10 +35,16 @@ class SignUpViewModel(
     }
   }
 
+  class TestDispatchers {
+    val background = Dispatchers.Unconfined
+  }
+
+  private val dispatchers = TestDispatchers()
+
   private fun proceedWithSignUp(email: String, password: String, about: String) {
     viewModelScope.launch {
       mutableSignUpState.value = SignUpState.Loading
-      mutableSignUpState.value = withContext(Dispatchers.Unconfined) {
+      mutableSignUpState.value = withContext(dispatchers.background) {
         userRepository.signUp(email, password, about)
       }
     }
