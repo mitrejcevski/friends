@@ -16,7 +16,8 @@ val applicationModule = module {
   viewModel {
     SignUpViewModel(
       credentialsValidator = get(),
-      userRepository = get()
+      userRepository = get(),
+      dispatchers = TestDispatchers()
     )
   }
 }
