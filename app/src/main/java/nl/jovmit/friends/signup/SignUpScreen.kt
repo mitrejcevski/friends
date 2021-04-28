@@ -1,13 +1,10 @@
 package nl.jovmit.friends.signup
 
 import androidx.annotation.StringRes
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.*
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -85,22 +82,35 @@ fun SignUpScreen(
       isVisible = screenState.isInfoMessageShowing,
       stringResource = screenState.currentInfoMessage
     )
-    if (screenState.isLoading) {
-      BlockingLoading()
-    }
+    BlockingLoading(screenState.isLoading)
   }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun BlockingLoading() {
-  Box(
-    modifier = Modifier
-      .fillMaxSize()
-      .testTag(stringResource(id = R.string.loading))
-      .background(MaterialTheme.colors.surface.copy(alpha = 0.7f)),
-    contentAlignment = Alignment.Center
+fun BlockingLoading(
+  isShowing: Boolean
+) {
+  AnimatedVisibility(
+    visible = isShowing,
+    enter = fadeIn(
+      initialAlpha = 0f,
+      animationSpec = tween(durationMillis = 150, easing = FastOutLinearInEasing)
+    ),
+    exit = fadeOut(
+      targetAlpha = 0f,
+      animationSpec = tween(durationMillis = 250, easing = LinearOutSlowInEasing)
+    )
   ) {
-    CircularProgressIndicator()
+    Box(
+      modifier = Modifier
+        .fillMaxSize()
+        .testTag(stringResource(id = R.string.loading))
+        .background(MaterialTheme.colors.surface.copy(alpha = 0.7f)),
+      contentAlignment = Alignment.Center
+    ) {
+      CircularProgressIndicator()
+    }
   }
 }
 
