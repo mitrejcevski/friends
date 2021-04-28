@@ -1,6 +1,7 @@
 package nl.jovmit.friends.signup
 
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import nl.jovmit.friends.MainActivity
 import nl.jovmit.friends.domain.exceptions.BackendException
@@ -127,6 +128,18 @@ class SignUpScreenTest {
     }
   }
 
+  @Test
+  fun displayBlockingLoading() {
+    replaceUserCatalogWith(DelayingUserCatalog())
+    launchSignUpScreen(signUpTestRule) {
+      typeEmail("caly@friends.com")
+      typePassword("C@lyP1ss#")
+      submit()
+    } verify {
+      blockingLoadingIsShown()
+    }
+  }
+
   @After
   fun tearDown() {
     replaceUserCatalogWith(InMemoryUserCatalog())
@@ -137,6 +150,14 @@ class SignUpScreenTest {
       factory(override = true) { userCatalog }
     }
     loadKoinModules(replaceModule)
+  }
+
+  class DelayingUserCatalog : UserCatalog {
+
+    override suspend fun createUser(email: String, password: String, about: String): User {
+      delay(1000)
+      return User("someId", email, about)
+    }
   }
 
   class UnavailableUserCatalog : UserCatalog {
