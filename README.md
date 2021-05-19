@@ -2,6 +2,9 @@
 
 ## Libraries used
 - Compose UI
+- Koin
+- Coroutines
+- JUnit5
 
 ## Project Outline
 
@@ -15,8 +18,8 @@
 ##### Login
 
 ### Timeline
+- see posts from us and from friends
 - post stuff (text)
-- see posts from friends
 
 ### Folks
 - find people
