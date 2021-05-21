@@ -15,7 +15,7 @@ class LoadPostsTest {
   fun noPostsAvailable() {
     val viewModel = TimelineViewModel()
 
-    viewModel.timelineFor("annaId")
+    viewModel.timelineFor("tomId")
 
     assertEquals(TimelineState.Posts(emptyList()), viewModel.timelineState.value)
   }
@@ -29,5 +29,20 @@ class LoadPostsTest {
     viewModel.timelineFor(tim.id)
 
     assertEquals(TimelineState.Posts(timPosts), viewModel.timelineState.value)
+  }
+
+  @Test
+  fun postsFormFriends() {
+    val anna = aUser().withId("annaId").build()
+    val lucy = aUser().withId("lucyId").build()
+    val lucyPosts = listOf(
+      Post("post2", lucy.id, "post 2", 2L),
+      Post("post1", lucy.id, "post 1", 1L)
+    )
+    val viewModel = TimelineViewModel()
+
+    viewModel.timelineFor(anna.id)
+
+    assertEquals(TimelineState.Posts(lucyPosts), viewModel.timelineState.value)
   }
 }

@@ -11,7 +11,13 @@ class TimelineViewModel {
   val timelineState: LiveData<TimelineState> = mutableTimelineState
 
   fun timelineFor(userId: String) {
-    if(userId == "timId") {
+    if(userId == "annaId") {
+      val posts = listOf(
+        Post("post2", "lucyId", "post 2", 2L),
+        Post("post1", "lucyId", "post 1", 1L)
+      )
+      mutableTimelineState.value = TimelineState.Posts(posts)
+    } else if(userId == "timId") {
       val posts = listOf(Post("postId", "timId", "post text", 1L))
       mutableTimelineState.value = TimelineState.Posts(posts)
     } else {
