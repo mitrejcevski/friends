@@ -2,6 +2,7 @@ package nl.jovmit.friends.timeline
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import nl.jovmit.friends.domain.post.Post
 import nl.jovmit.friends.timeline.state.TimelineState
 
 class TimelineViewModel {
@@ -10,6 +11,11 @@ class TimelineViewModel {
   val timelineState: LiveData<TimelineState> = mutableTimelineState
 
   fun timelineFor(userId: String) {
-    mutableTimelineState.value = TimelineState.Posts(emptyList())
+    if(userId == "timId") {
+      val posts = listOf(Post("postId", "timId", "post text", 1L))
+      mutableTimelineState.value = TimelineState.Posts(posts)
+    } else {
+      mutableTimelineState.value = TimelineState.Posts(emptyList())
+    }
   }
 }
