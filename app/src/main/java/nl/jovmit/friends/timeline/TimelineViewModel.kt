@@ -18,18 +18,19 @@ class TimelineViewModel {
       Post("post4", "saraId", "post 4", 4L),
       Post("post3", "saraId", "post 3", 3L)
     )
-    if (userId == "saraId") {
-      val lucyPosts = availablePosts.filter { it.userId == "lucyId" }
-      val saraPosts = availablePosts.filter { it.userId == "saraId" }
-      mutableTimelineState.value = TimelineState.Posts(lucyPosts + saraPosts)
-    } else if (userId == "annaId") {
-      val annaPosts = availablePosts.filter { it.userId == "lucyId" }
-      mutableTimelineState.value = TimelineState.Posts(annaPosts)
-    } else if (userId == "timId") {
-      val timPosts = availablePosts.filter { it.userId == "timId" }
-      mutableTimelineState.value = TimelineState.Posts(timPosts)
-    } else {
-      mutableTimelineState.value = TimelineState.Posts(emptyList())
-    }
+    val followings = listOf(
+      Following("saraId", "lucyId"),
+      Following("annaId", "lucyId")
+    )
+    val userIds = listOf(userId) + followings
+      .filter { it.userId == userId }
+      .map { it.followedId }
+    val postsForSara = availablePosts.filter { userIds.contains(it.userId) }
+    mutableTimelineState.value = TimelineState.Posts(postsForSara)
   }
+
+  data class Following(
+    val userId: String,
+    val followedId: String
+  )
 }
