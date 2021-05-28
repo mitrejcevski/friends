@@ -3,6 +3,7 @@ package nl.jovmit.friends.timeline
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import nl.jovmit.friends.domain.post.Post
+import nl.jovmit.friends.domain.user.Following
 import nl.jovmit.friends.timeline.state.TimelineState
 
 class TimelineViewModel {
@@ -28,9 +29,4 @@ class TimelineViewModel {
     val postsForSara = availablePosts.filter { userIds.contains(it.userId) }
     mutableTimelineState.value = TimelineState.Posts(postsForSara)
   }
-
-  data class Following(
-    val userId: String,
-    val followedId: String
-  )
 }
