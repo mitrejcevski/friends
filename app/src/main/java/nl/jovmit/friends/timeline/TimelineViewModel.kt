@@ -7,15 +7,16 @@ import nl.jovmit.friends.domain.user.InMemoryUserCatalog
 import nl.jovmit.friends.timeline.state.TimelineState
 
 class TimelineViewModel(
-  private val userCatalog: InMemoryUserCatalog
-  ) {
+  private val userCatalog: InMemoryUserCatalog,
+  private val postCatalog: InMemoryPostCatalog
+) {
 
   private val mutableTimelineState = MutableLiveData<TimelineState>()
   val timelineState: LiveData<TimelineState> = mutableTimelineState
 
   fun timelineFor(userId: String) {
     val userIds = listOf(userId) + userCatalog.followedBy(userId)
-    val postsForUser = InMemoryPostCatalog().postsFor(userIds)
+    val postsForUser = postCatalog.postsFor(userIds)
     mutableTimelineState.value = TimelineState.Posts(postsForUser)
   }
 }
