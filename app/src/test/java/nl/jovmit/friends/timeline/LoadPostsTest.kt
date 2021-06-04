@@ -2,6 +2,7 @@ package nl.jovmit.friends.timeline
 
 import nl.jovmit.friends.InstantTaskExecutorExtension
 import nl.jovmit.friends.domain.post.Post
+import nl.jovmit.friends.domain.user.InMemoryUserCatalog
 import nl.jovmit.friends.infrastructure.builder.UserBuilder.Companion.aUser
 import nl.jovmit.friends.timeline.state.TimelineState
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -13,7 +14,7 @@ class LoadPostsTest {
 
   @Test
   fun noPostsAvailable() {
-    val viewModel = TimelineViewModel()
+    val viewModel = TimelineViewModel(InMemoryUserCatalog())
 
     viewModel.timelineFor("tomId")
 
@@ -24,7 +25,7 @@ class LoadPostsTest {
   fun postsAvailable() {
     val tim = aUser().withId("timId").build()
     val timPosts = listOf(Post("postId", tim.id, "post text", 1L))
-    val viewModel = TimelineViewModel()
+    val viewModel = TimelineViewModel(InMemoryUserCatalog())
 
     viewModel.timelineFor(tim.id)
 
@@ -39,7 +40,7 @@ class LoadPostsTest {
       Post("post2", lucy.id, "post 2", 2L),
       Post("post1", lucy.id, "post 1", 1L)
     )
-    val viewModel = TimelineViewModel()
+    val viewModel = TimelineViewModel(InMemoryUserCatalog())
 
     viewModel.timelineFor(anna.id)
 
@@ -58,7 +59,7 @@ class LoadPostsTest {
       Post("post4", sara.id, "post 4", 4L),
       Post("post3", sara.id, "post 3", 3L)
     )
-    val viewModel = TimelineViewModel()
+    val viewModel = TimelineViewModel(InMemoryUserCatalog())
 
     viewModel.timelineFor(sara.id)
 
