@@ -19,7 +19,7 @@ class InMemoryUserCatalog(
     return user
   }
 
-  fun followedBy(userId: String): List<String> {
+  override fun followedBy(userId: String): List<String> {
     return followings
       .filter { it.userId == userId }
       .map { it.followedId }
