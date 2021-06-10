@@ -17,14 +17,19 @@ class TimelineViewModel(
   val timelineState: LiveData<TimelineState> = mutableTimelineState
 
   fun timelineFor(userId: String) {
-    try {
+    val result = getTimelineFor(userId)
+    mutableTimelineState.value = result
+  }
+
+  private fun getTimelineFor(userId: String): TimelineState {
+    return try {
       val userIds = listOf(userId) + userCatalog.followedBy(userId)
       val postsForUser = postCatalog.postsFor(userIds)
-      mutableTimelineState.value = TimelineState.Posts(postsForUser)
+      TimelineState.Posts(postsForUser)
     } catch (backendException: BackendException) {
-      mutableTimelineState.value = TimelineState.BackendError
+      TimelineState.BackendError
     } catch (offlineException: ConnectionUnavailableException) {
-      mutableTimelineState.value = TimelineState.OfflineError
+      TimelineState.OfflineError
     }
   }
 }
