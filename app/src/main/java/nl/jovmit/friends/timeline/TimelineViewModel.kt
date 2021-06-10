@@ -3,6 +3,7 @@ package nl.jovmit.friends.timeline
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import nl.jovmit.friends.domain.exceptions.BackendException
+import nl.jovmit.friends.domain.exceptions.ConnectionUnavailableException
 import nl.jovmit.friends.domain.post.PostCatalog
 import nl.jovmit.friends.domain.user.UserCatalog
 import nl.jovmit.friends.timeline.state.TimelineState
@@ -22,6 +23,8 @@ class TimelineViewModel(
       mutableTimelineState.value = TimelineState.Posts(postsForUser)
     } catch (backendException: BackendException) {
       mutableTimelineState.value = TimelineState.BackendError
+    } catch (offlineException: ConnectionUnavailableException) {
+      mutableTimelineState.value = TimelineState.OfflineError
     }
   }
 }

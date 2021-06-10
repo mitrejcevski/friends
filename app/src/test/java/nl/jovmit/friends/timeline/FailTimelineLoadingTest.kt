@@ -2,6 +2,7 @@ package nl.jovmit.friends.timeline
 
 import nl.jovmit.friends.InstantTaskExecutorExtension
 import nl.jovmit.friends.domain.exceptions.BackendException
+import nl.jovmit.friends.domain.exceptions.ConnectionUnavailableException
 import nl.jovmit.friends.domain.post.Post
 import nl.jovmit.friends.domain.post.PostCatalog
 import nl.jovmit.friends.domain.user.InMemoryUserCatalog
@@ -24,9 +25,26 @@ class FailTimelineLoadingTest {
     assertEquals(TimelineState.BackendError, viewModel.timelineState.value)
   }
 
+  @Test
+  fun offlineError() {
+    val userCatalog = InMemoryUserCatalog()
+    val postCatalog = OfflinePostCatalog()
+    val viewModel = TimelineViewModel(userCatalog, postCatalog)
+
+    viewModel.timelineFor(":irrelevant:")
+
+    assertEquals(TimelineState.OfflineError, viewModel.timelineState.value)
+  }
+
   private class UnavailablePostCatalog : PostCatalog {
     override fun postsFor(userIds: List<String>): List<Post> {
       throw BackendException()
+    }
+  }
+
+  private class OfflinePostCatalog : PostCatalog {
+    override fun postsFor(userIds: List<String>): List<Post> {
+      throw ConnectionUnavailableException()
     }
   }
 }
