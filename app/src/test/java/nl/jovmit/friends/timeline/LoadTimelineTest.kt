@@ -3,6 +3,7 @@ package nl.jovmit.friends.timeline
 import nl.jovmit.friends.InstantTaskExecutorExtension
 import nl.jovmit.friends.domain.post.InMemoryPostCatalog
 import nl.jovmit.friends.domain.post.Post
+import nl.jovmit.friends.domain.timeline.TimelineRepository
 import nl.jovmit.friends.domain.user.Following
 import nl.jovmit.friends.domain.user.InMemoryUserCatalog
 import nl.jovmit.friends.infrastructure.builder.UserBuilder.Companion.aUser
@@ -35,9 +36,10 @@ class LoadTimelineTest {
 
   @Test
   fun noPostsAvailable() {
+    val userCatalog = InMemoryUserCatalog()
+    val postCatalog = InMemoryPostCatalog(availablePosts)
     val viewModel = TimelineViewModel(
-      InMemoryUserCatalog(),
-      InMemoryPostCatalog(availablePosts)
+      TimelineRepository(userCatalog, postCatalog)
     )
 
     viewModel.timelineFor("tomId")
@@ -47,9 +49,10 @@ class LoadTimelineTest {
 
   @Test
   fun postsAvailable() {
+    val userCatalog = InMemoryUserCatalog()
+    val postCatalog = InMemoryPostCatalog(availablePosts)
     val viewModel = TimelineViewModel(
-      InMemoryUserCatalog(),
-      InMemoryPostCatalog(availablePosts)
+      TimelineRepository(userCatalog, postCatalog)
     )
 
     viewModel.timelineFor(tim.id)
@@ -59,13 +62,14 @@ class LoadTimelineTest {
 
   @Test
   fun postsFormFriends() {
+    val userCatalog = InMemoryUserCatalog(
+      followings = listOf(
+        Following(anna.id, lucy.id)
+      )
+    )
+    val postCatalog = InMemoryPostCatalog(availablePosts)
     val viewModel = TimelineViewModel(
-      InMemoryUserCatalog(
-        followings = listOf(
-          Following(anna.id, lucy.id)
-        )
-      ),
-      InMemoryPostCatalog(availablePosts)
+      TimelineRepository(userCatalog, postCatalog)
     )
 
     viewModel.timelineFor(anna.id)
@@ -75,13 +79,14 @@ class LoadTimelineTest {
 
   @Test
   fun postsFromFriendsAlongOwn() {
+    val userCatalog = InMemoryUserCatalog(
+      followings = listOf(
+        Following(sara.id, lucy.id)
+      )
+    )
+    val postCatalog = InMemoryPostCatalog(availablePosts)
     val viewModel = TimelineViewModel(
-      InMemoryUserCatalog(
-        followings = listOf(
-          Following(sara.id, lucy.id)
-        )
-      ),
-      InMemoryPostCatalog(availablePosts)
+      TimelineRepository(userCatalog, postCatalog)
     )
 
     viewModel.timelineFor(sara.id)
