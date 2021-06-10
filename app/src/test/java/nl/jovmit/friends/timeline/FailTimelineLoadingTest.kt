@@ -1,0 +1,32 @@
+package nl.jovmit.friends.timeline
+
+import nl.jovmit.friends.InstantTaskExecutorExtension
+import nl.jovmit.friends.domain.exceptions.BackendException
+import nl.jovmit.friends.domain.post.Post
+import nl.jovmit.friends.domain.post.PostCatalog
+import nl.jovmit.friends.domain.user.InMemoryUserCatalog
+import nl.jovmit.friends.timeline.state.TimelineState
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+
+@ExtendWith(InstantTaskExecutorExtension::class)
+class FailTimelineLoadingTest {
+
+  @Test
+  fun backendError() {
+    val userCatalog = InMemoryUserCatalog()
+    val postCatalog = UnavailablePostCatalog()
+    val viewModel = TimelineViewModel(userCatalog, postCatalog)
+
+    viewModel.timelineFor(":irrelevant:")
+
+    assertEquals(TimelineState.BackendError, viewModel.timelineState.value)
+  }
+
+  private class UnavailablePostCatalog : PostCatalog {
+    override fun postsFor(userIds: List<String>): List<Post> {
+      throw BackendException()
+    }
+  }
+}
