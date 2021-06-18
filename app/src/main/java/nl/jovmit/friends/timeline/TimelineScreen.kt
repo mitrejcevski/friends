@@ -7,9 +7,13 @@ import androidx.compose.ui.res.stringResource
 import nl.jovmit.friends.R
 
 @Composable
-fun TimelineScreen() {
+fun TimelineScreen(
+  userId: String,
+  timelineViewModel: TimelineViewModel
+) {
   Column {
     Text(text = stringResource(id = R.string.timeline))
     Text(text = stringResource(id = R.string.emptyTimelineMessage))
   }
+  timelineViewModel.timelineFor(userId)
 }
