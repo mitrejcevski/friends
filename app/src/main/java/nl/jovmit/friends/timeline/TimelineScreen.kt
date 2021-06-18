@@ -6,6 +6,6 @@ import androidx.compose.ui.res.stringResource
 import nl.jovmit.friends.R
 
 @Composable
-fun Timeline() {
+fun TimelineScreen() {
   Text(text = stringResource(id = R.string.timeline))
 }
