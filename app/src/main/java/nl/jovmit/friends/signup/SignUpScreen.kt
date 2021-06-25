@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import nl.jovmit.friends.R
 import nl.jovmit.friends.signup.state.SignUpScreenState
 import nl.jovmit.friends.signup.state.SignUpState
-import nl.jovmit.friends.ui.theme.typography
+import nl.jovmit.friends.ui.composables.ScreenTitle
 
 @Composable
 fun SignUpScreen(
@@ -147,19 +147,6 @@ fun InfoMessage(
         )
       }
     }
-  }
-}
-
-@Composable
-private fun ScreenTitle(@StringRes resource: Int) {
-  Row(
-    modifier = Modifier.fillMaxWidth(),
-    horizontalArrangement = Arrangement.Center
-  ) {
-    Text(
-      text = stringResource(resource),
-      style = typography.h4
-    )
   }
 }
 
