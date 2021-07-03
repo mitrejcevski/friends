@@ -2,7 +2,9 @@ package nl.jovmit.friends.timeline
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.AndroidComposeTestRule
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import nl.jovmit.friends.MainActivity
 import nl.jovmit.friends.R
@@ -29,6 +31,12 @@ class TimelineRobot(
   private val rule: MainActivityRule
 ) {
 
+  fun tapOnCreateNewPost() {
+    val createNewPost = rule.activity.getString(R.string.createNewPost)
+    rule.onNodeWithTag(createNewPost)
+      .performClick()
+  }
+
   infix fun verify(
     block: TimelineVerificationRobot.() -> Unit
   ): TimelineVerificationRobot {
@@ -51,5 +59,11 @@ class TimelineVerificationRobot(
       rule.onNodeWithText(post.text)
         .assertIsDisplayed()
     }
+  }
+
+  fun newPostComposerIsDisplayed() {
+    val createNewPost = rule.activity.getString(R.string.createNewPost)
+    rule.onNodeWithText(createNewPost)
+      .assertIsDisplayed()
   }
 }

@@ -36,9 +36,18 @@ class TimelineScreenTest {
     replacePostCatalogWith(InMemoryPostCatalog(listOf(post1, post2)))
 
     launchTimelineFor(email, password, timelineTestRule) {
-
+      //no operation
     } verify {
       postsAreDisplayed(post1, post2)
+    }
+  }
+
+  @Test
+  fun opensPostComposer() {
+    launchTimelineFor("test@email.com", "sOmEPa$123", timelineTestRule) {
+      tapOnCreateNewPost()
+    } verify {
+      newPostComposerIsDisplayed()
     }
   }
 

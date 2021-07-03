@@ -5,12 +5,18 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,7 +36,8 @@ class TimelineScreenState {
 @Composable
 fun TimelineScreen(
   userId: String,
-  timelineViewModel: TimelineViewModel
+  timelineViewModel: TimelineViewModel,
+  onCreateNewPost: () -> Unit
 ) {
   val screenState by remember { mutableStateOf(TimelineScreenState()) }
   val timelineState by timelineViewModel.timelineState.observeAsState()
@@ -47,16 +54,39 @@ fun TimelineScreen(
       .padding(16.dp)
   ) {
     ScreenTitle(resource = R.string.timeline)
-    PostsList(screenState.posts)
+    Spacer(modifier = Modifier.height(16.dp))
+    Box(modifier = Modifier.fillMaxSize()) {
+      PostsList(
+        posts = screenState.posts,
+        modifier = Modifier.align(Alignment.TopCenter)
+      )
+      FloatingActionButton(
+        onClick = { onCreateNewPost() },
+        modifier = Modifier
+          .align(Alignment.BottomEnd)
+          .testTag(stringResource(id = R.string.createNewPost))
+      ) {
+        Icon(
+          imageVector = Icons.Default.Add,
+          contentDescription = stringResource(id = R.string.createNewPost)
+        )
+      }
+    }
   }
 }
 
 @Composable
-private fun PostsList(posts: List<Post>) {
+private fun PostsList(
+  posts: List<Post>,
+  modifier: Modifier = Modifier
+) {
   if (posts.isEmpty()) {
-    Text(text = stringResource(id = R.string.emptyTimelineMessage))
+    Text(
+      text = stringResource(id = R.string.emptyTimelineMessage),
+      modifier = modifier
+    )
   } else {
-    LazyColumn {
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
       items(posts) { post ->
         PostItem(post = post)
         Spacer(modifier = Modifier.height(16.dp))
