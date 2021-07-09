@@ -12,13 +12,14 @@ import org.junit.jupiter.api.extension.ExtendWith
 @ExtendWith(InstantTaskExecutorExtension::class)
 class RenderingTimelineStatesTest {
 
+  private val timelineRepository = TimelineRepository(
+    InMemoryUserCatalog(),
+    InMemoryPostCatalog()
+  )
+  private val viewModel = TimelineViewModel(timelineRepository)
+
   @Test
   fun timelineStatesExposedToAnObserver() {
-    val timelineRepository = TimelineRepository(
-      InMemoryUserCatalog(),
-      InMemoryPostCatalog()
-    )
-    val viewModel = TimelineViewModel(timelineRepository)
     val renderedStates = mutableListOf<TimelineState>()
     viewModel.timelineState.observeForever { renderedStates.add(it) }
 
