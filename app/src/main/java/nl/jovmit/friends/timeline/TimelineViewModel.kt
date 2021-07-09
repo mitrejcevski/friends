@@ -8,12 +8,13 @@ import nl.jovmit.friends.timeline.state.TimelineState
 
 class TimelineViewModel(
   private val timelineRepository: TimelineRepository
-): ViewModel() {
+) : ViewModel() {
 
   private val mutableTimelineState = MutableLiveData<TimelineState>()
   val timelineState: LiveData<TimelineState> = mutableTimelineState
 
   fun timelineFor(userId: String) {
+    mutableTimelineState.value = TimelineState.Loading
     val result = timelineRepository.getTimelineFor(userId)
     mutableTimelineState.value = result
   }
