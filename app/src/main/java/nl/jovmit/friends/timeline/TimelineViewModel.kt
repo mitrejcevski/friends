@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import nl.jovmit.friends.app.CoroutineDispatchers
 import nl.jovmit.friends.domain.timeline.TimelineRepository
 import nl.jovmit.friends.timeline.state.TimelineState
@@ -20,8 +21,9 @@ class TimelineViewModel(
   fun timelineFor(userId: String) {
     viewModelScope.launch {
       mutableTimelineState.value = TimelineState.Loading
-      val result = timelineRepository.getTimelineFor(userId)
-      mutableTimelineState.value = result
+      mutableTimelineState.value = withContext(dispatchers.background) {
+        timelineRepository.getTimelineFor(userId)
+      }
     }
   }
 }
