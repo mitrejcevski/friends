@@ -1,6 +1,7 @@
 package nl.jovmit.friends.timeline
 
 import nl.jovmit.friends.InstantTaskExecutorExtension
+import nl.jovmit.friends.app.TestDispatchers
 import nl.jovmit.friends.domain.post.InMemoryPostCatalog
 import nl.jovmit.friends.domain.timeline.TimelineRepository
 import nl.jovmit.friends.domain.user.InMemoryUserCatalog
@@ -16,7 +17,10 @@ class RenderingTimelineStatesTest {
     InMemoryUserCatalog(),
     InMemoryPostCatalog()
   )
-  private val viewModel = TimelineViewModel(timelineRepository)
+  private val viewModel = TimelineViewModel(
+    timelineRepository,
+    TestDispatchers()
+  )
 
   @Test
   fun timelineStatesExposedToAnObserver() {

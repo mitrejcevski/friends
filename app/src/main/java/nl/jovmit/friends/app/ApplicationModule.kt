@@ -29,6 +29,6 @@ val applicationModule = module {
   }
 
   viewModel {
-    TimelineViewModel(timelineRepository = get())
+    TimelineViewModel(timelineRepository = get(), dispatchers = get())
   }
 }

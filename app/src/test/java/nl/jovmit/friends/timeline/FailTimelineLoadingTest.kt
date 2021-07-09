@@ -1,6 +1,7 @@
 package nl.jovmit.friends.timeline
 
 import nl.jovmit.friends.InstantTaskExecutorExtension
+import nl.jovmit.friends.app.TestDispatchers
 import nl.jovmit.friends.domain.exceptions.BackendException
 import nl.jovmit.friends.domain.exceptions.ConnectionUnavailableException
 import nl.jovmit.friends.domain.post.Post
@@ -20,7 +21,8 @@ class FailTimelineLoadingTest {
     val userCatalog = InMemoryUserCatalog()
     val postCatalog = UnavailablePostCatalog()
     val viewModel = TimelineViewModel(
-      TimelineRepository(userCatalog, postCatalog)
+      TimelineRepository(userCatalog, postCatalog),
+      TestDispatchers()
     )
 
     viewModel.timelineFor(":irrelevant:")
@@ -33,7 +35,8 @@ class FailTimelineLoadingTest {
     val userCatalog = InMemoryUserCatalog()
     val postCatalog = OfflinePostCatalog()
     val viewModel = TimelineViewModel(
-      TimelineRepository(userCatalog, postCatalog)
+      TimelineRepository(userCatalog, postCatalog),
+      TestDispatchers()
     )
 
     viewModel.timelineFor(":irrelevant:")
