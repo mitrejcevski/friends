@@ -3,6 +3,7 @@ package nl.jovmit.friends.timeline
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import kotlinx.coroutines.delay
 import nl.jovmit.friends.MainActivity
+import nl.jovmit.friends.domain.exceptions.BackendException
 import nl.jovmit.friends.domain.post.InMemoryPostCatalog
 import nl.jovmit.friends.domain.post.Post
 import nl.jovmit.friends.domain.post.PostCatalog
@@ -62,6 +63,16 @@ class TimelineScreenTest {
     }
   }
 
+  @Test
+  fun showsBackendError() {
+    replacePostCatalogWith(UnavailablePostCatalog())
+    launchTimelineFor("backendError@friends.com", "sOmEPa$123", timelineTestRule) {
+      //no operation
+    } verify {
+      backendErrorIsDisplayed()
+    }
+  }
+
   @After
   fun tearDown() {
     replacePostCatalogWith(InMemoryPostCatalog())
@@ -72,6 +83,13 @@ class TimelineScreenTest {
       factory(override = true) { postsCatalog }
     }
     loadKoinModules(replaceModule)
+  }
+
+  class UnavailablePostCatalog : PostCatalog {
+
+    override suspend fun postsFor(userIds: List<String>): List<Post> {
+      throw BackendException()
+    }
   }
 
   class DelayingPostsCatalog : PostCatalog {
