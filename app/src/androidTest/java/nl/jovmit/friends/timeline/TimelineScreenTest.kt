@@ -1,6 +1,7 @@
 package nl.jovmit.friends.timeline
 
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import kotlinx.coroutines.delay
 import nl.jovmit.friends.MainActivity
 import nl.jovmit.friends.domain.post.InMemoryPostCatalog
 import nl.jovmit.friends.domain.post.Post
@@ -51,6 +52,16 @@ class TimelineScreenTest {
     }
   }
 
+  @Test
+  fun showsLoadingIndicator() {
+    replacePostCatalogWith(DelayingPostsCatalog())
+    launchTimelineFor("testLoading@email.com", "sOmEPa$123", timelineTestRule) {
+      //no operation
+    } verify {
+      loadingIndicatorIsDisplayed()
+    }
+  }
+
   @After
   fun tearDown() {
     replacePostCatalogWith(InMemoryPostCatalog())
@@ -61,5 +72,13 @@ class TimelineScreenTest {
       factory(override = true) { postsCatalog }
     }
     loadKoinModules(replaceModule)
+  }
+
+  class DelayingPostsCatalog : PostCatalog {
+
+    override suspend fun postsFor(userIds: List<String>): List<Post> {
+      delay(2000)
+      return emptyList()
+    }
   }
 }

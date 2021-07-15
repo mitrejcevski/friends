@@ -23,13 +23,16 @@ import androidx.compose.ui.unit.dp
 import nl.jovmit.friends.R
 import nl.jovmit.friends.domain.post.Post
 import nl.jovmit.friends.timeline.state.TimelineState
+import nl.jovmit.friends.ui.composables.BlockingLoading
 import nl.jovmit.friends.ui.composables.ScreenTitle
 
 class TimelineScreenState {
   var posts by mutableStateOf(emptyList<Post>())
   var loadedUserId by mutableStateOf("")
+  var isLoading by mutableStateOf(false)
 
   fun updatePosts(newPosts: List<Post>) {
+    isLoading = false
     this.posts = newPosts
   }
 
@@ -39,6 +42,10 @@ class TimelineScreenState {
       return true
     }
     return false
+  }
+
+  fun showLoading() {
+    isLoading = true
   }
 }
 
@@ -54,35 +61,41 @@ fun TimelineScreen(
     timelineViewModel.timelineFor(userId)
   }
 
-  if (timelineState is TimelineState.Posts) {
-    val posts = (timelineState as TimelineState.Posts).posts
-    screenState.updatePosts(posts)
+  when (timelineState) {
+    is TimelineState.Loading -> screenState.showLoading()
+    is TimelineState.Posts -> {
+      val posts = (timelineState as TimelineState.Posts).posts
+      screenState.updatePosts(posts)
+    }
   }
 
-  Column(
-    modifier = Modifier
-      .fillMaxSize()
-      .padding(16.dp)
-  ) {
-    ScreenTitle(resource = R.string.timeline)
-    Spacer(modifier = Modifier.height(16.dp))
-    Box(modifier = Modifier.fillMaxSize()) {
-      PostsList(
-        posts = screenState.posts,
-        modifier = Modifier.align(Alignment.TopCenter)
-      )
-      FloatingActionButton(
-        onClick = { onCreateNewPost() },
-        modifier = Modifier
-          .align(Alignment.BottomEnd)
-          .testTag(stringResource(id = R.string.createNewPost))
-      ) {
-        Icon(
-          imageVector = Icons.Default.Add,
-          contentDescription = stringResource(id = R.string.createNewPost)
+  Box {
+    Column(
+      modifier = Modifier
+        .fillMaxSize()
+        .padding(16.dp)
+    ) {
+      ScreenTitle(resource = R.string.timeline)
+      Spacer(modifier = Modifier.height(16.dp))
+      Box(modifier = Modifier.fillMaxSize()) {
+        PostsList(
+          posts = screenState.posts,
+          modifier = Modifier.align(Alignment.TopCenter)
         )
+        FloatingActionButton(
+          onClick = { onCreateNewPost() },
+          modifier = Modifier
+            .align(Alignment.BottomEnd)
+            .testTag(stringResource(id = R.string.createNewPost))
+        ) {
+          Icon(
+            imageVector = Icons.Default.Add,
+            contentDescription = stringResource(id = R.string.createNewPost)
+          )
+        }
       }
     }
+    BlockingLoading(isShowing = screenState.isLoading)
   }
 }
 
