@@ -11,8 +11,11 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,8 +37,7 @@ fun TimelineScreen(
   timelineViewModel: TimelineViewModel,
   onCreateNewPost: () -> Unit
 ) {
-  val coroutineScope = rememberCoroutineScope()
-  val screenState by remember { mutableStateOf(TimelineScreenState(coroutineScope)) }
+  val screenState by remember { mutableStateOf(TimelineScreenState()) }
   val timelineState by timelineViewModel.timelineState.observeAsState()
   if (screenState.shouldLoadPostsFor(userId)) {
     timelineViewModel.timelineFor(userId)
@@ -79,10 +81,7 @@ fun TimelineScreen(
         }
       }
     }
-    InfoMessage(
-      isVisible = screenState.isInfoMessageShowing,
-      stringResource = screenState.currentInfoMessage
-    )
+    InfoMessage(stringResource = screenState.currentInfoMessage)
     BlockingLoading(isShowing = screenState.isLoading)
   }
 }

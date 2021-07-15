@@ -23,9 +23,7 @@ fun SignUpScreen(
   signUpViewModel: SignUpViewModel,
   onSignedUp: (String) -> Unit
 ) {
-
-  val coroutineScope = rememberCoroutineScope()
-  val screenState by remember { mutableStateOf(SignUpScreenState(coroutineScope)) }
+  val screenState by remember { mutableStateOf(SignUpScreenState()) }
   val signUpState by signUpViewModel.signUpState.observeAsState()
 
   when (signUpState) {
@@ -73,10 +71,7 @@ fun SignUpScreen(
         Text(text = stringResource(id = R.string.signUp))
       }
     }
-    InfoMessage(
-      isVisible = screenState.isInfoMessageShowing,
-      stringResource = screenState.currentInfoMessage
-    )
+    InfoMessage(stringResource = screenState.currentInfoMessage)
     BlockingLoading(screenState.isLoading)
   }
 }

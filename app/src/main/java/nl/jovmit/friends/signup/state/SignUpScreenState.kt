@@ -4,20 +4,14 @@ import androidx.annotation.StringRes
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
-class SignUpScreenState(
-  private val coroutineScope: CoroutineScope
-) {
+class SignUpScreenState {
   var email by mutableStateOf("")
   var isBadEmail by mutableStateOf(false)
   var password by mutableStateOf("")
   var isBadPassword by mutableStateOf(false)
   var about by mutableStateOf("")
   var currentInfoMessage by mutableStateOf(0)
-  var isInfoMessageShowing by mutableStateOf(false)
   var isLoading by mutableStateOf(false)
 
   private var lastSubmittedEmail by mutableStateOf("")
@@ -37,15 +31,10 @@ class SignUpScreenState(
     isBadPassword = true
   }
 
-  fun toggleInfoMessage(@StringRes message: Int) = coroutineScope.launch {
+  fun toggleInfoMessage(@StringRes message: Int) {
     isLoading = false
     if (currentInfoMessage != message) {
       currentInfoMessage = message
-      if (!isInfoMessageShowing) {
-        isInfoMessageShowing = true
-        delay(1500)
-        isInfoMessageShowing = false
-      }
     }
   }
 
@@ -57,7 +46,6 @@ class SignUpScreenState(
     currentInfoMessage = 0
     lastSubmittedEmail = email
     lastSubmittedPassword = password
-    isInfoMessageShowing = false
     isBadEmail = false
     isBadPassword = false
     isLoading = false

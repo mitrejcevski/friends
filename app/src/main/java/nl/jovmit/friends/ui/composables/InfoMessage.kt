@@ -15,19 +15,27 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun InfoMessage(
-  isVisible: Boolean,
   @StringRes stringResource: Int
 ) {
+  if (stringResource == 0) return
+  var shouldShow by remember { mutableStateOf(false) }
+  LaunchedEffect(key1 = "displayMessage") {
+    shouldShow = true
+    delay(1500)
+    shouldShow = false
+  }
+
   AnimatedVisibility(
-    visible = isVisible,
+    visible = shouldShow,
     enter = slideInVertically(
       initialOffsetY = { fullHeight -> -fullHeight },
       animationSpec = tween(durationMillis = 150, easing = FastOutLinearInEasing)
