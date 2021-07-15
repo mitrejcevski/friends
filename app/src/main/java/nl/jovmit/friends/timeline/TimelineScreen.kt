@@ -27,9 +27,18 @@ import nl.jovmit.friends.ui.composables.ScreenTitle
 
 class TimelineScreenState {
   var posts by mutableStateOf(emptyList<Post>())
+  var loadedUserId by mutableStateOf("")
 
   fun updatePosts(newPosts: List<Post>) {
     this.posts = newPosts
+  }
+
+  fun shouldLoadPostsFor(userId: String): Boolean {
+    if (loadedUserId != userId) {
+      loadedUserId = userId
+      return true
+    }
+    return false
   }
 }
 
@@ -41,7 +50,9 @@ fun TimelineScreen(
 ) {
   val screenState by remember { mutableStateOf(TimelineScreenState()) }
   val timelineState by timelineViewModel.timelineState.observeAsState()
-  timelineViewModel.timelineFor(userId)
+  if (screenState.shouldLoadPostsFor(userId)) {
+    timelineViewModel.timelineFor(userId)
+  }
 
   if (timelineState is TimelineState.Posts) {
     val posts = (timelineState as TimelineState.Posts).posts
