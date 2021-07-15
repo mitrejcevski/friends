@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import nl.jovmit.friends.R
 import nl.jovmit.friends.signup.state.SignUpScreenState
 import nl.jovmit.friends.signup.state.SignUpState
+import nl.jovmit.friends.ui.composables.BlockingLoading
 import nl.jovmit.friends.ui.composables.ScreenTitle
 
 @Composable
@@ -83,34 +84,6 @@ fun SignUpScreen(
       stringResource = screenState.currentInfoMessage
     )
     BlockingLoading(screenState.isLoading)
-  }
-}
-
-@OptIn(ExperimentalAnimationApi::class)
-@Composable
-fun BlockingLoading(
-  isShowing: Boolean
-) {
-  AnimatedVisibility(
-    visible = isShowing,
-    enter = fadeIn(
-      initialAlpha = 0f,
-      animationSpec = tween(durationMillis = 150, easing = FastOutLinearInEasing)
-    ),
-    exit = fadeOut(
-      targetAlpha = 0f,
-      animationSpec = tween(durationMillis = 250, easing = LinearOutSlowInEasing)
-    )
-  ) {
-    Box(
-      modifier = Modifier
-        .fillMaxSize()
-        .testTag(stringResource(id = R.string.loading))
-        .background(MaterialTheme.colors.surface.copy(alpha = 0.7f)),
-      contentAlignment = Alignment.Center
-    ) {
-      CircularProgressIndicator()
-    }
   }
 }
 
