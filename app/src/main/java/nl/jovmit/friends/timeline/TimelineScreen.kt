@@ -89,9 +89,10 @@ fun TimelineScreen(
       val posts = (timelineState as TimelineState.Posts).posts
       screenState.updatePosts(posts)
     }
-    is TimelineState.BackendError -> {
+    is TimelineState.BackendError ->
       screenState.showInfoMessage(R.string.fetchingTimelineError)
-    }
+    is TimelineState.OfflineError ->
+      screenState.showInfoMessage(R.string.offlineError)
   }
 
   Box {

@@ -4,6 +4,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import kotlinx.coroutines.delay
 import nl.jovmit.friends.MainActivity
 import nl.jovmit.friends.domain.exceptions.BackendException
+import nl.jovmit.friends.domain.exceptions.ConnectionUnavailableException
 import nl.jovmit.friends.domain.post.InMemoryPostCatalog
 import nl.jovmit.friends.domain.post.Post
 import nl.jovmit.friends.domain.post.PostCatalog
@@ -73,6 +74,16 @@ class TimelineScreenTest {
     }
   }
 
+  @Test
+  fun showsOfflineError() {
+    replacePostCatalogWith(OfflinePostCatalog())
+    launchTimelineFor("offlineError@friends.com", "sOmEPa$123", timelineTestRule) {
+      //no operation
+    } verify {
+      offlineErrorIsDisplayed()
+    }
+  }
+
   @After
   fun tearDown() {
     replacePostCatalogWith(InMemoryPostCatalog())
@@ -85,6 +96,14 @@ class TimelineScreenTest {
     loadKoinModules(replaceModule)
   }
 
+  class DelayingPostsCatalog : PostCatalog {
+
+    override suspend fun postsFor(userIds: List<String>): List<Post> {
+      delay(2000)
+      return emptyList()
+    }
+  }
+
   class UnavailablePostCatalog : PostCatalog {
 
     override suspend fun postsFor(userIds: List<String>): List<Post> {
@@ -92,11 +111,10 @@ class TimelineScreenTest {
     }
   }
 
-  class DelayingPostsCatalog : PostCatalog {
+  class OfflinePostCatalog : PostCatalog {
 
     override suspend fun postsFor(userIds: List<String>): List<Post> {
-      delay(2000)
-      return emptyList()
+      throw ConnectionUnavailableException()
     }
   }
 }
