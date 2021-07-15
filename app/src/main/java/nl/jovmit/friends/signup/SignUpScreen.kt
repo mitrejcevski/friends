@@ -1,16 +1,9 @@
 package nl.jovmit.friends.signup
 
-import androidx.annotation.StringRes
-import androidx.compose.animation.*
-import androidx.compose.animation.core.FastOutLinearInEasing
-import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
@@ -22,6 +15,7 @@ import nl.jovmit.friends.R
 import nl.jovmit.friends.signup.state.SignUpScreenState
 import nl.jovmit.friends.signup.state.SignUpState
 import nl.jovmit.friends.ui.composables.BlockingLoading
+import nl.jovmit.friends.ui.composables.InfoMessage
 import nl.jovmit.friends.ui.composables.ScreenTitle
 
 @Composable
@@ -84,42 +78,6 @@ fun SignUpScreen(
       stringResource = screenState.currentInfoMessage
     )
     BlockingLoading(screenState.isLoading)
-  }
-}
-
-@OptIn(ExperimentalAnimationApi::class)
-@Composable
-fun InfoMessage(
-  isVisible: Boolean,
-  @StringRes stringResource: Int
-) {
-  AnimatedVisibility(
-    visible = isVisible,
-    enter = slideInVertically(
-      initialOffsetY = { fullHeight -> -fullHeight },
-      animationSpec = tween(durationMillis = 150, easing = FastOutLinearInEasing)
-    ),
-    exit = fadeOut(
-      targetAlpha = 0f,
-      animationSpec = tween(durationMillis = 250, easing = LinearOutSlowInEasing)
-    )
-  ) {
-    Surface(
-      modifier = Modifier.fillMaxWidth(),
-      color = MaterialTheme.colors.error,
-      elevation = 4.dp
-    ) {
-      Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center
-      ) {
-        Text(
-          modifier = Modifier.padding(16.dp),
-          text = stringResource(id = stringResource),
-          color = MaterialTheme.colors.onError
-        )
-      }
-    }
   }
 }
 
