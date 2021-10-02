@@ -11,12 +11,14 @@ class CreatePostViewModel {
   val postState: LiveData<CreatePostState> = mutablePostState
 
   fun createPost(postText: String) {
-    if(postText == "Second Post") {
-      val post = Post("postId2", "userId", postText, 2L)
-      mutablePostState.value = CreatePostState.Created(post)
+    val userId = loggedInUserId()
+    val post = if (postText == "Second Post") {
+      Post("postId2", userId, postText, 2L)
     } else {
-      val post = Post("postId", "userId", postText, 1L)
-      mutablePostState.value = CreatePostState.Created(post)
+      Post("postId", userId, postText, 1L)
     }
+    mutablePostState.value = CreatePostState.Created(post)
   }
+
+  private fun loggedInUserId() = "userId"
 }
