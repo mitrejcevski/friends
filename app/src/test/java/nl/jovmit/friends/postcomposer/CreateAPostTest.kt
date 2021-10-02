@@ -20,4 +20,15 @@ class CreateAPostTest {
 
     assertEquals(CreatePostState.Created(post), viewModel.postState.value)
   }
+
+  @Test
+  fun anotherPostCreated() {
+    val postText = "Second Post"
+    val anotherPost = Post("postId2", "userId", postText, 2L)
+    val viewModel = CreatePostViewModel()
+
+    viewModel.createPost(postText)
+
+    assertEquals(CreatePostState.Created(anotherPost), viewModel.postState.value)
+  }
 }
