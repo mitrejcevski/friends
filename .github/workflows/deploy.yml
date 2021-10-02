@@ -117,10 +117,10 @@ jobs:
         run: echo '${{ secrets.GOOGLE_SERVICES_API }}' > service_account.json
 
       - name: Deploy to alpha
-        uses: r0adkll/upload-google-play@v1
+        uses: r0adkll/upload-google-play@v1.0.15
         with:
           serviceAccountJson: service_account.json
           packageName: nl.jovmit.friends
           releaseFiles: app/build/outputs/bundle/release/app-release.aab
           track: alpha
-          whatsNewDirectory: whatsNewDirectory/
+          whatsNewDirectory: whatsNewDirectory/whatsnew
