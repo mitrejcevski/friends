@@ -123,4 +123,4 @@ jobs:
           packageName: nl.jovmit.friends
           releaseFiles: app/build/outputs/bundle/release/app-release.aab
           track: alpha
-          whatsNewDirectory: whatsNewDirectory/whatsnew
+          whatsNewDirectory: whatsNewDirectory/
