@@ -43,8 +43,8 @@ class CreateAnAccountTest {
   fun createDuplicateAccount() {
     val anna = User("annaId", "anna@friends.com", "about Anna")
     val password = "AnNaPas$123"
-    val usersForPassword = mutableMapOf(password to mutableListOf(anna))
-    val userRepository = UserRepository(InMemoryUserCatalog(usersForPassword))
+    val usersForEmail = mutableMapOf(anna.email to anna)
+    val userRepository = UserRepository(InMemoryUserCatalog(usersForEmail))
     val viewModel = SignUpViewModel(credentialsValidator, userRepository, TestDispatchers())
 
     viewModel.createAccount(anna.email, password, anna.about)
