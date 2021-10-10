@@ -2,9 +2,9 @@ package nl.jovmit.friends.infrastructure
 
 class ControllableClock(
   private val timestamp: Long
-) {
+) : Clock {
 
-  fun now(): Long {
+  override fun now(): Long {
     return timestamp
   }
 }

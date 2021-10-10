@@ -4,12 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import nl.jovmit.friends.domain.post.Post
 import nl.jovmit.friends.domain.user.InMemoryUserData
-import nl.jovmit.friends.infrastructure.ControllableClock
+import nl.jovmit.friends.infrastructure.Clock
 import nl.jovmit.friends.postcomposer.state.CreatePostState
 
 class CreatePostViewModel(
   private val userData: InMemoryUserData,
-  val clock: ControllableClock
+  private val clock: Clock
 ) {
 
   private val mutablePostState = MutableLiveData<CreatePostState>()
