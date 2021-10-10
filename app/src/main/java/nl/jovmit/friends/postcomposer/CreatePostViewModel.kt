@@ -18,11 +18,14 @@ class CreatePostViewModel(
   val postState: LiveData<CreatePostState> = mutablePostState
 
   fun createPost(postText: String) {
-    val userId = userData.loggedInUserId()
-    val timestamp = clock.now()
-    val postId = idGenerator.next()
-    val post = Post(postId, userId, postText, timestamp)
+    val post = createNewPost(postText)
     mutablePostState.value = CreatePostState.Created(post)
   }
 
+  private fun createNewPost(postText: String): Post {
+    val userId = userData.loggedInUserId()
+    val timestamp = clock.now()
+    val postId = idGenerator.next()
+    return Post(postId, userId, postText, timestamp)
+  }
 }
