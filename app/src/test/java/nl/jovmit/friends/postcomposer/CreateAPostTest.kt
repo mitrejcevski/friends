@@ -3,6 +3,7 @@ package nl.jovmit.friends.postcomposer
 import nl.jovmit.friends.InstantTaskExecutorExtension
 import nl.jovmit.friends.domain.post.Post
 import nl.jovmit.friends.domain.user.InMemoryUserData
+import nl.jovmit.friends.infrastructure.ControllableClock
 import nl.jovmit.friends.postcomposer.state.CreatePostState
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -18,7 +19,7 @@ class CreateAPostTest {
   fun aPostIsCreated() {
     val postText = "First Post"
     val post = Post("postId", "userId", postText, 1L)
-    val viewModel = CreatePostViewModel(userData)
+    val viewModel = CreatePostViewModel(userData, ControllableClock(1L))
 
     viewModel.createPost(postText)
 
@@ -29,7 +30,7 @@ class CreateAPostTest {
   fun anotherPostCreated() {
     val postText = "Second Post"
     val anotherPost = Post("postId2", userId, postText, 2L)
-    val viewModel = CreatePostViewModel(userData)
+    val viewModel = CreatePostViewModel(userData, ControllableClock(2L))
 
     viewModel.createPost(postText)
 

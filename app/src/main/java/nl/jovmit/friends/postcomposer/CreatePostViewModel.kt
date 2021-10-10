@@ -4,10 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import nl.jovmit.friends.domain.post.Post
 import nl.jovmit.friends.domain.user.InMemoryUserData
+import nl.jovmit.friends.infrastructure.ControllableClock
 import nl.jovmit.friends.postcomposer.state.CreatePostState
 
 class CreatePostViewModel(
-  private val userData: InMemoryUserData
+  private val userData: InMemoryUserData,
+  val clock: ControllableClock
 ) {
 
   private val mutablePostState = MutableLiveData<CreatePostState>()
@@ -15,11 +17,7 @@ class CreatePostViewModel(
 
   fun createPost(postText: String) {
     val userId = userData.loggedInUserId()
-    val timestamp = if (postText == "Second Post") {
-      ControllableClock(2L).now()
-    } else {
-      ControllableClock(1L).now()
-    }
+    val timestamp = clock.now()
     val post = if (postText == "Second Post") {
       Post("postId2", userId, postText, timestamp)
     } else {
@@ -28,12 +26,4 @@ class CreatePostViewModel(
     mutablePostState.value = CreatePostState.Created(post)
   }
 
-  class ControllableClock(
-    private val timestamp: Long
-  ) {
-
-    fun now(): Long {
-      return timestamp
-    }
-  }
 }
