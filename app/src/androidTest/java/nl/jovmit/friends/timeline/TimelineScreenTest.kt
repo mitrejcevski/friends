@@ -97,6 +97,9 @@ class TimelineScreenTest {
   }
 
   class DelayingPostsCatalog : PostCatalog {
+    override fun addPost(userId: String, postText: String): Post {
+      TODO("Not yet implemented")
+    }
 
     override suspend fun postsFor(userIds: List<String>): List<Post> {
       delay(2000)
@@ -105,6 +108,9 @@ class TimelineScreenTest {
   }
 
   class UnavailablePostCatalog : PostCatalog {
+    override fun addPost(userId: String, postText: String): Post {
+      TODO("Not yet implemented")
+    }
 
     override suspend fun postsFor(userIds: List<String>): List<Post> {
       throw BackendException()
@@ -112,6 +118,9 @@ class TimelineScreenTest {
   }
 
   class OfflinePostCatalog : PostCatalog {
+    override fun addPost(userId: String, postText: String): Post {
+      TODO("Not yet implemented")
+    }
 
     override suspend fun postsFor(userIds: List<String>): List<Post> {
       throw ConnectionUnavailableException()
