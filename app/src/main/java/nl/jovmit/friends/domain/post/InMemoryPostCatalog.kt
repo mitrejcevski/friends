@@ -1,7 +1,14 @@
 package nl.jovmit.friends.domain.post
 
+import nl.jovmit.friends.infrastructure.Clock
+import nl.jovmit.friends.infrastructure.IdGenerator
+import nl.jovmit.friends.infrastructure.SystemClock
+import nl.jovmit.friends.infrastructure.UUIDGenerator
+
 class InMemoryPostCatalog(
-  private val availablePosts: List<Post> = emptyList()
+  private val availablePosts: List<Post> = emptyList(),
+  private val idGenerator: IdGenerator = UUIDGenerator(),
+  private val clock: Clock = SystemClock()
 ) : PostCatalog {
 
   override fun addPost(userId: String, postText: String): Post {
