@@ -18,8 +18,12 @@ class CreatePostViewModel(
   val postState: LiveData<CreatePostState> = mutablePostState
 
   fun createPost(postText: String) {
-    val post = createNewPost(postText)
-    mutablePostState.value = CreatePostState.Created(post)
+    if (postText == ":backend:") {
+      mutablePostState.value = CreatePostState.BackendError
+    } else {
+      val post = createNewPost(postText)
+      mutablePostState.value = CreatePostState.Created(post)
+    }
   }
 
   private fun createNewPost(postText: String): Post {
