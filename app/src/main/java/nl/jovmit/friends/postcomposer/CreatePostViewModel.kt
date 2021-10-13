@@ -2,9 +2,7 @@ package nl.jovmit.friends.postcomposer
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import nl.jovmit.friends.domain.exceptions.BackendException
-import nl.jovmit.friends.domain.exceptions.ConnectionUnavailableException
-import nl.jovmit.friends.domain.post.Post
+import nl.jovmit.friends.domain.post.PostRepository
 import nl.jovmit.friends.domain.user.InMemoryUserData
 import nl.jovmit.friends.infrastructure.Clock
 import nl.jovmit.friends.infrastructure.IdGenerator
@@ -20,31 +18,8 @@ class CreatePostViewModel(
   val postState: LiveData<CreatePostState> = mutablePostState
 
   fun createPost(postText: String) {
-    val result = PostRepository().createNewPost(postText)
+    val result = PostRepository(userData, clock, idGenerator)
+      .createNewPost(postText)
     mutablePostState.value = result
-  }
-
-  inner class PostRepository {
-    fun createNewPost(postText: String): CreatePostState {
-      return try {
-        val post = addPost(userData.loggedInUserId(), postText)
-        CreatePostState.Created(post)
-      } catch (backendException: BackendException) {
-        CreatePostState.BackendError
-      } catch (offlineException: ConnectionUnavailableException) {
-        CreatePostState.Offline
-      }
-    }
-
-    private fun addPost(userId: String, postText: String): Post {
-      if (postText == ":backend:") {
-        throw BackendException()
-      } else if (postText == ":offline:") {
-        throw ConnectionUnavailableException()
-      }
-      val timestamp = clock.now()
-      val postId = idGenerator.next()
-      return Post(postId, userId, postText, timestamp)
-    }
   }
 }
