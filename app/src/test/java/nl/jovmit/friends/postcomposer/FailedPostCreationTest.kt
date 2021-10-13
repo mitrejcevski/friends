@@ -1,6 +1,7 @@
 package nl.jovmit.friends.postcomposer
 
 import nl.jovmit.friends.InstantTaskExecutorExtension
+import nl.jovmit.friends.domain.post.InMemoryPostCatalog
 import nl.jovmit.friends.domain.post.PostRepository
 import nl.jovmit.friends.domain.user.InMemoryUserData
 import nl.jovmit.friends.infrastructure.ControllableClock
@@ -19,7 +20,12 @@ class FailedPostCreationTest {
     val clock = ControllableClock(1L)
     val idGenerator = ControllableIdGenerator("postId1")
     val viewModel = CreatePostViewModel(
-      PostRepository(userData, clock, idGenerator)
+      PostRepository(
+        userData, InMemoryPostCatalog(
+          idGenerator = idGenerator,
+          clock = clock
+        )
+      )
     )
 
     viewModel.createPost(":backend:")
@@ -33,7 +39,12 @@ class FailedPostCreationTest {
     val clock = ControllableClock(1L)
     val idGenerator = ControllableIdGenerator("postId2")
     val viewModel = CreatePostViewModel(
-      PostRepository(userData, clock, idGenerator)
+      PostRepository(
+        userData, InMemoryPostCatalog(
+          idGenerator = idGenerator,
+          clock = clock
+        )
+      )
     )
 
     viewModel.createPost(":offline:")
