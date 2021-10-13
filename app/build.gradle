@@ -49,6 +49,17 @@ android {
         }
     }
 
+    sourceSets {
+        def sharedTestDirectory = "src/sharedTest/java"
+        test {
+            java.srcDir sharedTestDirectory
+        }
+
+        androidTest {
+            java.srcDir sharedTestDirectory
+        }
+    }
+
     packagingOptions {
         exclude 'META-INF/AL2.0'
         exclude 'META-INF/LGPL2.1'
