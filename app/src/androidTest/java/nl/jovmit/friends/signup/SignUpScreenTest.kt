@@ -4,11 +4,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import nl.jovmit.friends.MainActivity
-import nl.jovmit.friends.domain.exceptions.BackendException
-import nl.jovmit.friends.domain.exceptions.ConnectionUnavailableException
-import nl.jovmit.friends.domain.user.InMemoryUserCatalog
-import nl.jovmit.friends.domain.user.User
-import nl.jovmit.friends.domain.user.UserCatalog
+import nl.jovmit.friends.domain.user.*
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -157,28 +153,6 @@ class SignUpScreenTest {
     override suspend fun createUser(email: String, password: String, about: String): User {
       delay(1000)
       return User("someId", email, about)
-    }
-
-    override fun followedBy(userId: String): List<String> {
-      TODO("Not yet implemented")
-    }
-  }
-
-  class UnavailableUserCatalog : UserCatalog {
-
-    override suspend fun createUser(email: String, password: String, about: String): User {
-      throw BackendException()
-    }
-
-    override fun followedBy(userId: String): List<String> {
-      TODO("Not yet implemented")
-    }
-  }
-
-  class OfflineUserCatalog : UserCatalog {
-
-    override suspend fun createUser(email: String, password: String, about: String): User {
-      throw ConnectionUnavailableException()
     }
 
     override fun followedBy(userId: String): List<String> {
