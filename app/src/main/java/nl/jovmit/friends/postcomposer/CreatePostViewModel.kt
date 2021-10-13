@@ -23,13 +23,12 @@ class CreatePostViewModel(
     } else if (postText == ":offline:") {
       mutablePostState.value = CreatePostState.Offline
     } else {
-      val post = createNewPost(postText)
+      val post = addPost(userData.loggedInUserId(), postText)
       mutablePostState.value = CreatePostState.Created(post)
     }
   }
 
-  private fun createNewPost(postText: String): Post {
-    val userId = userData.loggedInUserId()
+  private fun addPost(userId: String, postText: String): Post {
     val timestamp = clock.now()
     val postId = idGenerator.next()
     return Post(postId, userId, postText, timestamp)
