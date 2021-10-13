@@ -15,23 +15,15 @@ class PostRepository(
 
   fun createNewPost(postText: String): CreatePostState {
     return try {
-      val post = addPost(userData.loggedInUserId(), postText)
+      val post = InMemoryPostCatalog(
+        idGenerator = idGenerator,
+        clock = clock
+      ).addPost(userData.loggedInUserId(), postText)
       CreatePostState.Created(post)
     } catch (backendException: BackendException) {
       CreatePostState.BackendError
     } catch (offlineException: ConnectionUnavailableException) {
       CreatePostState.Offline
     }
-  }
-
-  private fun addPost(userId: String, postText: String): Post {
-    if (postText == ":backend:") {
-      throw BackendException()
-    } else if (postText == ":offline:") {
-      throw ConnectionUnavailableException()
-    }
-    val timestamp = clock.now()
-    val postId = idGenerator.next()
-    return Post(postId, userId, postText, timestamp)
   }
 }
