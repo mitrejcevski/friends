@@ -20,13 +20,18 @@ class CreatePostViewModel(
   val postState: LiveData<CreatePostState> = mutablePostState
 
   fun createPost(postText: String) {
-    try {
+    val result = createNewPost(postText)
+    mutablePostState.value = result
+  }
+
+  private fun createNewPost(postText: String): CreatePostState {
+    return try {
       val post = addPost(userData.loggedInUserId(), postText)
-      mutablePostState.value = CreatePostState.Created(post)
+      CreatePostState.Created(post)
     } catch (backendException: BackendException) {
-      mutablePostState.value = CreatePostState.BackendError
+      CreatePostState.BackendError
     } catch (offlineException: ConnectionUnavailableException) {
-      mutablePostState.value = CreatePostState.Offline
+      CreatePostState.Offline
     }
   }
 
