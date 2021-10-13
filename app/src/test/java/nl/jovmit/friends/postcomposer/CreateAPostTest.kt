@@ -1,6 +1,7 @@
 package nl.jovmit.friends.postcomposer
 
 import nl.jovmit.friends.InstantTaskExecutorExtension
+import nl.jovmit.friends.app.TestDispatchers
 import nl.jovmit.friends.domain.post.InMemoryPostCatalog
 import nl.jovmit.friends.domain.post.Post
 import nl.jovmit.friends.domain.post.PostRepository
@@ -28,7 +29,8 @@ class CreateAPostTest {
           idGenerator = idGenerator,
           clock = clock
         )
-      )
+      ),
+      TestDispatchers()
     )
 
     viewModel.createPost(postText)
@@ -49,7 +51,8 @@ class CreateAPostTest {
           idGenerator = idGenerator,
           clock = clock
         )
-      )
+      ),
+      TestDispatchers()
     )
 
     viewModel.createPost(postText)

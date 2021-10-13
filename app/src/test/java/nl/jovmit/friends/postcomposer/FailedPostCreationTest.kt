@@ -1,6 +1,7 @@
 package nl.jovmit.friends.postcomposer
 
 import nl.jovmit.friends.InstantTaskExecutorExtension
+import nl.jovmit.friends.app.TestDispatchers
 import nl.jovmit.friends.domain.post.OfflinePostCatalog
 import nl.jovmit.friends.domain.post.PostRepository
 import nl.jovmit.friends.domain.post.UnavailablePostCatalog
@@ -19,7 +20,8 @@ class FailedPostCreationTest {
       PostRepository(
         InMemoryUserData("userId"),
         UnavailablePostCatalog()
-      )
+      ),
+      TestDispatchers()
     )
 
     viewModel.createPost(":backend:")
@@ -33,7 +35,8 @@ class FailedPostCreationTest {
       PostRepository(
         InMemoryUserData("userId"),
         OfflinePostCatalog()
-      )
+      ),
+      TestDispatchers()
     )
 
     viewModel.createPost(":offline:")

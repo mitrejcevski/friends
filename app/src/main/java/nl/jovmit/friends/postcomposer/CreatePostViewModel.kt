@@ -5,11 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import nl.jovmit.friends.app.CoroutineDispatchers
 import nl.jovmit.friends.domain.post.PostRepository
 import nl.jovmit.friends.postcomposer.state.CreatePostState
 
 class CreatePostViewModel(
-  private val postRepository: PostRepository
+  private val postRepository: PostRepository,
+  private val dispatchers: CoroutineDispatchers
 ) : ViewModel() {
 
   private val mutablePostState = MutableLiveData<CreatePostState>()
