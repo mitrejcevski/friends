@@ -11,7 +11,7 @@ class InMemoryPostCatalog(
   private val clock: Clock = SystemClock()
 ) : PostCatalog {
 
-  override fun addPost(userId: String, postText: String): Post {
+  override suspend fun addPost(userId: String, postText: String): Post {
     val timestamp = clock.now()
     val postId = idGenerator.next()
     return Post(postId, userId, postText, timestamp)

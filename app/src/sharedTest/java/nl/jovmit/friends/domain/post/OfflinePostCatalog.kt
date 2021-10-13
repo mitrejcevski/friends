@@ -4,7 +4,7 @@ import nl.jovmit.friends.domain.exceptions.ConnectionUnavailableException
 
 class OfflinePostCatalog : PostCatalog {
 
-  override fun addPost(userId: String, postText: String): Post {
+  override suspend fun addPost(userId: String, postText: String): Post {
     throw ConnectionUnavailableException()
   }
 
