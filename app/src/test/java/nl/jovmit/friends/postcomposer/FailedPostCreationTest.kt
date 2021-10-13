@@ -24,4 +24,17 @@ class FailedPostCreationTest {
 
     assertEquals(CreatePostState.BackendError, viewModel.postState.value)
   }
+
+  @Test
+  fun offlineError() {
+    val viewModel = CreatePostViewModel(
+      InMemoryUserData("userId"),
+      ControllableClock(1L),
+      ControllableIdGenerator("postId2")
+    )
+
+    viewModel.createPost(":offline:")
+
+    assertEquals(CreatePostState.Offline, viewModel.postState.value)
+  }
 }
