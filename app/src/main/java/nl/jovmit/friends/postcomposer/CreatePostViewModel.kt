@@ -20,29 +20,31 @@ class CreatePostViewModel(
   val postState: LiveData<CreatePostState> = mutablePostState
 
   fun createPost(postText: String) {
-    val result = createNewPost(postText)
+    val result = PostRepository().createNewPost(postText)
     mutablePostState.value = result
   }
 
-  private fun createNewPost(postText: String): CreatePostState {
-    return try {
-      val post = addPost(userData.loggedInUserId(), postText)
-      CreatePostState.Created(post)
-    } catch (backendException: BackendException) {
-      CreatePostState.BackendError
-    } catch (offlineException: ConnectionUnavailableException) {
-      CreatePostState.Offline
+  inner class PostRepository {
+    fun createNewPost(postText: String): CreatePostState {
+      return try {
+        val post = addPost(userData.loggedInUserId(), postText)
+        CreatePostState.Created(post)
+      } catch (backendException: BackendException) {
+        CreatePostState.BackendError
+      } catch (offlineException: ConnectionUnavailableException) {
+        CreatePostState.Offline
+      }
     }
-  }
 
-  private fun addPost(userId: String, postText: String): Post {
-    if (postText == ":backend:") {
-      throw BackendException()
-    } else if (postText == ":offline:") {
-      throw ConnectionUnavailableException()
+    private fun addPost(userId: String, postText: String): Post {
+      if (postText == ":backend:") {
+        throw BackendException()
+      } else if (postText == ":offline:") {
+        throw ConnectionUnavailableException()
+      }
+      val timestamp = clock.now()
+      val postId = idGenerator.next()
+      return Post(postId, userId, postText, timestamp)
     }
-    val timestamp = clock.now()
-    val postId = idGenerator.next()
-    return Post(postId, userId, postText, timestamp)
   }
 }
