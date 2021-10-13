@@ -1,10 +1,8 @@
 package nl.jovmit.friends.signup
 
 import kotlinx.coroutines.runBlocking
-import nl.jovmit.friends.domain.exceptions.BackendException
-import nl.jovmit.friends.domain.exceptions.ConnectionUnavailableException
-import nl.jovmit.friends.domain.user.User
-import nl.jovmit.friends.domain.user.UserCatalog
+import nl.jovmit.friends.domain.user.OfflineUserCatalog
+import nl.jovmit.friends.domain.user.UnavailableUserCatalog
 import nl.jovmit.friends.domain.user.UserRepository
 import nl.jovmit.friends.signup.state.SignUpState
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -28,27 +26,5 @@ class FailedAccountCreationTest {
     val result = userRepository.signUp(":email:", ":password:", ":about:")
 
     assertEquals(SignUpState.Offline, result)
-  }
-
-  class OfflineUserCatalog : UserCatalog {
-
-    override suspend fun createUser(email: String, password: String, about: String): User {
-      throw ConnectionUnavailableException()
-    }
-
-    override fun followedBy(userId: String): List<String> {
-      TODO("Not yet implemented")
-    }
-  }
-
-  class UnavailableUserCatalog : UserCatalog {
-
-    override suspend fun createUser(email: String, password: String, about: String): User {
-      throw BackendException()
-    }
-
-    override fun followedBy(userId: String): List<String> {
-      TODO("Not yet implemented")
-    }
   }
 }

@@ -2,10 +2,8 @@ package nl.jovmit.friends.timeline
 
 import nl.jovmit.friends.InstantTaskExecutorExtension
 import nl.jovmit.friends.app.TestDispatchers
-import nl.jovmit.friends.domain.exceptions.BackendException
-import nl.jovmit.friends.domain.exceptions.ConnectionUnavailableException
-import nl.jovmit.friends.domain.post.Post
-import nl.jovmit.friends.domain.post.PostCatalog
+import nl.jovmit.friends.domain.post.OfflinePostCatalog
+import nl.jovmit.friends.domain.post.UnavailablePostCatalog
 import nl.jovmit.friends.domain.timeline.TimelineRepository
 import nl.jovmit.friends.domain.user.InMemoryUserCatalog
 import nl.jovmit.friends.timeline.state.TimelineState
@@ -42,25 +40,5 @@ class FailTimelineLoadingTest {
     viewModel.timelineFor(":irrelevant:")
 
     assertEquals(TimelineState.OfflineError, viewModel.timelineState.value)
-  }
-
-  private class UnavailablePostCatalog : PostCatalog {
-    override fun addPost(userId: String, postText: String): Post {
-      TODO("Not yet implemented")
-    }
-
-    override suspend fun postsFor(userIds: List<String>): List<Post> {
-      throw BackendException()
-    }
-  }
-
-  private class OfflinePostCatalog : PostCatalog {
-    override fun addPost(userId: String, postText: String): Post {
-      TODO("Not yet implemented")
-    }
-
-    override suspend fun postsFor(userIds: List<String>): List<Post> {
-      throw ConnectionUnavailableException()
-    }
   }
 }

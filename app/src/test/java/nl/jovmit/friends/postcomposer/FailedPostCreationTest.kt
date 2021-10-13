@@ -1,11 +1,9 @@
 package nl.jovmit.friends.postcomposer
 
 import nl.jovmit.friends.InstantTaskExecutorExtension
-import nl.jovmit.friends.domain.exceptions.BackendException
-import nl.jovmit.friends.domain.exceptions.ConnectionUnavailableException
-import nl.jovmit.friends.domain.post.Post
-import nl.jovmit.friends.domain.post.PostCatalog
+import nl.jovmit.friends.domain.post.OfflinePostCatalog
 import nl.jovmit.friends.domain.post.PostRepository
+import nl.jovmit.friends.domain.post.UnavailablePostCatalog
 import nl.jovmit.friends.domain.user.InMemoryUserData
 import nl.jovmit.friends.postcomposer.state.CreatePostState
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -41,25 +39,5 @@ class FailedPostCreationTest {
     viewModel.createPost(":offline:")
 
     assertEquals(CreatePostState.Offline, viewModel.postState.value)
-  }
-
-  private class OfflinePostCatalog : PostCatalog {
-    override fun addPost(userId: String, postText: String): Post {
-      throw ConnectionUnavailableException()
-    }
-
-    override suspend fun postsFor(userIds: List<String>): List<Post> {
-      TODO("Not yet implemented")
-    }
-  }
-
-  private class UnavailablePostCatalog : PostCatalog {
-    override fun addPost(userId: String, postText: String): Post {
-      throw BackendException()
-    }
-
-    override suspend fun postsFor(userIds: List<String>): List<Post> {
-      TODO("Not yet implemented")
-    }
   }
 }
