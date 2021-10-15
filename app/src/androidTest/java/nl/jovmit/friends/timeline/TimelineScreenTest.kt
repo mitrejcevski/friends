@@ -3,12 +3,11 @@ package nl.jovmit.friends.timeline
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import kotlinx.coroutines.delay
 import nl.jovmit.friends.MainActivity
-import nl.jovmit.friends.domain.exceptions.BackendException
-import nl.jovmit.friends.domain.exceptions.ConnectionUnavailableException
 import nl.jovmit.friends.domain.post.*
 import org.junit.After
 import org.junit.Rule
 import org.junit.Test
+import org.koin.core.context.GlobalContext
 import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
 
@@ -16,6 +15,8 @@ class TimelineScreenTest {
 
   @get:Rule
   val timelineTestRule = createAndroidComposeRule<MainActivity>()
+
+  private val defaultPostCatalog : PostCatalog = GlobalContext.get().get()
 
   @Test
   fun showsEmptyTimelineMessage() {
@@ -84,7 +85,7 @@ class TimelineScreenTest {
 
   @After
   fun tearDown() {
-    replacePostCatalogWith(InMemoryPostCatalog())
+    replacePostCatalogWith(defaultPostCatalog)
   }
 
   private fun replacePostCatalogWith(postsCatalog: PostCatalog) {

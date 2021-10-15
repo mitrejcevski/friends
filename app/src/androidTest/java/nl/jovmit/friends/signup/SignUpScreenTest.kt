@@ -9,6 +9,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.koin.core.context.GlobalContext.get
 import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
 
@@ -16,6 +17,8 @@ class SignUpScreenTest {
 
   @get:Rule
   val signUpTestRule = createAndroidComposeRule<MainActivity>()
+
+  private val defaultUserCatalog : UserCatalog = get().get()
 
   private val signUpModule = module {
     factory<UserCatalog>(override = true) { InMemoryUserCatalog() }
@@ -138,7 +141,7 @@ class SignUpScreenTest {
 
   @After
   fun tearDown() {
-    replaceUserCatalogWith(InMemoryUserCatalog())
+    replaceUserCatalogWith(defaultUserCatalog)
   }
 
   private fun replaceUserCatalogWith(userCatalog: UserCatalog) {
