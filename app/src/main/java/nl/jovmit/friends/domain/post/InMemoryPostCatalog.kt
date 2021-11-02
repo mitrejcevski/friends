@@ -6,7 +6,7 @@ import nl.jovmit.friends.infrastructure.SystemClock
 import nl.jovmit.friends.infrastructure.UUIDGenerator
 
 class InMemoryPostCatalog(
-  private val availablePosts: List<Post> = emptyList(),
+  private val availablePosts: MutableList<Post> = mutableListOf(),
   private val idGenerator: IdGenerator = UUIDGenerator(),
   private val clock: Clock = SystemClock()
 ) : PostCatalog {
@@ -14,7 +14,9 @@ class InMemoryPostCatalog(
   override suspend fun addPost(userId: String, postText: String): Post {
     val timestamp = clock.now()
     val postId = idGenerator.next()
-    return Post(postId, userId, postText, timestamp)
+    val post = Post(postId, userId, postText, timestamp)
+    availablePosts.add(post)
+    return post
   }
 
   override suspend fun postsFor(userIds: List<String>): List<Post> {
