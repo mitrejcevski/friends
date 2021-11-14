@@ -11,18 +11,16 @@ import org.junit.Rule
 import org.junit.Test
 import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
-import java.time.LocalDateTime
-import java.time.ZoneOffset
+import java.util.*
 
 class CreateNewPostScreenTest {
 
   @get:Rule
   val createNewPostRule = createAndroidComposeRule<MainActivity>()
 
-  private val timestampWithTimezoneOffset = LocalDateTime
-    .of(2021, 10, 30, 13, 30)
-    .toInstant(ZoneOffset.ofTotalSeconds(0))
-    .toEpochMilli()
+  private val timestampWithTimezoneOffset = Calendar.getInstance()
+    .also { it.set(2021, 9, 30, 15, 30) }
+    .timeInMillis
 
   @Test
   fun createNewPost() {
