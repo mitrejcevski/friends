@@ -1,9 +1,6 @@
 package nl.jovmit.friends.postcomposer
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
@@ -16,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import nl.jovmit.friends.R
 import nl.jovmit.friends.postcomposer.state.CreatePostState
 import nl.jovmit.friends.ui.composables.ScreenTitle
@@ -46,8 +44,13 @@ fun CreateNewPostScreen(
     }
   }
 
-  Column(modifier = Modifier.fillMaxSize()) {
+  Column(
+    modifier = Modifier
+      .fillMaxSize()
+      .padding(16.dp)
+  ) {
     ScreenTitle(resource = R.string.createNewPost)
+    Spacer(modifier = Modifier.height(16.dp))
     Box(modifier = Modifier.fillMaxSize()) {
       PostComposer(postText) { postText = it }
       FloatingActionButton(
