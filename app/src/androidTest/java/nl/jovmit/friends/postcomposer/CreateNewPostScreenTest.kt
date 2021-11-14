@@ -19,12 +19,13 @@ class CreateNewPostScreenTest {
   @get:Rule
   val createNewPostRule = createAndroidComposeRule<MainActivity>()
 
+  private val timestampWithTimezoneOffset = LocalDateTime
+    .of(2021, 10, 30, 13, 30)
+    .toInstant(ZoneOffset.ofTotalSeconds(0))
+    .toEpochMilli()
+
   @Test
   fun createNewPost() {
-    val timestampWithTimezoneOffset = LocalDateTime
-      .of(2021, 10, 30, 13, 30)
-      .toInstant(ZoneOffset.ofTotalSeconds(0))
-      .toEpochMilli()
     replaceUserDataWith(InMemoryUserData("jovmitId"))
     replacePostCatalogWith(InMemoryPostCatalog(clock = ControllableClock(timestampWithTimezoneOffset)))
 
@@ -38,10 +39,6 @@ class CreateNewPostScreenTest {
 
   @Test
   fun createMultiplePost() {
-    val timestampWithTimezoneOffset = LocalDateTime
-      .of(2021, 10, 30, 13, 30)
-      .toInstant(ZoneOffset.ofTotalSeconds(0))
-      .toEpochMilli()
     replaceUserDataWith(InMemoryUserData("jovmitId"))
     replacePostCatalogWith(InMemoryPostCatalog(clock = ControllableClock(timestampWithTimezoneOffset)))
 
