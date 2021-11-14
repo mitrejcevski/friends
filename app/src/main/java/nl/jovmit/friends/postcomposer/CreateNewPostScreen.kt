@@ -20,17 +20,30 @@ import nl.jovmit.friends.R
 import nl.jovmit.friends.postcomposer.state.CreatePostState
 import nl.jovmit.friends.ui.composables.ScreenTitle
 
+class CreateNewPostScreenState {
+  var isPostSubmitted by mutableStateOf(false)
+
+  fun setPostSubmitted() {
+    isPostSubmitted = true
+  }
+}
+
 @Composable
 fun CreateNewPostScreen(
   createPostViewModel: CreatePostViewModel,
   onPostCreated: () -> Unit
 ) {
 
+  val screenState by remember { mutableStateOf(CreateNewPostScreenState()) }
   var postText by remember { mutableStateOf("") }
 
   val createPostState by createPostViewModel.postState.observeAsState()
   when (createPostState) {
-    is CreatePostState.Created -> onPostCreated()
+    is CreatePostState.Created -> {
+      if (screenState.isPostSubmitted) {
+        onPostCreated()
+      }
+    }
   }
 
   Column(modifier = Modifier.fillMaxSize()) {
@@ -39,6 +52,7 @@ fun CreateNewPostScreen(
       PostComposer(postText) { postText = it }
       FloatingActionButton(
         onClick = {
+          screenState.setPostSubmitted()
           createPostViewModel.createPost(postText)
         },
         modifier = Modifier

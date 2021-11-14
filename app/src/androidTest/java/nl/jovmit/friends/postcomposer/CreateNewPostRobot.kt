@@ -36,6 +36,12 @@ class CreateNewPostRobot(
       .performClick()
   }
 
+  fun tapOnCreateNewPost() {
+    val createNewPost = rule.activity.getString(R.string.createNewPost)
+    rule.onNodeWithTag(createNewPost)
+      .performClick()
+  }
+
   infix fun verify(
     block: CreateNewPostVerificationRobot.() -> Unit
   ): CreateNewPostVerificationRobot {
@@ -52,8 +58,10 @@ class CreateNewPostVerificationRobot(
     dateTime: String,
     postContent: String
   ) {
-    rule.onNodeWithText(userId).assertIsDisplayed()
-    rule.onNodeWithText(dateTime).assertIsDisplayed()
+    rule.onAllNodesWithText(userId).onFirst().assertIsDisplayed()
+    rule.onAllNodesWithText(userId).onLast().assertIsDisplayed()
+    rule.onAllNodesWithText(dateTime).onFirst().assertIsDisplayed()
+    rule.onAllNodesWithText(dateTime).onLast().assertIsDisplayed()
     rule.onNodeWithText(postContent).assertIsDisplayed()
   }
 }
