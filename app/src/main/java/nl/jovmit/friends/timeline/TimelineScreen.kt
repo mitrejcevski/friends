@@ -30,6 +30,8 @@ import nl.jovmit.friends.timeline.state.TimelineState
 import nl.jovmit.friends.ui.composables.BlockingLoading
 import nl.jovmit.friends.ui.composables.InfoMessage
 import nl.jovmit.friends.ui.composables.ScreenTitle
+import java.text.SimpleDateFormat
+import java.util.*
 
 @Composable
 fun TimelineScreen(
@@ -121,11 +123,30 @@ fun PostItem(
         shape = RoundedCornerShape(16.dp)
       )
   ) {
-    Text(
-      text = post.text,
-      modifier = Modifier.padding(16.dp)
-    )
+    Column(
+      modifier = Modifier.fillMaxWidth()
+    ) {
+      Row(
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+      ) {
+        Text(text = post.userId)
+        Text(text = post.timestamp.toDateTime())
+      }
+      Text(
+        text = post.text,
+        style = MaterialTheme.typography.h5,
+        modifier = Modifier.padding(16.dp)
+      )
+    }
   }
+}
+
+private fun Long.toDateTime(): String {
+  val dateTimeFormat = SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.US)
+  return dateTimeFormat.format(this)
 }
 
 @Preview
