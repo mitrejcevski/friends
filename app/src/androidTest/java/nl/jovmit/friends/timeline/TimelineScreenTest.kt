@@ -34,7 +34,7 @@ class TimelineScreenTest {
     val password = "b0bPaS#2021"
     val post1 = Post("post1", "bobId", "This is Bob's first post", 1L)
     val post2 = Post("post2", "bobId", "Bob's second post is here!", 2L)
-    replacePostCatalogWith(InMemoryPostCatalog(listOf(post1, post2)))
+    replacePostCatalogWith(InMemoryPostCatalog(mutableListOf(post1, post2)))
 
     launchTimelineFor(email, password, timelineTestRule) {
       //no operation
