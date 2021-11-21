@@ -71,13 +71,13 @@ class CreateNewPostVerificationRobot(
       .assertIsDisplayed()
   }
 
-  fun backendErrorIsDisplayed() {
+  fun backendErrorIsShown() {
     val errorMessage = rule.activity.getString(R.string.creatingPostError)
     rule.onNodeWithText(errorMessage)
       .assertIsDisplayed()
   }
 
-  fun offlineErrorIsDisplayed() {
+  fun offlineErrorIsShown() {
     val offlineMessage = rule.activity.getString(R.string.offlineError)
     rule.onNodeWithText(offlineMessage)
       .assertIsDisplayed()

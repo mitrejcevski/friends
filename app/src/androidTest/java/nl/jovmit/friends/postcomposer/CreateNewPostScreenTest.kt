@@ -71,7 +71,7 @@ class CreateNewPostScreenTest {
       typePost("Some Post")
       submit()
     } verify {
-      backendErrorIsDisplayed()
+      backendErrorIsShown()
     }
   }
 
@@ -83,7 +83,7 @@ class CreateNewPostScreenTest {
       typePost("My New Post")
       submit()
     } verify {
-      offlineErrorIsDisplayed()
+      offlineErrorIsShown()
     }
   }
 
