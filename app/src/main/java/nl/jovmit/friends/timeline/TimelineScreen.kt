@@ -30,8 +30,7 @@ import nl.jovmit.friends.timeline.state.TimelineState
 import nl.jovmit.friends.ui.composables.BlockingLoading
 import nl.jovmit.friends.ui.composables.InfoMessage
 import nl.jovmit.friends.ui.composables.ScreenTitle
-import java.text.SimpleDateFormat
-import java.util.*
+import nl.jovmit.friends.ui.extensions.toDateTime
 
 @Composable
 fun TimelineScreen(
@@ -142,11 +141,6 @@ fun PostItem(
       )
     }
   }
-}
-
-private fun Long.toDateTime(): String {
-  val dateTimeFormat = SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.US)
-  return dateTimeFormat.format(this)
 }
 
 @Preview
