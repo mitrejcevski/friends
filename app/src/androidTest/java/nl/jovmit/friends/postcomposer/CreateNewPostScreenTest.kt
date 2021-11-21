@@ -3,7 +3,9 @@ package nl.jovmit.friends.postcomposer
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import nl.jovmit.friends.MainActivity
 import nl.jovmit.friends.domain.post.InMemoryPostCatalog
+import nl.jovmit.friends.domain.post.OfflinePostCatalog
 import nl.jovmit.friends.domain.post.PostCatalog
+import nl.jovmit.friends.domain.post.UnavailablePostCatalog
 import nl.jovmit.friends.domain.user.InMemoryUserData
 import nl.jovmit.friends.infrastructure.ControllableClock
 import org.junit.After
@@ -49,6 +51,18 @@ class CreateNewPostScreenTest {
     } verify {
       newlyCreatedPostIsShown("jovmitId", "30-10-2021 15:30", "My First Post")
       newlyCreatedPostIsShown("jovmitId", "30-10-2021 15:30", "My Second Post")
+    }
+  }
+
+  @Test
+  fun showsBackendError() {
+    replacePostCatalogWith(UnavailablePostCatalog())
+
+    launchPostComposerFor("dan@friends.com", createNewPostRule) {
+      typePost("Some Post")
+      submit()
+    } verify {
+      backendErrorIsDisplayed()
     }
   }
 

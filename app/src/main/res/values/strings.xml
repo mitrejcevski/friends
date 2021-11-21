@@ -18,4 +18,5 @@
     <string name="fetchingTimelineError">Failed fetching the timeline :(</string>
     <string name="newPostHint">What\'s on your mind?</string>
     <string name="submitPost">Submit Post</string>
+    <string name="creatingPostError">Cannot create a new post!</string>
 </resources>

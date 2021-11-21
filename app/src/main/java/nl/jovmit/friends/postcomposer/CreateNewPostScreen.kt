@@ -1,5 +1,6 @@
 package nl.jovmit.friends.postcomposer
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
@@ -16,13 +17,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import nl.jovmit.friends.R
 import nl.jovmit.friends.postcomposer.state.CreatePostState
+import nl.jovmit.friends.ui.composables.InfoMessage
 import nl.jovmit.friends.ui.composables.ScreenTitle
 
 class CreateNewPostScreenState {
+
+  var currentMessage by mutableStateOf(0)
   var isPostSubmitted by mutableStateOf(false)
 
   fun setPostSubmitted() {
     isPostSubmitted = true
+  }
+
+  fun showMessage(@StringRes message: Int) {
+    if (currentMessage != message) {
+      currentMessage = message
+    }
   }
 }
 
@@ -42,32 +52,37 @@ fun CreateNewPostScreen(
         onPostCreated()
       }
     }
+    is CreatePostState.BackendError ->
+      screenState.showMessage(R.string.creatingPostError)
   }
 
-  Column(
-    modifier = Modifier
-      .fillMaxSize()
-      .padding(16.dp)
-  ) {
-    ScreenTitle(resource = R.string.createNewPost)
-    Spacer(modifier = Modifier.height(16.dp))
-    Box(modifier = Modifier.fillMaxSize()) {
-      PostComposer(postText) { postText = it }
-      FloatingActionButton(
-        onClick = {
-          screenState.setPostSubmitted()
-          createPostViewModel.createPost(postText)
-        },
-        modifier = Modifier
-          .align(Alignment.BottomEnd)
-          .testTag(stringResource(id = R.string.submitPost))
-      ) {
-        Icon(
-          imageVector = Icons.Default.Done,
-          contentDescription = stringResource(id = R.string.submitPost)
-        )
+  Box {
+    Column(
+      modifier = Modifier
+        .fillMaxSize()
+        .padding(16.dp)
+    ) {
+      ScreenTitle(resource = R.string.createNewPost)
+      Spacer(modifier = Modifier.height(16.dp))
+      Box(modifier = Modifier.fillMaxSize()) {
+        PostComposer(postText) { postText = it }
+        FloatingActionButton(
+          onClick = {
+            screenState.setPostSubmitted()
+            createPostViewModel.createPost(postText)
+          },
+          modifier = Modifier
+            .align(Alignment.BottomEnd)
+            .testTag(stringResource(id = R.string.submitPost))
+        ) {
+          Icon(
+            imageVector = Icons.Default.Done,
+            contentDescription = stringResource(id = R.string.submitPost)
+          )
+        }
       }
     }
+    InfoMessage(stringResource = screenState.currentMessage)
   }
 }
 
