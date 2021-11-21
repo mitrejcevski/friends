@@ -1,6 +1,5 @@
 package nl.jovmit.friends.postcomposer
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
@@ -16,32 +15,11 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import nl.jovmit.friends.R
+import nl.jovmit.friends.postcomposer.state.CreateNewPostScreenState
 import nl.jovmit.friends.postcomposer.state.CreatePostState
 import nl.jovmit.friends.ui.composables.BlockingLoading
 import nl.jovmit.friends.ui.composables.InfoMessage
 import nl.jovmit.friends.ui.composables.ScreenTitle
-
-class CreateNewPostScreenState {
-
-  var isLoading by mutableStateOf(false)
-  var currentMessage by mutableStateOf(0)
-  var isPostSubmitted by mutableStateOf(false)
-
-  fun setPostSubmitted() {
-    isPostSubmitted = true
-  }
-
-  fun showMessage(@StringRes message: Int) {
-    isLoading = false
-    if (currentMessage != message) {
-      currentMessage = message
-    }
-  }
-
-  fun showLoading() {
-    isLoading = true
-  }
-}
 
 @Composable
 fun CreateNewPostScreen(
@@ -51,8 +29,8 @@ fun CreateNewPostScreen(
 
   val screenState by remember { mutableStateOf(CreateNewPostScreenState()) }
   var postText by remember { mutableStateOf("") }
-
   val createPostState by createPostViewModel.postState.observeAsState()
+
   when (createPostState) {
     is CreatePostState.Loading ->
       screenState.showLoading()
