@@ -66,6 +66,18 @@ class CreateNewPostScreenTest {
     }
   }
 
+  @Test
+  fun showsOfflineError() {
+    replacePostCatalogWith(OfflinePostCatalog())
+
+    launchPostComposerFor("mia@friends.com", createNewPostRule) {
+      typePost("My New Post")
+      submit()
+    } verify {
+      offlineErrorIsDisplayed()
+    }
+  }
+
   @After
   fun tearDown() {
     replacePostCatalogWith(InMemoryPostCatalog())

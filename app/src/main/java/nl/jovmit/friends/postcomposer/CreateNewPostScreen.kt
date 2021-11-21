@@ -54,6 +54,8 @@ fun CreateNewPostScreen(
     }
     is CreatePostState.BackendError ->
       screenState.showMessage(R.string.creatingPostError)
+    is CreatePostState.Offline ->
+      screenState.showMessage(R.string.offlineError)
   }
 
   Box {
