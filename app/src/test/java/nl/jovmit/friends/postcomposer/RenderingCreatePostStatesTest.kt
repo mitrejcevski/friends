@@ -5,7 +5,7 @@ import nl.jovmit.friends.app.TestDispatchers
 import nl.jovmit.friends.domain.post.InMemoryPostCatalog
 import nl.jovmit.friends.domain.post.Post
 import nl.jovmit.friends.domain.post.PostRepository
-import nl.jovmit.friends.domain.user.InMemoryUserData
+import nl.jovmit.friends.domain.user.InMemoryUserDataStore
 import nl.jovmit.friends.infrastructure.ControllableClock
 import nl.jovmit.friends.infrastructure.ControllableIdGenerator
 import nl.jovmit.friends.postcomposer.state.CreatePostState
@@ -24,7 +24,7 @@ class RenderingCreatePostStatesTest {
   private val idGenerator = ControllableIdGenerator(postId)
   private val clock = ControllableClock(timestamp)
   private val postCatalog = InMemoryPostCatalog(idGenerator = idGenerator, clock = clock)
-  private val userData = InMemoryUserData(loggedInUserId)
+  private val userData = InMemoryUserDataStore(loggedInUserId)
   private val postRepository = PostRepository(userData, postCatalog)
   private val dispatchers = TestDispatchers()
   private val viewModel = CreatePostViewModel(postRepository, dispatchers)

@@ -3,14 +3,13 @@ package nl.jovmit.friends.postcomposer
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import nl.jovmit.friends.MainActivity
 import nl.jovmit.friends.domain.post.*
-import nl.jovmit.friends.domain.user.InMemoryUserData
+import nl.jovmit.friends.domain.user.InMemoryUserDataStore
 import nl.jovmit.friends.infrastructure.ControllableClock
 import org.junit.After
 import org.junit.Rule
 import org.junit.Test
 import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
-import org.koin.dsl.single
 import java.util.*
 
 class CreateNewPostScreenTest {
@@ -24,7 +23,7 @@ class CreateNewPostScreenTest {
 
   @Test
   fun createNewPost() {
-    replaceUserDataWith(InMemoryUserData("jovmitId"))
+    replaceUserDataWith(InMemoryUserDataStore("jovmitId"))
     replacePostCatalogWith(InMemoryPostCatalog(clock = ControllableClock(timestamp)))
 
     launchPostComposerFor("jovmit@friends.com", createNewPostRule) {
@@ -37,7 +36,7 @@ class CreateNewPostScreenTest {
 
   @Test
   fun createMultiplePost() {
-    replaceUserDataWith(InMemoryUserData("jovmitId"))
+    replaceUserDataWith(InMemoryUserDataStore("jovmitId"))
     replacePostCatalogWith(InMemoryPostCatalog(clock = ControllableClock(timestamp)))
 
     launchPostComposerFor("jovmit@fiends.com", createNewPostRule) {
@@ -91,7 +90,7 @@ class CreateNewPostScreenTest {
   @After
   fun tearDown() {
     replacePostCatalogWith(InMemoryPostCatalog())
-    replaceUserDataWith(InMemoryUserData(""))
+    replaceUserDataWith(InMemoryUserDataStore(""))
   }
 
   private fun replacePostCatalogWith(postCatalog: PostCatalog) {
@@ -101,9 +100,9 @@ class CreateNewPostScreenTest {
     loadKoinModules(module)
   }
 
-  private fun replaceUserDataWith(userData: InMemoryUserData) {
+  private fun replaceUserDataWith(userDataStore: InMemoryUserDataStore) {
     val module = module {
-      single { userData }
+      single { userDataStore }
     }
     loadKoinModules(module)
   }

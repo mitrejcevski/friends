@@ -5,7 +5,7 @@ import nl.jovmit.friends.app.TestDispatchers
 import nl.jovmit.friends.domain.post.OfflinePostCatalog
 import nl.jovmit.friends.domain.post.PostRepository
 import nl.jovmit.friends.domain.post.UnavailablePostCatalog
-import nl.jovmit.friends.domain.user.InMemoryUserData
+import nl.jovmit.friends.domain.user.InMemoryUserDataStore
 import nl.jovmit.friends.postcomposer.state.CreatePostState
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -18,7 +18,7 @@ class FailedPostCreationTest {
   fun backedError() {
     val viewModel = CreatePostViewModel(
       PostRepository(
-        InMemoryUserData("userId"),
+        InMemoryUserDataStore("userId"),
         UnavailablePostCatalog()
       ),
       TestDispatchers()
@@ -33,7 +33,7 @@ class FailedPostCreationTest {
   fun offlineError() {
     val viewModel = CreatePostViewModel(
       PostRepository(
-        InMemoryUserData("userId"),
+        InMemoryUserDataStore("userId"),
         OfflinePostCatalog()
       ),
       TestDispatchers()

@@ -1,6 +1,6 @@
 package nl.jovmit.friends.domain.user
 
-class InMemoryUserData(
+class InMemoryUserDataStore(
   private val loggedInUserId: String
 ) {
 
