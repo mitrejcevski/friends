@@ -23,7 +23,6 @@ class CreateNewPostScreenTest {
 
   @Test
   fun createNewPost() {
-    replaceUserDataWith(InMemoryUserDataStore("jovmitId"))
     replacePostCatalogWith(InMemoryPostCatalog(clock = ControllableClock(timestamp)))
 
     launchPostComposerFor("jovmit@friends.com", createNewPostRule) {
@@ -36,7 +35,6 @@ class CreateNewPostScreenTest {
 
   @Test
   fun createMultiplePost() {
-    replaceUserDataWith(InMemoryUserDataStore("jovmitId"))
     replacePostCatalogWith(InMemoryPostCatalog(clock = ControllableClock(timestamp)))
 
     launchPostComposerFor("jovmit@fiends.com", createNewPostRule) {
@@ -90,7 +88,7 @@ class CreateNewPostScreenTest {
   @After
   fun tearDown() {
     replacePostCatalogWith(InMemoryPostCatalog())
-    replaceUserDataWith(InMemoryUserDataStore(""))
+    replaceUserDataWith(InMemoryUserDataStore())
   }
 
   private fun replacePostCatalogWith(postCatalog: PostCatalog) {
