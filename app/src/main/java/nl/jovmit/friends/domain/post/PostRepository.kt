@@ -2,11 +2,11 @@ package nl.jovmit.friends.domain.post
 
 import nl.jovmit.friends.domain.exceptions.BackendException
 import nl.jovmit.friends.domain.exceptions.ConnectionUnavailableException
-import nl.jovmit.friends.domain.user.InMemoryUserDataStore
+import nl.jovmit.friends.domain.user.UserDataStore
 import nl.jovmit.friends.postcomposer.state.CreatePostState
 
 class PostRepository(
-  private val userDataStore: InMemoryUserDataStore,
+  private val userDataStore: UserDataStore,
   private val postCatalog: PostCatalog
 ) {
 

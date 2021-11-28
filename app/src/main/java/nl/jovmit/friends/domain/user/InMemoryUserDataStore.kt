@@ -2,10 +2,11 @@ package nl.jovmit.friends.domain.user
 
 class InMemoryUserDataStore(
   private var loggedInUserId: String = ""
-) {
+) : UserDataStore {
 
-  fun loggedInUserId() = loggedInUserId
-  fun storeLoggedInUserId(userId: String) {
+  override fun loggedInUserId() = loggedInUserId
+
+  override fun storeLoggedInUserId(userId: String) {
     loggedInUserId = userId
   }
 }
