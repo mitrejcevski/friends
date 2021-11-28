@@ -3,6 +3,7 @@ package nl.jovmit.friends.signup
 import nl.jovmit.friends.InstantTaskExecutorExtension
 import nl.jovmit.friends.app.TestDispatchers
 import nl.jovmit.friends.domain.user.InMemoryUserCatalog
+import nl.jovmit.friends.domain.user.InMemoryUserDataStore
 import nl.jovmit.friends.domain.user.User
 import nl.jovmit.friends.domain.user.UserRepository
 import nl.jovmit.friends.domain.validation.RegexCredentialsValidator
@@ -17,7 +18,7 @@ class CreateAnAccountTest {
   private val credentialsValidator = RegexCredentialsValidator()
   private val viewModel = SignUpViewModel(
     credentialsValidator,
-    UserRepository(InMemoryUserCatalog()),
+    UserRepository(InMemoryUserCatalog(), InMemoryUserDataStore()),
     TestDispatchers()
   )
 
@@ -44,7 +45,10 @@ class CreateAnAccountTest {
     val anna = User("annaId", "anna@friends.com", "about Anna")
     val password = "AnNaPas$123"
     val usersForPassword = mutableMapOf(password to mutableListOf(anna))
-    val userRepository = UserRepository(InMemoryUserCatalog(usersForPassword))
+    val userRepository = UserRepository(
+      InMemoryUserCatalog(usersForPassword),
+      InMemoryUserDataStore()
+    )
     val viewModel = SignUpViewModel(credentialsValidator, userRepository, TestDispatchers())
 
     viewModel.createAccount(anna.email, password, anna.about)

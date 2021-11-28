@@ -3,6 +3,7 @@ package nl.jovmit.friends.signup
 import nl.jovmit.friends.InstantTaskExecutorExtension
 import nl.jovmit.friends.app.TestDispatchers
 import nl.jovmit.friends.domain.user.InMemoryUserCatalog
+import nl.jovmit.friends.domain.user.InMemoryUserDataStore
 import nl.jovmit.friends.domain.user.User
 import nl.jovmit.friends.domain.user.UserRepository
 import nl.jovmit.friends.domain.validation.RegexCredentialsValidator
@@ -14,7 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 @ExtendWith(InstantTaskExecutorExtension::class)
 class RenderingSignUpStatesTest {
 
-  private val userRepository = UserRepository(InMemoryUserCatalog())
+  private val userRepository = UserRepository(InMemoryUserCatalog(), InMemoryUserDataStore())
   private val viewModel = SignUpViewModel(
     RegexCredentialsValidator(),
     userRepository,

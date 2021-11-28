@@ -6,7 +6,8 @@ import nl.jovmit.friends.domain.exceptions.DuplicateAccountException
 import nl.jovmit.friends.signup.state.SignUpState
 
 class UserRepository(
-  private val userCatalog: UserCatalog
+  private val userCatalog: UserCatalog,
+  private val userDataStore: InMemoryUserDataStore
 ) {
 
   suspend fun signUp(
@@ -16,6 +17,7 @@ class UserRepository(
   ): SignUpState {
     return try {
       val user = userCatalog.createUser(email, password, about)
+      userDataStore.storeLoggedInUserId(user.id)
       SignUpState.SignedUp(user)
     } catch (duplicateAccount: DuplicateAccountException) {
       SignUpState.DuplicateAccount
