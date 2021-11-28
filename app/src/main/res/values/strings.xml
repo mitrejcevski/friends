@@ -19,4 +19,5 @@
     <string name="newPostHint">What\'s on your mind?</string>
     <string name="submitPost">Submit Post</string>
     <string name="creatingPostError">Cannot create a new post!</string>
+    <string name="people">People</string>
 </resources>
