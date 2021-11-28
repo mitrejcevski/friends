@@ -9,10 +9,23 @@ class StoreSignedUpUserDataTest {
   @Test
   fun successSigningUp() = runBlocking {
     val userDataStore = InMemoryUserDataStore()
-    val userRepository = UserRepository(InMemoryUserCatalog(), userDataStore)
+    val userRepository = UserRepository(UserCatalogCreatingUsersWith("userId"), userDataStore)
 
-    userRepository.signUp("user@email.com", ":password:", ":about:")
+    userRepository.signUp(":email:", ":password:", ":about:")
 
     assertEquals("userId", userDataStore.loggedInUserId())
+  }
+
+  private class UserCatalogCreatingUsersWith(
+    private val desiredUserId: String
+  ) : UserCatalog {
+
+    override suspend fun createUser(email: String, password: String, about: String): User {
+      return User(desiredUserId, email, about)
+    }
+
+    override fun followedBy(userId: String): List<String> {
+      TODO("Not yet implemented")
+    }
   }
 }
