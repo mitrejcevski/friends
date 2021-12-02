@@ -77,13 +77,17 @@ class MainActivity : ComponentActivity() {
   fun HomeScreen(userId: String) {
     val navigationController = rememberNavController()
     val homeNavigationScreens = listOf(Screen.Main.Timeline, Screen.Main.People)
+    val currentDestination = currentDestination(navigationController)
+    val isMainDestination = homeNavigationScreens.any { it.route == currentDestination }
     Scaffold(bottomBar = {
-      HomeScreenBottomNavigation(navigationController, homeNavigationScreens)
+      if (isMainDestination) {
+        HomeScreenBottomNavigation(navigationController, homeNavigationScreens)
+      }
     }) {
       NavHost(
         navController = navigationController,
         startDestination = homeNavigationScreens.first().route,
-        modifier = Modifier.padding(bottom = 50.dp)
+        modifier = Modifier.padding(bottom = if (isMainDestination) 50.dp else 0.dp)
       ) {
         composable(route = Screen.Main.Timeline.route) {
           TimelineScreen(
