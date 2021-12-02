@@ -9,12 +9,11 @@ import nl.jovmit.friends.timeline.launchTimelineFor
 
 private typealias MainActivityRule = AndroidComposeTestRule<ActivityScenarioRule<MainActivity>, MainActivity>
 
-fun launchPeopleFor(
-  email: String,
+fun launchTimeline(
   rule: MainActivityRule,
   block: PeopleRobot.() -> Unit
 ): PeopleRobot {
-  launchTimelineFor(email, "Pas$123.", rule) {}
+  launchTimelineFor("email@email.com", "Pas$123.", rule) {}
   return PeopleRobot(rule).apply(block)
 }
 

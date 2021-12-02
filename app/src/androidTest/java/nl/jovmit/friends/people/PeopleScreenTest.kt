@@ -2,7 +2,6 @@ package nl.jovmit.friends.people
 
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import nl.jovmit.friends.MainActivity
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 
@@ -13,7 +12,7 @@ class PeopleScreenTest {
 
   @Test
   fun displaysPeople() {
-    launchPeopleFor("email@email.com", rule) {
+    launchTimeline(rule) {
       tapOnPeople()
     } verify {
       peopleScreenIsPresent()
