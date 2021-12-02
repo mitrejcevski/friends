@@ -12,7 +12,6 @@ class PeopleScreenTest {
   val rule = createAndroidComposeRule<MainActivity>()
 
   @Test
-  @Ignore("In Development")
   fun displaysPeople() {
     launchPeopleFor("email@email.com", rule) {
       tapOnPeople()

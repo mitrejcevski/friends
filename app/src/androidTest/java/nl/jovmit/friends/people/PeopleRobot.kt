@@ -1,9 +1,7 @@
 package nl.jovmit.friends.people
 
-import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.AndroidComposeTestRule
-import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import nl.jovmit.friends.MainActivity
 import nl.jovmit.friends.R
@@ -41,7 +39,8 @@ class PeopleVerificationRobot(
 
   fun peopleScreenIsPresent() {
     val people = rule.activity.getString(R.string.people)
-    rule.onNodeWithText(people)
+    rule.onAllNodesWithText(people)
+      .onFirst()
       .assertIsDisplayed()
   }
 }
