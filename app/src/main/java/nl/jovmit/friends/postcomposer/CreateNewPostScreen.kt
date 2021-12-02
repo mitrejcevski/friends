@@ -20,13 +20,14 @@ import nl.jovmit.friends.postcomposer.state.CreatePostState
 import nl.jovmit.friends.ui.composables.BlockingLoading
 import nl.jovmit.friends.ui.composables.InfoMessage
 import nl.jovmit.friends.ui.composables.ScreenTitle
+import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun CreateNewPostScreen(
-  createPostViewModel: CreatePostViewModel,
   onPostCreated: () -> Unit
 ) {
 
+  val createPostViewModel = getViewModel<CreatePostViewModel>()
   val screenState by remember { mutableStateOf(CreateNewPostScreenState()) }
   var postText by remember { mutableStateOf("") }
   val createPostState by createPostViewModel.postState.observeAsState()

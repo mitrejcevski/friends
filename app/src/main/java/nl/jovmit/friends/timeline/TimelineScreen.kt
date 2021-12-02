@@ -31,13 +31,15 @@ import nl.jovmit.friends.ui.composables.BlockingLoading
 import nl.jovmit.friends.ui.composables.InfoMessage
 import nl.jovmit.friends.ui.composables.ScreenTitle
 import nl.jovmit.friends.ui.extensions.toDateTime
+import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun TimelineScreen(
   userId: String,
-  timelineViewModel: TimelineViewModel,
   onCreateNewPost: () -> Unit
 ) {
+
+  val timelineViewModel = getViewModel<TimelineViewModel>()
   val screenState by remember { mutableStateOf(TimelineScreenState()) }
   val timelineState by timelineViewModel.timelineState.observeAsState()
   if (screenState.shouldLoadPostsFor(userId)) {

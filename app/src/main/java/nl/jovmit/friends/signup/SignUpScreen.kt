@@ -17,12 +17,14 @@ import nl.jovmit.friends.signup.state.SignUpState
 import nl.jovmit.friends.ui.composables.BlockingLoading
 import nl.jovmit.friends.ui.composables.InfoMessage
 import nl.jovmit.friends.ui.composables.ScreenTitle
+import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun SignUpScreen(
-  signUpViewModel: SignUpViewModel,
   onSignedUp: (String) -> Unit
 ) {
+
+  val signUpViewModel = getViewModel<SignUpViewModel>()
   val screenState by remember { mutableStateOf(SignUpScreenState()) }
   val signUpState by signUpViewModel.signUpState.observeAsState()
 
