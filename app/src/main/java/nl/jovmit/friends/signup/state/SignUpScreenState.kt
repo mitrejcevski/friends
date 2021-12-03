@@ -13,6 +13,7 @@ class SignUpScreenState {
   var about by mutableStateOf("")
   var currentInfoMessage by mutableStateOf(0)
   var isLoading by mutableStateOf(false)
+  var signedUpUserId by mutableStateOf("")
 
   private var lastSubmittedEmail by mutableStateOf("")
   private var lastSubmittedPassword by mutableStateOf("")
@@ -41,6 +42,14 @@ class SignUpScreenState {
   fun toggleLoading() {
     isLoading = true
   }
+
+  fun setSignedUpUser(userId: String) {
+    if (signedUpUserId != userId) {
+      signedUpUserId = userId
+    }
+  }
+
+  fun didUserSignUp() = signedUpUserId != ""
 
   fun resetUiState() {
     currentInfoMessage = 0
