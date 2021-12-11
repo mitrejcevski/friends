@@ -3,6 +3,7 @@ buildscript {
         kotlinVersion = '1.5.31'
         composeVersion = '1.0.5'
         koinVersion = '3.1.4'
+        jUnitVersion = '5.8.2'
     }
     repositories {
         google()
