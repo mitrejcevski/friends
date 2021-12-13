@@ -31,4 +31,18 @@ class LoadPeopleTest {
     assertEquals(PeopleState.Loaded(listOf(tomFriend)), viewModel.peopleState.value)
   }
 
+  @Test
+  fun loadedMultiplePeople() {
+    val friendAnna = Friend(User("annaId", "", ""), true)
+    val friendSara = Friend(User("saraId", "", ""), false)
+    val friendTom = Friend(User("tomId", "", ""), false)
+    val viewModel = PeopleViewModel()
+
+    viewModel.loadPeople("lucyId")
+
+    assertEquals(
+      PeopleState.Loaded(listOf(friendAnna, friendSara, friendTom)),
+      viewModel.peopleState.value
+    )
+  }
 }
