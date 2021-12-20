@@ -4,11 +4,13 @@ import nl.jovmit.friends.domain.exceptions.BackendException
 import nl.jovmit.friends.domain.exceptions.ConnectionUnavailableException
 import nl.jovmit.friends.people.state.PeopleState
 
-class PeopleRepository {
+class PeopleRepository(
+  private val peopleCatalog: InMemoryPeopleCatalog
+) {
 
   fun loadPeopleFor(userId: String): PeopleState {
     return try {
-      val peopleForUserId = InMemoryPeopleCatalog().loadPeopleFor(userId)
+      val peopleForUserId = peopleCatalog.loadPeopleFor(userId)
       PeopleState.Loaded(peopleForUserId)
     } catch (backendException: BackendException) {
       PeopleState.BackendError

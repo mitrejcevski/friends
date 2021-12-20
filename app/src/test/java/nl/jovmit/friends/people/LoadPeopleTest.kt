@@ -1,6 +1,8 @@
 package nl.jovmit.friends.people
 
 import nl.jovmit.friends.InstantTaskExecutorExtension
+import nl.jovmit.friends.domain.people.InMemoryPeopleCatalog
+import nl.jovmit.friends.domain.people.PeopleRepository
 import nl.jovmit.friends.domain.user.Friend
 import nl.jovmit.friends.domain.user.User
 import nl.jovmit.friends.people.state.PeopleState
@@ -13,7 +15,7 @@ class LoadPeopleTest {
 
   @Test
   fun noPeopleExisting() {
-    val viewModel = PeopleViewModel()
+    val viewModel = PeopleViewModel(PeopleRepository(InMemoryPeopleCatalog()))
 
     viewModel.loadPeople("saraId")
 
@@ -23,7 +25,7 @@ class LoadPeopleTest {
   @Test
   fun loadedASinglePerson() {
     val tom = Friend(User("tomId", "", ""), isFollowee = false)
-    val viewModel = PeopleViewModel()
+    val viewModel = PeopleViewModel(PeopleRepository(InMemoryPeopleCatalog()))
 
     viewModel.loadPeople("annaId")
 
@@ -35,7 +37,7 @@ class LoadPeopleTest {
     val anna = Friend(User("annaId", "", ""), isFollowee = true)
     val sara = Friend(User("saraId", "", ""), isFollowee = false)
     val tom = Friend(User("tomId", "", ""), isFollowee = false)
-    val viewModel = PeopleViewModel()
+    val viewModel = PeopleViewModel(PeopleRepository(InMemoryPeopleCatalog()))
 
     viewModel.loadPeople("lucyId")
 

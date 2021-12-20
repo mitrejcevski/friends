@@ -1,6 +1,8 @@
 package nl.jovmit.friends.people
 
 import nl.jovmit.friends.InstantTaskExecutorExtension
+import nl.jovmit.friends.domain.people.InMemoryPeopleCatalog
+import nl.jovmit.friends.domain.people.PeopleRepository
 import nl.jovmit.friends.people.state.PeopleState
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -11,7 +13,7 @@ class FailPeopleLoadingTest {
 
   @Test
   fun backendError() {
-    val viewModel = PeopleViewModel()
+    val viewModel = PeopleViewModel(PeopleRepository(InMemoryPeopleCatalog()))
 
     viewModel.loadPeople("jovId")
 
@@ -20,7 +22,7 @@ class FailPeopleLoadingTest {
 
   @Test
   fun offlineError() {
-    val viewModel = PeopleViewModel()
+    val viewModel = PeopleViewModel(PeopleRepository(InMemoryPeopleCatalog()))
 
     viewModel.loadPeople("")
 
