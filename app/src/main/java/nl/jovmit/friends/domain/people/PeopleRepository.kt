@@ -5,7 +5,7 @@ import nl.jovmit.friends.domain.exceptions.ConnectionUnavailableException
 import nl.jovmit.friends.people.state.PeopleState
 
 class PeopleRepository(
-  private val peopleCatalog: InMemoryPeopleCatalog
+  private val peopleCatalog: PeopleCatalog
 ) {
 
   fun loadPeopleFor(userId: String): PeopleState {
