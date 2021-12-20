@@ -39,9 +39,5 @@ class PeopleViewModel {
       if (userId.isBlank()) throw ConnectionUnavailableException()
       return peopleForUserId[userId] ?: throw BackendException()
     }
-
-    fun isKnownUser(userId: String): Boolean {
-      return peopleForUserId.containsKey(userId)
-    }
   }
 }
