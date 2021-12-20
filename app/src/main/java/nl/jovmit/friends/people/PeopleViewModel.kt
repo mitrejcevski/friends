@@ -14,14 +14,33 @@ class PeopleViewModel {
   fun loadPeople(userId: String) {
     val result = if (userId.isBlank()) {
       PeopleState.Offline
-    } else if (isKnownUser(userId)) {
-      PeopleState.Loaded(loadPeopleFor(userId))
-    } else if (!isKnownUser(userId)) {
+    } else if (InMemoryPeopleCatalog().isKnownUser(userId)) {
+      PeopleState.Loaded(InMemoryPeopleCatalog().loadPeopleFor(userId))
+    } else if (!InMemoryPeopleCatalog().isKnownUser(userId)) {
       PeopleState.BackendError
     } else {
       TODO()
     }
     mutablePeopleState.value = result
+  }
+
+  class InMemoryPeopleCatalog {
+    private val tom = Friend(User("tomId", "", ""), isFollowee = false)
+    private val anna = Friend(User("annaId", "", ""), isFollowee = true)
+    private val sara = Friend(User("saraId", "", ""), isFollowee = false)
+    private val peopleForUserId = mapOf(
+      "annaId" to listOf(tom),
+      "lucyId" to listOf(anna, sara, tom),
+      "saraId" to emptyList()
+    )
+
+    fun loadPeopleFor(userId: String): List<Friend> {
+      return peopleForUserId.getValue(userId)
+    }
+
+    fun isKnownUser(userId: String): Boolean {
+      return peopleForUserId.containsKey(userId)
+    }
   }
 
   val tom = Friend(User("tomId", "", ""), isFollowee = false)
