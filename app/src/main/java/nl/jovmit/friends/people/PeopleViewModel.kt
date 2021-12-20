@@ -22,6 +22,8 @@ class PeopleViewModel {
       mutablePeopleState.value = PeopleState.Loaded(listOf(anna, sara, tom))
     } else if (userId == "saraId") {
       mutablePeopleState.value = PeopleState.Loaded(emptyList())
+    } else if (userId == "jovId") {
+      mutablePeopleState.value = PeopleState.BackendError
     }
   }
 }
