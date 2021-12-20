@@ -17,4 +17,13 @@ class FailPeopleLoadingTest {
 
     assertEquals(PeopleState.BackendError, viewModel.peopleState.value)
   }
+
+  @Test
+  fun offlineError() {
+    val viewModel = PeopleViewModel()
+
+    viewModel.loadPeople("")
+
+    assertEquals(PeopleState.Offline, viewModel.peopleState.value)
+  }
 }
