@@ -1,7 +1,9 @@
 package nl.jovmit.friends.people
 
 import nl.jovmit.friends.InstantTaskExecutorExtension
+import nl.jovmit.friends.domain.exceptions.ConnectionUnavailableException
 import nl.jovmit.friends.domain.people.InMemoryPeopleCatalog
+import nl.jovmit.friends.domain.people.PeopleCatalog
 import nl.jovmit.friends.domain.people.PeopleRepository
 import nl.jovmit.friends.domain.user.Friend
 import nl.jovmit.friends.domain.user.User
@@ -35,10 +37,17 @@ class FailPeopleLoadingTest {
 
   @Test
   fun offlineError() {
-    val viewModel = PeopleViewModel(PeopleRepository(peopleCatalog))
+    val viewModel = PeopleViewModel(PeopleRepository(OfflinePeopleCatalog()))
 
-    viewModel.loadPeople("")
+    viewModel.loadPeople(":irrelevant:")
 
     assertEquals(PeopleState.Offline, viewModel.peopleState.value)
+  }
+
+  private class OfflinePeopleCatalog : PeopleCatalog {
+
+    override fun loadPeopleFor(userId: String): List<Friend> {
+      throw ConnectionUnavailableException()
+    }
   }
 }
