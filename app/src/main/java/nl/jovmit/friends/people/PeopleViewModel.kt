@@ -12,20 +12,23 @@ class PeopleViewModel {
   val peopleState: LiveData<PeopleState> = mutablePeopleState
 
   fun loadPeople(userId: String) {
-    if (userId == "annaId") {
+    val result = if (userId == "annaId") {
       val tom = Friend(User("tomId", "", ""), isFollowee = false)
-      mutablePeopleState.value = PeopleState.Loaded(listOf(tom))
+      PeopleState.Loaded(listOf(tom))
     } else if (userId == "lucyId") {
       val anna = Friend(User("annaId", "", ""), isFollowee = true)
       val sara = Friend(User("saraId", "", ""), isFollowee = false)
       val tom = Friend(User("tomId", "", ""), isFollowee = false)
-      mutablePeopleState.value = PeopleState.Loaded(listOf(anna, sara, tom))
+      PeopleState.Loaded(listOf(anna, sara, tom))
     } else if (userId == "saraId") {
-      mutablePeopleState.value = PeopleState.Loaded(emptyList())
+      PeopleState.Loaded(emptyList())
     } else if (userId == "jovId") {
-      mutablePeopleState.value = PeopleState.BackendError
+      PeopleState.BackendError
     } else if (userId.isBlank()) {
-      mutablePeopleState.value = PeopleState.Offline
+      PeopleState.Offline
+    } else {
+      TODO()
     }
+    mutablePeopleState.value = result
   }
 }
