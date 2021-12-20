@@ -42,21 +42,4 @@ class PeopleViewModel {
       return peopleForUserId.containsKey(userId)
     }
   }
-
-  val tom = Friend(User("tomId", "", ""), isFollowee = false)
-  val anna = Friend(User("annaId", "", ""), isFollowee = true)
-  val sara = Friend(User("saraId", "", ""), isFollowee = false)
-  val peopleForUserId = mapOf(
-    "annaId" to listOf(tom),
-    "lucyId" to listOf(anna, sara, tom),
-    "saraId" to emptyList()
-  )
-
-  private fun loadPeopleFor(userId: String): List<Friend> {
-    return peopleForUserId.getValue(userId)
-  }
-
-  private fun isKnownUser(userId: String): Boolean {
-    return peopleForUserId.containsKey(userId)
-  }
 }
