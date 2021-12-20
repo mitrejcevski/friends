@@ -2,6 +2,8 @@ package nl.jovmit.friends.people
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import nl.jovmit.friends.domain.exceptions.BackendException
+import nl.jovmit.friends.domain.exceptions.ConnectionUnavailableException
 import nl.jovmit.friends.domain.user.Friend
 import nl.jovmit.friends.domain.user.User
 import nl.jovmit.friends.people.state.PeopleState
@@ -21,6 +23,7 @@ class PeopleViewModel {
     } else {
       TODO()
     }
+
     mutablePeopleState.value = result
   }
 
@@ -35,7 +38,8 @@ class PeopleViewModel {
     )
 
     fun loadPeopleFor(userId: String): List<Friend> {
-      return peopleForUserId.getValue(userId)
+      if(userId.isBlank()) throw ConnectionUnavailableException()
+      return peopleForUserId[userId] ?: throw BackendException()
     }
 
     fun isKnownUser(userId: String): Boolean {
