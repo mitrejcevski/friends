@@ -15,7 +15,18 @@ class LoadPeopleTest {
 
   @Test
   fun noPeopleExisting() {
-    val viewModel = PeopleViewModel(PeopleRepository(InMemoryPeopleCatalog()))
+    val viewModel = PeopleViewModel(PeopleRepository(InMemoryPeopleCatalog(
+      mapOf(
+        "annaId" to listOf(Friend(User("tomId", "", ""), isFollowee = false)),
+        "lucyId" to listOf(
+          Friend(User("annaId", "", ""), isFollowee = true),
+          Friend(User("saraId", "", ""), isFollowee = false),
+          Friend(User("tomId", "", ""), isFollowee = false)
+        ),
+        "saraId" to emptyList()
+      )
+    )
+    ))
 
     viewModel.loadPeople("saraId")
 
@@ -25,7 +36,18 @@ class LoadPeopleTest {
   @Test
   fun loadedASinglePerson() {
     val tom = Friend(User("tomId", "", ""), isFollowee = false)
-    val viewModel = PeopleViewModel(PeopleRepository(InMemoryPeopleCatalog()))
+    val viewModel = PeopleViewModel(PeopleRepository(InMemoryPeopleCatalog(
+      mapOf(
+        "annaId" to listOf(Friend(User("tomId", "", ""), isFollowee = false)),
+        "lucyId" to listOf(
+          Friend(User("annaId", "", ""), isFollowee = true),
+          Friend(User("saraId", "", ""), isFollowee = false),
+          Friend(User("tomId", "", ""), isFollowee = false)
+        ),
+        "saraId" to emptyList()
+      )
+    )
+    ))
 
     viewModel.loadPeople("annaId")
 
@@ -37,7 +59,18 @@ class LoadPeopleTest {
     val anna = Friend(User("annaId", "", ""), isFollowee = true)
     val sara = Friend(User("saraId", "", ""), isFollowee = false)
     val tom = Friend(User("tomId", "", ""), isFollowee = false)
-    val viewModel = PeopleViewModel(PeopleRepository(InMemoryPeopleCatalog()))
+    val viewModel = PeopleViewModel(PeopleRepository(InMemoryPeopleCatalog(
+      mapOf(
+        "annaId" to listOf(Friend(User("tomId", "", ""), isFollowee = false)),
+        "lucyId" to listOf(
+          Friend(User("annaId", "", ""), isFollowee = true),
+          Friend(User("saraId", "", ""), isFollowee = false),
+          Friend(User("tomId", "", ""), isFollowee = false)
+        ),
+        "saraId" to emptyList()
+      )
+    )
+    ))
 
     viewModel.loadPeople("lucyId")
 
