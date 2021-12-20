@@ -22,25 +22,25 @@ class LoadPeopleTest {
 
   @Test
   fun loadedASinglePerson() {
-    val tomFriend = Friend(User("tomId", "", ""), isFollowee = false)
+    val tom = Friend(User("tomId", "", ""), isFollowee = false)
     val viewModel = PeopleViewModel()
 
     viewModel.loadPeople("annaId")
 
-    assertEquals(PeopleState.Loaded(listOf(tomFriend)), viewModel.peopleState.value)
+    assertEquals(PeopleState.Loaded(listOf(tom)), viewModel.peopleState.value)
   }
 
   @Test
   fun loadedMultiplePeople() {
-    val friendAnna = Friend(User("annaId", "", ""), true)
-    val friendSara = Friend(User("saraId", "", ""), false)
-    val friendTom = Friend(User("tomId", "", ""), false)
+    val anna = Friend(User("annaId", "", ""), true)
+    val sara = Friend(User("saraId", "", ""), false)
+    val tom = Friend(User("tomId", "", ""), false)
     val viewModel = PeopleViewModel()
 
     viewModel.loadPeople("lucyId")
 
     assertEquals(
-      PeopleState.Loaded(listOf(friendAnna, friendSara, friendTom)),
+      PeopleState.Loaded(listOf(anna, sara, tom)),
       viewModel.peopleState.value
     )
   }
