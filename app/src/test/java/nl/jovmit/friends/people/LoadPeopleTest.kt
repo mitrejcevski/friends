@@ -32,9 +32,9 @@ class LoadPeopleTest {
 
   @Test
   fun loadedMultiplePeople() {
-    val anna = Friend(User("annaId", "", ""), true)
-    val sara = Friend(User("saraId", "", ""), false)
-    val tom = Friend(User("tomId", "", ""), false)
+    val anna = Friend(User("annaId", "", ""), isFollowee = true)
+    val sara = Friend(User("saraId", "", ""), isFollowee = false)
+    val tom = Friend(User("tomId", "", ""), isFollowee = false)
     val viewModel = PeopleViewModel()
 
     viewModel.loadPeople("lucyId")
