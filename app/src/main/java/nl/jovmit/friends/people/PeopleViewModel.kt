@@ -16,11 +16,11 @@ class PeopleViewModel {
       val tom = Friend(User("tomId", "", ""), isFollowee = false)
       mutablePeopleState.value = PeopleState.Loaded(listOf(tom))
     } else if (userId == "lucyId") {
-      val anna = Friend(User("annaId", "", ""), true)
-      val sara = Friend(User("saraId", "", ""), false)
-      val tom = Friend(User("tomId", "", ""), false)
+      val anna = Friend(User("annaId", "", ""), isFollowee = true)
+      val sara = Friend(User("saraId", "", ""), isFollowee = false)
+      val tom = Friend(User("tomId", "", ""), isFollowee = false)
       mutablePeopleState.value = PeopleState.Loaded(listOf(anna, sara, tom))
-    } else if(userId == "saraId") {
+    } else if (userId == "saraId") {
       mutablePeopleState.value = PeopleState.Loaded(emptyList())
     }
   }
