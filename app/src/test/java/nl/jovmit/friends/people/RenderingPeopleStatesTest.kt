@@ -21,10 +21,13 @@ class RenderingPeopleStatesTest {
       "jovId" to listOf(tom, anna)
     )
   )
+  private val viewModel = PeopleViewModel(
+    PeopleRepository(peopleCatalog),
+    TestDispatchers()
+  )
 
   @Test
   fun peopleStatesDeliveredToAnObserverInParticularOrder() {
-    val viewModel = PeopleViewModel(PeopleRepository(peopleCatalog), TestDispatchers())
     val deliveredStates = mutableListOf<PeopleState>()
     viewModel.peopleState.observeForever { deliveredStates.add(it) }
 
