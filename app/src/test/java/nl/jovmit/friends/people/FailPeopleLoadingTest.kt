@@ -34,14 +34,14 @@ class FailPeopleLoadingTest {
 
   private class UnavailablePeopleCatalog : PeopleCatalog {
 
-    override fun loadPeopleFor(userId: String): List<Friend> {
+    override suspend fun loadPeopleFor(userId: String): List<Friend> {
       throw BackendException()
     }
   }
 
   private class OfflinePeopleCatalog : PeopleCatalog {
 
-    override fun loadPeopleFor(userId: String): List<Friend> {
+    override suspend fun loadPeopleFor(userId: String): List<Friend> {
       throw ConnectionUnavailableException()
     }
   }
