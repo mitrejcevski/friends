@@ -1,6 +1,7 @@
 package nl.jovmit.friends.people
 
 import nl.jovmit.friends.InstantTaskExecutorExtension
+import nl.jovmit.friends.app.TestDispatchers
 import nl.jovmit.friends.domain.exceptions.BackendException
 import nl.jovmit.friends.domain.exceptions.ConnectionUnavailableException
 import nl.jovmit.friends.domain.people.PeopleCatalog
@@ -16,7 +17,7 @@ class FailPeopleLoadingTest {
 
   @Test
   fun backendError() {
-    val viewModel = PeopleViewModel(PeopleRepository(UnavailablePeopleCatalog()))
+    val viewModel = PeopleViewModel(PeopleRepository(UnavailablePeopleCatalog()), TestDispatchers())
 
     viewModel.loadPeople(":irrelevant:")
 
@@ -25,7 +26,7 @@ class FailPeopleLoadingTest {
 
   @Test
   fun offlineError() {
-    val viewModel = PeopleViewModel(PeopleRepository(OfflinePeopleCatalog()))
+    val viewModel = PeopleViewModel(PeopleRepository(OfflinePeopleCatalog()), TestDispatchers())
 
     viewModel.loadPeople(":irrelevant:")
 

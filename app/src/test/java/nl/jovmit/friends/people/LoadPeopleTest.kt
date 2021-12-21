@@ -1,6 +1,7 @@
 package nl.jovmit.friends.people
 
 import nl.jovmit.friends.InstantTaskExecutorExtension
+import nl.jovmit.friends.app.TestDispatchers
 import nl.jovmit.friends.domain.people.InMemoryPeopleCatalog
 import nl.jovmit.friends.domain.people.PeopleRepository
 import nl.jovmit.friends.domain.user.Friend
@@ -26,7 +27,7 @@ class LoadPeopleTest {
 
   @Test
   fun noPeopleExisting() {
-    val viewModel = PeopleViewModel(PeopleRepository(peopleCatalog))
+    val viewModel = PeopleViewModel(PeopleRepository(peopleCatalog), TestDispatchers())
 
     viewModel.loadPeople("saraId")
 
@@ -35,7 +36,7 @@ class LoadPeopleTest {
 
   @Test
   fun loadedASinglePerson() {
-    val viewModel = PeopleViewModel(PeopleRepository(peopleCatalog))
+    val viewModel = PeopleViewModel(PeopleRepository(peopleCatalog), TestDispatchers())
 
     viewModel.loadPeople("annaId")
 
@@ -44,7 +45,7 @@ class LoadPeopleTest {
 
   @Test
   fun loadedMultiplePeople() {
-    val viewModel = PeopleViewModel(PeopleRepository(peopleCatalog))
+    val viewModel = PeopleViewModel(PeopleRepository(peopleCatalog), TestDispatchers())
 
     viewModel.loadPeople("lucyId")
 
