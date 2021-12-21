@@ -4,6 +4,8 @@ import nl.jovmit.friends.domain.user.Friend
 
 sealed class PeopleState {
 
+  object Loading : PeopleState()
+
   data class Loaded(val friends: List<Friend>) : PeopleState()
 
   object BackendError : PeopleState()
