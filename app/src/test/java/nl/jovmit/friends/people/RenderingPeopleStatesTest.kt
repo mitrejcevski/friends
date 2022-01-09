@@ -5,6 +5,7 @@ import nl.jovmit.friends.app.TestDispatchers
 import nl.jovmit.friends.domain.people.InMemoryPeopleCatalog
 import nl.jovmit.friends.domain.people.PeopleRepository
 import nl.jovmit.friends.domain.user.Friend
+import nl.jovmit.friends.domain.user.InMemoryUserCatalog
 import nl.jovmit.friends.infrastructure.builder.UserBuilder.Companion.aUser
 import nl.jovmit.friends.people.state.PeopleState
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -22,7 +23,7 @@ class RenderingPeopleStatesTest {
     )
   )
   private val viewModel = PeopleViewModel(
-    PeopleRepository(peopleCatalog),
+    PeopleRepository(peopleCatalog, InMemoryUserCatalog()),
     TestDispatchers()
   )
 
