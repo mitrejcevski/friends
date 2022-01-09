@@ -14,13 +14,17 @@ import org.junit.jupiter.api.extension.ExtendWith
 @ExtendWith(InstantTaskExecutorExtension::class)
 class LoadPeopleTest {
 
-  private val tom = Friend(User("tomId", "", ""), isFollower = false)
-  private val anna = Friend(User("annaId", "", ""), isFollower = true)
-  private val sara = Friend(User("saraId", "", ""), isFollower = false)
+  private val tom = User("tomId", "", "")
+  private val anna = User("annaId", "", "")
+  private val sara = User("saraId", "", "")
+  private val friendTom = Friend(tom, isFollower = false)
+  private val friendAnna = Friend(anna, isFollower = true)
+  private val friendSara = Friend(sara, isFollower = false)
+
   private val peopleCatalog = InMemoryPeopleCatalog(
     mapOf(
-      "annaId" to listOf(tom),
-      "lucyId" to listOf(anna, sara, tom),
+      "annaId" to listOf(friendTom),
+      "lucyId" to listOf(friendAnna, friendSara, friendTom),
       "saraId" to emptyList()
     )
   )
@@ -40,7 +44,7 @@ class LoadPeopleTest {
 
     viewModel.loadPeople("annaId")
 
-    assertEquals(PeopleState.Loaded(listOf(tom)), viewModel.peopleState.value)
+    assertEquals(PeopleState.Loaded(listOf(friendTom)), viewModel.peopleState.value)
   }
 
   @Test
@@ -50,7 +54,7 @@ class LoadPeopleTest {
     viewModel.loadPeople("lucyId")
 
     assertEquals(
-      PeopleState.Loaded(listOf(anna, sara, tom)),
+      PeopleState.Loaded(listOf(friendAnna, friendSara, friendTom)),
       viewModel.peopleState.value
     )
   }
