@@ -19,10 +19,16 @@ class InMemoryUserCatalog(
     return user
   }
 
-  override fun followedBy(userId: String): List<String> {
+  override suspend fun followedBy(userId: String): List<String> {
     return followings
       .filter { it.userId == userId }
       .map { it.followedId }
+  }
+
+  override suspend fun loadPeopleFor(userId: String): List<Friend> {
+    val peopleFollowedByUser = followedBy(userId)
+    val allUsers = usersForPassword.values.flatten()
+    return allUsers.map { user -> Friend(user, user.id in peopleFollowedByUser) }
   }
 
   private fun checkAccountExists(email: String) {

@@ -155,7 +155,11 @@ class SignUpScreenTest {
       return User("someId", email, about)
     }
 
-    override fun followedBy(userId: String): List<String> {
+    override suspend fun followedBy(userId: String): List<String> {
+      TODO("Not yet implemented")
+    }
+
+    override suspend fun loadPeopleFor(userId: String): List<Friend> {
       TODO("Not yet implemented")
     }
   }

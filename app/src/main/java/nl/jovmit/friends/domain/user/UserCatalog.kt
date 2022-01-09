@@ -8,5 +8,7 @@ interface UserCatalog {
     about: String
   ): User
 
-  fun followedBy(userId: String): List<String>
+  suspend fun followedBy(userId: String): List<String>
+
+  suspend fun loadPeopleFor(userId: String): List<Friend>
 }

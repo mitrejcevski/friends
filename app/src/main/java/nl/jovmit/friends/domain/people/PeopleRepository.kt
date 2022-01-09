@@ -12,8 +12,8 @@ class PeopleRepository(
 
   suspend fun loadPeopleFor(userId: String): PeopleState {
     return try {
-      val peopleForUserId = peopleCatalog.loadPeopleFor(userId)
-      PeopleState.Loaded(peopleForUserId)
+      val peopleForUser = userCatalog.loadPeopleFor(userId)
+      PeopleState.Loaded(peopleForUser)
     } catch (backendException: BackendException) {
       PeopleState.BackendError
     } catch (offlineException: ConnectionUnavailableException) {
