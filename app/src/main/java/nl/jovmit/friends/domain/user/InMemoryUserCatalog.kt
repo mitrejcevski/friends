@@ -7,6 +7,9 @@ class InMemoryUserCatalog(
   private val followings: List<Following> = mutableListOf()
 ) : UserCatalog {
 
+  private val allUsers: List<User>
+    get() = usersForPassword.values.flatten()
+
   override suspend fun createUser(
     email: String,
     password: String,
@@ -27,12 +30,11 @@ class InMemoryUserCatalog(
 
   override suspend fun loadPeopleFor(userId: String): List<Friend> {
     val peopleFollowedByUser = followedBy(userId)
-    val allUsers = usersForPassword.values.flatten()
     return allUsers.map { user -> Friend(user, user.id in peopleFollowedByUser) }
   }
 
   private fun checkAccountExists(email: String) {
-    if (usersForPassword.values.flatten().any { it.email == email }) {
+    if (allUsers.any { it.email == email }) {
       throw DuplicateAccountException()
     }
   }
