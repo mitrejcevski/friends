@@ -2,7 +2,6 @@ package nl.jovmit.friends.people
 
 import nl.jovmit.friends.InstantTaskExecutorExtension
 import nl.jovmit.friends.app.TestDispatchers
-import nl.jovmit.friends.domain.people.InMemoryPeopleCatalog
 import nl.jovmit.friends.domain.people.PeopleRepository
 import nl.jovmit.friends.domain.user.Following
 import nl.jovmit.friends.domain.user.Friend
@@ -24,18 +23,10 @@ class LoadPeopleTest {
   private val friendAnna = Friend(anna, isFollower = true)
   private val friendSara = Friend(sara, isFollower = false)
 
-  private val peopleCatalog = InMemoryPeopleCatalog(
-    mapOf(
-      anna.id to listOf(friendTom),
-      lucy.id to listOf(friendAnna, friendSara, friendTom),
-      sara.id to emptyList()
-    )
-  )
-
   @Test
   fun noPeopleExisting() {
     val userCatalog = InMemoryUserCatalog()
-    val viewModel = PeopleViewModel(PeopleRepository(peopleCatalog, userCatalog), TestDispatchers())
+    val viewModel = PeopleViewModel(PeopleRepository(userCatalog), TestDispatchers())
 
     viewModel.loadPeople(sara.id)
 
@@ -47,7 +38,7 @@ class LoadPeopleTest {
     val userCatalog = InMemoryUserCatalog(
       usersForPassword = mutableMapOf(":irrelevant" to mutableListOf(tom))
     )
-    val viewModel = PeopleViewModel(PeopleRepository(peopleCatalog, userCatalog), TestDispatchers())
+    val viewModel = PeopleViewModel(PeopleRepository(userCatalog), TestDispatchers())
 
     viewModel.loadPeople(anna.id)
 
@@ -60,7 +51,7 @@ class LoadPeopleTest {
       usersForPassword = mutableMapOf(":irrelevant:" to mutableListOf(anna, sara, tom)),
       followings = mutableListOf(Following(lucy.id, anna.id))
     )
-    val viewModel = PeopleViewModel(PeopleRepository(peopleCatalog, userCatalog), TestDispatchers())
+    val viewModel = PeopleViewModel(PeopleRepository(userCatalog), TestDispatchers())
 
     viewModel.loadPeople(lucy.id)
 

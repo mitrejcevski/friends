@@ -2,7 +2,6 @@ package nl.jovmit.friends.people
 
 import nl.jovmit.friends.InstantTaskExecutorExtension
 import nl.jovmit.friends.app.TestDispatchers
-import nl.jovmit.friends.domain.people.InMemoryPeopleCatalog
 import nl.jovmit.friends.domain.people.PeopleRepository
 import nl.jovmit.friends.domain.user.Following
 import nl.jovmit.friends.domain.user.Friend
@@ -22,17 +21,12 @@ class RenderingPeopleStatesTest {
   private val friendAnna = Friend(anna, isFollower = true)
   private val friendTom = Friend(tom, isFollower = true)
 
-  private val peopleCatalog = InMemoryPeopleCatalog(
-    mapOf(
-      jov.id to listOf(friendTom, friendAnna)
-    )
-  )
   private val userCatalog = InMemoryUserCatalog(
     usersForPassword = mutableMapOf(":irrelevant:" to mutableListOf(tom, anna)),
     followings = mutableListOf(Following(jov.id, anna.id), Following(jov.id, tom.id))
   )
   private val viewModel = PeopleViewModel(
-    PeopleRepository(peopleCatalog, userCatalog),
+    PeopleRepository(userCatalog),
     TestDispatchers()
   )
 

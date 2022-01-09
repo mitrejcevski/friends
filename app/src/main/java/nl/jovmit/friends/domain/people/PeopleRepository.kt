@@ -6,7 +6,6 @@ import nl.jovmit.friends.domain.user.UserCatalog
 import nl.jovmit.friends.people.state.PeopleState
 
 class PeopleRepository(
-  private val peopleCatalog: PeopleCatalog,
   private val userCatalog: UserCatalog
 ) {
 
