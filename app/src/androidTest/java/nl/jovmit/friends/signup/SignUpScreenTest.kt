@@ -159,7 +159,7 @@ class SignUpScreenTest {
       TODO("Not yet implemented")
     }
 
-    override suspend fun loadPeopleFor(userId: String): List<Friend> {
+    override suspend fun loadFriendsFor(userId: String): List<Friend> {
       TODO("Not yet implemented")
     }
   }

@@ -21,7 +21,7 @@ sealed class Screen(val route: String) {
 
     object Timeline : Main("timeline", R.string.timeline, R.drawable.ic_timeline)
 
-    object People : Main("people", R.string.people, R.drawable.ic_people)
+    object Friends : Main("friends", R.string.friends, R.drawable.ic_friends)
   }
 
   object PostComposer : Screen("createNewPost")

@@ -1,4 +1,4 @@
-package nl.jovmit.friends.people
+package nl.jovmit.friends.friends
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,8 +10,8 @@ import androidx.compose.ui.res.stringResource
 import nl.jovmit.friends.R
 
 @Composable
-fun PeopleScreen() {
+fun FriendsScreen() {
   Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-    Text(text = stringResource(id = R.string.people))
+    Text(text = stringResource(id = R.string.friends))
   }
 }

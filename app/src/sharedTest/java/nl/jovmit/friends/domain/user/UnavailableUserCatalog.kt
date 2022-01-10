@@ -12,7 +12,7 @@ class UnavailableUserCatalog : UserCatalog {
     throw BackendException()
   }
 
-  override suspend fun loadPeopleFor(userId: String): List<Friend> {
+  override suspend fun loadFriendsFor(userId: String): List<Friend> {
     throw BackendException()
   }
 }

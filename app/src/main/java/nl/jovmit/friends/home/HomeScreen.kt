@@ -15,14 +15,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import nl.jovmit.friends.navigation.Screen
-import nl.jovmit.friends.people.PeopleScreen
+import nl.jovmit.friends.friends.FriendsScreen
 import nl.jovmit.friends.postcomposer.CreateNewPostScreen
 import nl.jovmit.friends.timeline.TimelineScreen
 
 @Composable
 fun HomeScreen(userId: String) {
   val navigationController = rememberNavController()
-  val homeNavigationScreens = listOf(Screen.Main.Timeline, Screen.Main.People)
+  val homeNavigationScreens = listOf(Screen.Main.Timeline, Screen.Main.Friends)
   val currentDestination = currentDestination(navigationController)
   val isMainDestination = homeNavigationScreens.any { it.route == currentDestination }
   Scaffold(bottomBar = {
@@ -45,8 +45,8 @@ fun HomeScreen(userId: String) {
           navigationController.navigateUp()
         }
       }
-      composable(route = Screen.Main.People.route) {
-        PeopleScreen()
+      composable(route = Screen.Main.Friends.route) {
+        FriendsScreen()
       }
     }
   }

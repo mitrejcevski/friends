@@ -1,22 +1,22 @@
-package nl.jovmit.friends.domain.people
+package nl.jovmit.friends.domain.friends
 
 import nl.jovmit.friends.domain.exceptions.BackendException
 import nl.jovmit.friends.domain.exceptions.ConnectionUnavailableException
 import nl.jovmit.friends.domain.user.UserCatalog
-import nl.jovmit.friends.people.state.PeopleState
+import nl.jovmit.friends.friends.state.FriendsState
 
-class PeopleRepository(
+class FriendsRepository(
   private val userCatalog: UserCatalog
 ) {
 
-  suspend fun loadPeopleFor(userId: String): PeopleState {
+  suspend fun loadFriendsFor(userId: String): FriendsState {
     return try {
-      val peopleForUser = userCatalog.loadPeopleFor(userId)
-      PeopleState.Loaded(peopleForUser)
+      val friendsForUser = userCatalog.loadFriendsFor(userId)
+      FriendsState.Loaded(friendsForUser)
     } catch (backendException: BackendException) {
-      PeopleState.BackendError
+      FriendsState.BackendError
     } catch (offlineException: ConnectionUnavailableException) {
-      PeopleState.Offline
+      FriendsState.Offline
     }
   }
 }

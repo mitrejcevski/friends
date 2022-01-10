@@ -1,42 +1,42 @@
-package nl.jovmit.friends.people
+package nl.jovmit.friends.friends
 
 import nl.jovmit.friends.InstantTaskExecutorExtension
 import nl.jovmit.friends.app.TestDispatchers
-import nl.jovmit.friends.domain.people.PeopleRepository
+import nl.jovmit.friends.domain.friends.FriendsRepository
 import nl.jovmit.friends.domain.user.OfflineUserCatalog
 import nl.jovmit.friends.domain.user.UnavailableUserCatalog
-import nl.jovmit.friends.people.state.PeopleState
+import nl.jovmit.friends.friends.state.FriendsState
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(InstantTaskExecutorExtension::class)
-class FailPeopleLoadingTest {
+class FailFriendsLoadingTest {
 
   @Test
   fun backendError() {
-    val viewModel = PeopleViewModel(
-      PeopleRepository(
+    val viewModel = FriendsViewModel(
+      FriendsRepository(
         UnavailableUserCatalog()
       ), TestDispatchers()
     )
 
-    viewModel.loadPeople(":irrelevant:")
+    viewModel.loadFriends(":irrelevant:")
 
-    assertEquals(PeopleState.BackendError, viewModel.peopleState.value)
+    assertEquals(FriendsState.BackendError, viewModel.friendsState.value)
   }
 
   @Test
   fun offlineError() {
-    val viewModel = PeopleViewModel(
-      PeopleRepository(
+    val viewModel = FriendsViewModel(
+      FriendsRepository(
         OfflineUserCatalog()
       ),
       TestDispatchers()
     )
 
-    viewModel.loadPeople(":irrelevant:")
+    viewModel.loadFriends(":irrelevant:")
 
-    assertEquals(PeopleState.Offline, viewModel.peopleState.value)
+    assertEquals(FriendsState.Offline, viewModel.friendsState.value)
   }
 }

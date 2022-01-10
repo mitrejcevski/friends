@@ -28,9 +28,9 @@ class InMemoryUserCatalog(
       .map { it.followedId }
   }
 
-  override suspend fun loadPeopleFor(userId: String): List<Friend> {
-    val peopleFollowedByUser = followedBy(userId)
-    return allUsers.map { user -> Friend(user, user.id in peopleFollowedByUser) }
+  override suspend fun loadFriendsFor(userId: String): List<Friend> {
+    val friendsFollowedByUser = followedBy(userId)
+    return allUsers.map { user -> Friend(user, user.id in friendsFollowedByUser) }
   }
 
   private fun checkAccountExists(email: String) {

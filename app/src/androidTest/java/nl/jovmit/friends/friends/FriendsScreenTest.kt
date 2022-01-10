@@ -1,21 +1,21 @@
-package nl.jovmit.friends.people
+package nl.jovmit.friends.friends
 
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import nl.jovmit.friends.MainActivity
 import org.junit.Rule
 import org.junit.Test
 
-class PeopleScreenTest {
+class FriendsScreenTest {
 
   @get:Rule
   val rule = createAndroidComposeRule<MainActivity>()
 
   @Test
-  fun displaysPeople() {
+  fun displaysFriendsScreen() {
     launchTimeline(rule) {
-      tapOnPeople()
+      tapOnFriends()
     } verify {
-      peopleScreenIsPresent()
+      friendsScreenIsPresent()
     }
   }
 }

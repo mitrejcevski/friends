@@ -1,19 +1,19 @@
-package nl.jovmit.friends.people
+package nl.jovmit.friends.friends
 
 import nl.jovmit.friends.InstantTaskExecutorExtension
 import nl.jovmit.friends.app.TestDispatchers
-import nl.jovmit.friends.domain.people.PeopleRepository
+import nl.jovmit.friends.domain.friends.FriendsRepository
 import nl.jovmit.friends.domain.user.Following
 import nl.jovmit.friends.domain.user.Friend
 import nl.jovmit.friends.domain.user.InMemoryUserCatalog
 import nl.jovmit.friends.infrastructure.builder.UserBuilder.Companion.aUser
-import nl.jovmit.friends.people.state.PeopleState
+import nl.jovmit.friends.friends.state.FriendsState
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(InstantTaskExecutorExtension::class)
-class LoadPeopleTest {
+class LoadFriendsTest {
 
   private val tom = aUser().withId("tomId").build()
   private val anna = aUser().withId("annaId").build()
@@ -24,13 +24,13 @@ class LoadPeopleTest {
   private val friendSara = Friend(sara, isFollower = false)
 
   @Test
-  fun noPeopleExisting() {
+  fun noFriendsExisting() {
     val userCatalog = InMemoryUserCatalog()
-    val viewModel = PeopleViewModel(PeopleRepository(userCatalog), TestDispatchers())
+    val viewModel = FriendsViewModel(FriendsRepository(userCatalog), TestDispatchers())
 
-    viewModel.loadPeople(sara.id)
+    viewModel.loadFriends(sara.id)
 
-    assertEquals(PeopleState.Loaded(emptyList()), viewModel.peopleState.value)
+    assertEquals(FriendsState.Loaded(emptyList()), viewModel.friendsState.value)
   }
 
   @Test
@@ -38,26 +38,26 @@ class LoadPeopleTest {
     val userCatalog = InMemoryUserCatalog(
       usersForPassword = mutableMapOf(":irrelevant" to mutableListOf(tom))
     )
-    val viewModel = PeopleViewModel(PeopleRepository(userCatalog), TestDispatchers())
+    val viewModel = FriendsViewModel(FriendsRepository(userCatalog), TestDispatchers())
 
-    viewModel.loadPeople(anna.id)
+    viewModel.loadFriends(anna.id)
 
-    assertEquals(PeopleState.Loaded(listOf(friendTom)), viewModel.peopleState.value)
+    assertEquals(FriendsState.Loaded(listOf(friendTom)), viewModel.friendsState.value)
   }
 
   @Test
-  fun loadedMultiplePeople() {
+  fun loadedMultipleFriends() {
     val userCatalog = InMemoryUserCatalog(
       usersForPassword = mutableMapOf(":irrelevant:" to mutableListOf(anna, sara, tom)),
       followings = mutableListOf(Following(lucy.id, anna.id))
     )
-    val viewModel = PeopleViewModel(PeopleRepository(userCatalog), TestDispatchers())
+    val viewModel = FriendsViewModel(FriendsRepository(userCatalog), TestDispatchers())
 
-    viewModel.loadPeople(lucy.id)
+    viewModel.loadFriends(lucy.id)
 
     assertEquals(
-      PeopleState.Loaded(listOf(friendAnna, friendSara, friendTom)),
-      viewModel.peopleState.value
+      FriendsState.Loaded(listOf(friendAnna, friendSara, friendTom)),
+      viewModel.friendsState.value
     )
   }
 }
