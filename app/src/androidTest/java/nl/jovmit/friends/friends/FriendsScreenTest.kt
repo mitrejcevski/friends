@@ -11,11 +11,11 @@ class FriendsScreenTest {
   val rule = createAndroidComposeRule<MainActivity>()
 
   @Test
-  fun displaysFriendsScreen() {
-    launchTimeline(rule) {
-      tapOnFriends()
+  fun showsEmptyFriendsMessage() {
+    launchFriends(rule) {
+      //no operation
     } verify {
-      friendsScreenIsPresent()
+      emptyFriendsMessageIsDisplayed()
     }
   }
 }
