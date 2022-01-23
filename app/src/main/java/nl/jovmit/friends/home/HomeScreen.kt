@@ -46,7 +46,9 @@ fun HomeScreen(userId: String) {
         }
       }
       composable(route = Screen.Main.Friends.route) {
-        FriendsScreen()
+        FriendsScreen(
+          userId = userId
+        )
       }
     }
   }

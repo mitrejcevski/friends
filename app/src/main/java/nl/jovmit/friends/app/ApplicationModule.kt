@@ -1,11 +1,13 @@
 package nl.jovmit.friends.app
 
+import nl.jovmit.friends.domain.friends.FriendsRepository
 import nl.jovmit.friends.domain.post.InMemoryPostCatalog
 import nl.jovmit.friends.domain.post.PostCatalog
 import nl.jovmit.friends.domain.post.PostRepository
 import nl.jovmit.friends.domain.timeline.TimelineRepository
 import nl.jovmit.friends.domain.user.*
 import nl.jovmit.friends.domain.validation.RegexCredentialsValidator
+import nl.jovmit.friends.friends.FriendsViewModel
 import nl.jovmit.friends.postcomposer.CreatePostViewModel
 import nl.jovmit.friends.signup.SignUpViewModel
 import nl.jovmit.friends.timeline.TimelineViewModel
@@ -21,6 +23,7 @@ val applicationModule = module {
   factory { UserRepository(userCatalog = get(), userDataStore = get()) }
   factory { TimelineRepository(userCatalog = get(), postCatalog = get()) }
   factory { PostRepository(userDataStore = get(), postCatalog = get()) }
+  factory { FriendsRepository(userCatalog = get()) }
 
   viewModel {
     SignUpViewModel(
@@ -35,4 +38,6 @@ val applicationModule = module {
   }
 
   viewModel { CreatePostViewModel(postRepository = get(), dispatchers = get()) }
+
+  viewModel { FriendsViewModel(friendsRepository = get(), dispatchers = get()) }
 }

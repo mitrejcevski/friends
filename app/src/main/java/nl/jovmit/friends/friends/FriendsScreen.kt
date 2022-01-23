@@ -8,9 +8,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import nl.jovmit.friends.R
 import nl.jovmit.friends.ui.composables.ScreenTitle
+import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun FriendsScreen() {
+fun FriendsScreen(
+  userId: String
+) {
+
+  val friendsViewModel = getViewModel<FriendsViewModel>()
+  friendsViewModel.loadFriends(userId)
+
   Box {
     Column(
       modifier = Modifier
