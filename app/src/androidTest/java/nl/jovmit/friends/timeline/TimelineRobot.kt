@@ -1,10 +1,7 @@
 package nl.jovmit.friends.timeline
 
-import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.AndroidComposeTestRule
-import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import nl.jovmit.friends.MainActivity
 import nl.jovmit.friends.R
@@ -34,6 +31,12 @@ class TimelineRobot(
   fun tapOnCreateNewPost() {
     val createNewPost = rule.activity.getString(R.string.createNewPost)
     rule.onNodeWithTag(createNewPost)
+      .performClick()
+  }
+
+  fun tapOnFriendsTab() {
+    val friends = rule.activity.getString(R.string.friends)
+    rule.onNodeWithText(friends)
       .performClick()
   }
 
@@ -82,6 +85,13 @@ class TimelineVerificationRobot(
   fun offlineErrorIsDisplayed() {
     val offline = rule.activity.getString(R.string.offlineError)
     rule.onNodeWithText(offline)
+      .assertIsDisplayed()
+  }
+
+  fun friendsScreenIsDisplayed() {
+    val friends = rule.activity.getString(R.string.friends)
+    rule.onAllNodesWithText(friends)
+      .onFirst()
       .assertIsDisplayed()
   }
 }

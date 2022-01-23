@@ -50,6 +50,15 @@ class TimelineScreenTest {
   }
 
   @Test
+  fun opensFriends() {
+    launchTimelineFor("sam@friends.com", "P@s$12D.", timelineTestRule) {
+      tapOnFriendsTab()
+    } verify {
+      friendsScreenIsDisplayed()
+    }
+  }
+
+  @Test
   fun showsLoadingIndicator() {
     replacePostCatalogWith(DelayingPostsCatalog())
     launchTimelineFor("testLoading@email.com", "sOmEPa$123", timelineTestRule) {
