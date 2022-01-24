@@ -7,6 +7,7 @@ import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import nl.jovmit.friends.MainActivity
 import nl.jovmit.friends.R
+import nl.jovmit.friends.domain.user.Friend
 import nl.jovmit.friends.timeline.launchTimelineFor
 
 private typealias MainActivityRule = AndroidComposeTestRule<ActivityScenarioRule<MainActivity>, MainActivity>
@@ -45,5 +46,12 @@ class FriendsVerificationRobot(
     val emptyFriendsMessage = rule.activity.getString(R.string.emptyFriendsMessage)
     rule.onNodeWithText(emptyFriendsMessage)
       .assertIsDisplayed()
+  }
+
+  fun friendsAreDisplayed(vararg friends: Friend) {
+    friends.forEach { friend ->
+      rule.onNodeWithText(friend.user.id)
+        .assertIsDisplayed()
+    }
   }
 }
