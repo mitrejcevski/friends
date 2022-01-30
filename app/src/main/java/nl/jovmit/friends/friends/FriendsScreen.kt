@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import nl.jovmit.friends.R
 import nl.jovmit.friends.domain.user.Friend
@@ -36,7 +37,9 @@ fun FriendsScreen(
       ScreenTitle(resource = R.string.friends)
       Spacer(modifier = Modifier.height(16.dp))
       if (friendsState is FriendsState.Loaded) {
-        FriendsList(friendsState.friends)
+        FriendsList(
+          friends = friendsState.friends
+        )
       }
     }
   }
@@ -44,13 +47,16 @@ fun FriendsScreen(
 
 @Composable
 private fun FriendsList(
-  friends: List<Friend>,
-  modifier: Modifier = Modifier
+  friends: List<Friend>
 ) {
   if (friends.isEmpty()) {
-    Text(text = stringResource(id = R.string.emptyFriendsMessage))
+    Text(
+      text = stringResource(id = R.string.emptyFriendsMessage),
+      modifier = Modifier.fillMaxWidth(),
+      textAlign = TextAlign.Center
+    )
   } else {
-    LazyColumn {
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
       items(friends) { friend ->
         Text(text = friend.user.id)
       }
