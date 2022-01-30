@@ -3,6 +3,7 @@ package nl.jovmit.friends.friends
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
@@ -58,8 +59,28 @@ private fun FriendsList(
   } else {
     LazyColumn(modifier = Modifier.fillMaxSize()) {
       items(friends) { friend ->
-        Text(text = friend.user.id)
+        FriendItem(friend)
       }
+    }
+  }
+}
+
+@Composable
+private fun FriendItem(
+  friend: Friend
+) {
+  Row(
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(16.dp)
+  ) {
+    Column(Modifier.weight(1f)) {
+      Text(text = friend.user.id)
+      Spacer(modifier = Modifier.height(8.dp))
+      Text(text = friend.user.about)
+    }
+    OutlinedButton(onClick = { /*TODO*/ }) {
+      Text(text = stringResource(id = R.string.follow))
     }
   }
 }

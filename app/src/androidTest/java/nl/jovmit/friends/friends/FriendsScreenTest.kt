@@ -17,6 +17,12 @@ class FriendsScreenTest {
   @get:Rule
   val rule = createAndroidComposeRule<MainActivity>()
 
+  private val ana = User("anaId", "ana@friends.com", "something about Anna")
+  private val friendAna = Friend(ana, false)
+  private val bob = User("bobId", "bob@friends.com", "")
+  private val friendBob = Friend(bob, false)
+  private val users = mutableMapOf("" to mutableListOf(ana, bob))
+
   @Test
   fun showsEmptyFriendsMessage() {
     launchFriends(rule) {
@@ -28,17 +34,24 @@ class FriendsScreenTest {
 
   @Test
   fun showsAvailableFriends() {
-    val ana = User("anaId", "ana@friends.com", "")
-    val friendAna = Friend(ana, false)
-    val bob = User("bobId", "bob@friends.com", "")
-    val friendBob = Friend(bob, false)
-    val users = mutableMapOf("" to mutableListOf(ana, bob))
     replaceUserCatalogWith(InMemoryUserCatalog(users))
 
     launchFriends(rule) {
       //no operation
     } verify {
       friendsAreDisplayed(friendAna, friendBob)
+    }
+  }
+
+  @Test
+  fun showsRequiredFriendInformation() {
+    val users = mutableMapOf("" to mutableListOf(ana))
+    replaceUserCatalogWith(InMemoryUserCatalog(users))
+
+    launchFriends(rule) {
+      //no operation
+    } verify {
+      friendInformationIsShownFor(friendAna)
     }
   }
 
