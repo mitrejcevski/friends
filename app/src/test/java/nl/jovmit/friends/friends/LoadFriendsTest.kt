@@ -6,8 +6,8 @@ import nl.jovmit.friends.domain.friends.FriendsRepository
 import nl.jovmit.friends.domain.user.Following
 import nl.jovmit.friends.domain.user.Friend
 import nl.jovmit.friends.domain.user.InMemoryUserCatalog
-import nl.jovmit.friends.infrastructure.builder.UserBuilder.Companion.aUser
 import nl.jovmit.friends.friends.state.FriendsState
+import nl.jovmit.friends.infrastructure.builder.UserBuilder.Companion.aUser
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -57,6 +57,21 @@ class LoadFriendsTest {
 
     assertEquals(
       FriendsState.Loaded(listOf(friendAnna, friendSara, friendTom)),
+      viewModel.friendsState.value
+    )
+  }
+
+  @Test
+  fun loadedNoFriendsWhenUsingTheSignedUpUserId() {
+    val userCatalog = InMemoryUserCatalog(
+      usersForPassword = mutableMapOf(":irrelevant:" to mutableListOf(tom))
+    )
+    val viewModel = FriendsViewModel(FriendsRepository(userCatalog), TestDispatchers())
+
+    viewModel.loadFriends(tom.id)
+
+    assertEquals(
+      FriendsState.Loaded(emptyList()),
       viewModel.friendsState.value
     )
   }
