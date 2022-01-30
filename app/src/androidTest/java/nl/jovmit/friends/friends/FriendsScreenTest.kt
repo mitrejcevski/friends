@@ -7,7 +7,6 @@ import nl.jovmit.friends.domain.user.InMemoryUserCatalog
 import nl.jovmit.friends.domain.user.User
 import nl.jovmit.friends.domain.user.UserCatalog
 import org.junit.After
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.koin.core.context.loadKoinModules
@@ -19,7 +18,6 @@ class FriendsScreenTest {
   val rule = createAndroidComposeRule<MainActivity>()
 
   @Test
-  @Ignore("Waiting for the BL update")
   fun showsEmptyFriendsMessage() {
     launchFriends(rule) {
       //no operation
