@@ -40,7 +40,7 @@ class FriendsScreenTest {
     launchFriends(rule) {
       //no operation
     } verify {
-      loadingIndicatorIsShown()
+      loadingIndicatorIsDisplayed()
     }
   }
 
@@ -63,7 +63,7 @@ class FriendsScreenTest {
     launchFriends(rule) {
       //no operation
     } verify {
-      friendInformationIsShownFor(friendAna)
+      friendInformationIsDisplayedFor(friendAna)
     }
   }
 

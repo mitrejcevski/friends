@@ -56,7 +56,7 @@ class FriendsVerificationRobot(
     }
   }
 
-  fun friendInformationIsShownFor(friend: Friend) {
+  fun friendInformationIsDisplayedFor(friend: Friend) {
     val follow = rule.activity.getString(R.string.follow)
     rule.onNodeWithText(friend.user.id)
       .assertIsDisplayed()
@@ -66,7 +66,7 @@ class FriendsVerificationRobot(
       .assertIsDisplayed()
   }
 
-  fun loadingIndicatorIsShown() {
+  fun loadingIndicatorIsDisplayed() {
     val loading = rule.activity.getString(R.string.loading)
     rule.onNodeWithContentDescription(loading)
       .assertIsDisplayed()
