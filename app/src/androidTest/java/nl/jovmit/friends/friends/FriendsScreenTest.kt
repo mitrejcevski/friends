@@ -4,6 +4,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import kotlinx.coroutines.delay
 import nl.jovmit.friends.MainActivity
 import nl.jovmit.friends.domain.exceptions.BackendException
+import nl.jovmit.friends.domain.exceptions.ConnectionUnavailableException
 import nl.jovmit.friends.domain.user.Friend
 import nl.jovmit.friends.domain.user.InMemoryUserCatalog
 import nl.jovmit.friends.domain.user.User
@@ -80,6 +81,17 @@ class FriendsScreenTest {
       //no operation
     } verify {
       backendErrorIsDisplayed()
+    }
+  }
+
+  @Test
+  fun showsOfflineError() {
+    replaceUserCatalogWith(ControllableUserCatalog(loadFriendsFunction = { throw ConnectionUnavailableException() }))
+
+    launchFriends(rule) {
+      //no operation
+    } verify {
+      offlineErrorIsDisplayed()
     }
   }
 

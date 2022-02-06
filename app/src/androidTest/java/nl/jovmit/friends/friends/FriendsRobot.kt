@@ -77,4 +77,10 @@ class FriendsVerificationRobot(
     rule.onNodeWithText(errorMessage)
       .assertIsDisplayed()
   }
+
+  fun offlineErrorIsDisplayed() {
+    val offlineError = rule.activity.getString(R.string.offlineError)
+    rule.onNodeWithText(offlineError)
+      .assertIsDisplayed()
+  }
 }
