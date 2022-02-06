@@ -2,6 +2,7 @@ package nl.jovmit.friends.friends
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.AndroidComposeTestRule
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.rules.ActivityScenarioRule
@@ -62,6 +63,12 @@ class FriendsVerificationRobot(
     rule.onNodeWithText(friend.user.about)
       .assertIsDisplayed()
     rule.onNodeWithText(follow)
+      .assertIsDisplayed()
+  }
+
+  fun loadingIndicatorIsShown() {
+    val loading = rule.activity.getString(R.string.loading)
+    rule.onNodeWithContentDescription(loading)
       .assertIsDisplayed()
   }
 }

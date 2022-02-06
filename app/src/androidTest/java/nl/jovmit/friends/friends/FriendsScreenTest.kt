@@ -1,6 +1,7 @@
 package nl.jovmit.friends.friends
 
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import kotlinx.coroutines.delay
 import nl.jovmit.friends.MainActivity
 import nl.jovmit.friends.domain.user.Friend
 import nl.jovmit.friends.domain.user.InMemoryUserCatalog
@@ -29,6 +30,35 @@ class FriendsScreenTest {
       //no operation
     } verify {
       emptyFriendsMessageIsDisplayed()
+    }
+  }
+
+  @Test
+  fun showsLoadingIndicator() {
+    replaceUserCatalogWith(DelayingUserCatalog(listOf(friendAna, friendBob)))
+
+    launchFriends(rule) {
+      //no operation
+    } verify {
+      loadingIndicatorIsShown()
+    }
+  }
+
+  private class DelayingUserCatalog(
+    private val friends: List<Friend>
+  ) : UserCatalog {
+
+    override suspend fun createUser(email: String, password: String, about: String): User {
+      return User(":irrelevant:", email, about)
+    }
+
+    override suspend fun followedBy(userId: String): List<String> {
+      return emptyList()
+    }
+
+    override suspend fun loadFriendsFor(userId: String): List<Friend> {
+      delay(1000)
+      return friends
     }
   }
 
