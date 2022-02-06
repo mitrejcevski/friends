@@ -4,7 +4,10 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import kotlinx.coroutines.delay
 import nl.jovmit.friends.MainActivity
 import nl.jovmit.friends.domain.exceptions.BackendException
-import nl.jovmit.friends.domain.user.*
+import nl.jovmit.friends.domain.user.Friend
+import nl.jovmit.friends.domain.user.InMemoryUserCatalog
+import nl.jovmit.friends.domain.user.User
+import nl.jovmit.friends.domain.user.UserCatalog
 import org.junit.After
 import org.junit.Rule
 import org.junit.Test
@@ -37,7 +40,7 @@ class FriendsScreenTest {
       delay(1000)
       listOf(friendAna, friendBob)
     }
-    replaceUserCatalogWith(DelayingUserCatalog(loadFriendsFunction = loadFriends))
+    replaceUserCatalogWith(ControllableUserCatalog(loadFriendsFunction = loadFriends))
 
     launchFriends(rule) {
       //no operation
@@ -71,7 +74,7 @@ class FriendsScreenTest {
 
   @Test
   fun showsBackendError() {
-    replaceUserCatalogWith(DelayingUserCatalog(loadFriendsFunction = {throw BackendException()}))
+    replaceUserCatalogWith(ControllableUserCatalog(loadFriendsFunction = { throw BackendException() }))
 
     launchFriends(rule) {
       //no operation
@@ -92,7 +95,7 @@ class FriendsScreenTest {
     loadKoinModules(replaceModule)
   }
 
-  private class DelayingUserCatalog(
+  private class ControllableUserCatalog(
     private val followedByFunction: suspend () -> List<String> = { emptyList() },
     private val loadFriendsFunction: suspend () -> List<Friend> = { emptyList() }
   ) : UserCatalog {
