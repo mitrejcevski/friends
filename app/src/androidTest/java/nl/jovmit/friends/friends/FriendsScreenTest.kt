@@ -44,24 +44,6 @@ class FriendsScreenTest {
     }
   }
 
-  private class DelayingUserCatalog(
-    private val friends: List<Friend>
-  ) : UserCatalog {
-
-    override suspend fun createUser(email: String, password: String, about: String): User {
-      return User(":irrelevant:", email, about)
-    }
-
-    override suspend fun followedBy(userId: String): List<String> {
-      return emptyList()
-    }
-
-    override suspend fun loadFriendsFor(userId: String): List<Friend> {
-      delay(1000)
-      return friends
-    }
-  }
-
   @Test
   fun showsAvailableFriends() {
     replaceUserCatalogWith(InMemoryUserCatalog(users))
@@ -95,5 +77,23 @@ class FriendsScreenTest {
       factory { userCatalog }
     }
     loadKoinModules(replaceModule)
+  }
+
+  private class DelayingUserCatalog(
+    private val friends: List<Friend>
+  ) : UserCatalog {
+
+    override suspend fun createUser(email: String, password: String, about: String): User {
+      return User(":irrelevant:", email, about)
+    }
+
+    override suspend fun followedBy(userId: String): List<String> {
+      return emptyList()
+    }
+
+    override suspend fun loadFriendsFor(userId: String): List<Friend> {
+      delay(1000)
+      return friends
+    }
   }
 }
