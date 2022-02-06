@@ -71,4 +71,10 @@ class FriendsVerificationRobot(
     rule.onNodeWithContentDescription(loading)
       .assertIsDisplayed()
   }
+
+  fun backendErrorIsDisplayed() {
+    val errorMessage = rule.activity.getString(R.string.fetchingFriendsError)
+    rule.onNodeWithText(errorMessage)
+      .assertIsDisplayed()
+  }
 }

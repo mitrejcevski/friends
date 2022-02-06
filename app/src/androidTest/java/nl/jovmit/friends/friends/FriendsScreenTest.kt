@@ -3,10 +3,8 @@ package nl.jovmit.friends.friends
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import kotlinx.coroutines.delay
 import nl.jovmit.friends.MainActivity
-import nl.jovmit.friends.domain.user.Friend
-import nl.jovmit.friends.domain.user.InMemoryUserCatalog
-import nl.jovmit.friends.domain.user.User
-import nl.jovmit.friends.domain.user.UserCatalog
+import nl.jovmit.friends.domain.exceptions.BackendException
+import nl.jovmit.friends.domain.user.*
 import org.junit.After
 import org.junit.Rule
 import org.junit.Test
@@ -35,7 +33,11 @@ class FriendsScreenTest {
 
   @Test
   fun showsLoadingIndicator() {
-    replaceUserCatalogWith(DelayingUserCatalog(listOf(friendAna, friendBob)))
+    val loadFriends: suspend () -> List<Friend> = {
+      delay(1000)
+      listOf(friendAna, friendBob)
+    }
+    replaceUserCatalogWith(DelayingUserCatalog(loadFriendsFunction = loadFriends))
 
     launchFriends(rule) {
       //no operation
@@ -67,6 +69,17 @@ class FriendsScreenTest {
     }
   }
 
+  @Test
+  fun showsBackendError() {
+    replaceUserCatalogWith(DelayingUserCatalog(loadFriendsFunction = {throw BackendException()}))
+
+    launchFriends(rule) {
+      //no operation
+    } verify {
+      backendErrorIsDisplayed()
+    }
+  }
+
   @After
   fun tearDown() {
     replaceUserCatalogWith(InMemoryUserCatalog())
@@ -80,7 +93,8 @@ class FriendsScreenTest {
   }
 
   private class DelayingUserCatalog(
-    private val friends: List<Friend>
+    private val followedByFunction: suspend () -> List<String> = { emptyList() },
+    private val loadFriendsFunction: suspend () -> List<Friend> = { emptyList() }
   ) : UserCatalog {
 
     override suspend fun createUser(email: String, password: String, about: String): User {
@@ -88,12 +102,11 @@ class FriendsScreenTest {
     }
 
     override suspend fun followedBy(userId: String): List<String> {
-      return emptyList()
+      return followedByFunction()
     }
 
     override suspend fun loadFriendsFor(userId: String): List<Friend> {
-      delay(1000)
-      return friends
+      return loadFriendsFunction()
     }
   }
 }

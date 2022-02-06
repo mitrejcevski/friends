@@ -1,5 +1,6 @@
 package nl.jovmit.friends.friends
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -23,12 +24,14 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import nl.jovmit.friends.R
 import nl.jovmit.friends.domain.user.Friend
 import nl.jovmit.friends.friends.state.FriendsState
+import nl.jovmit.friends.ui.composables.InfoMessage
 import nl.jovmit.friends.ui.composables.ScreenTitle
 import org.koin.androidx.compose.getViewModel
 
 data class FriendsScreenState(
   val isLoading: Boolean = false,
-  val friends: List<Friend> = emptyList()
+  val friends: List<Friend> = emptyList(),
+  @StringRes val error: Int = 0
 )
 
 @Composable
@@ -49,6 +52,9 @@ fun FriendsScreen(
   if (friendsState is FriendsState.Loaded) {
     screenState = screenState.copy(isLoading = false, friends = friendsState.friends)
   }
+  if (friendsState is FriendsState.BackendError) {
+    screenState = screenState.copy(isLoading = false, error = R.string.fetchingFriendsError)
+  }
 
   Box {
     Column(
@@ -64,6 +70,7 @@ fun FriendsScreen(
         onRefresh = { friendsViewModel.loadFriends(userId) }
       )
     }
+    InfoMessage(stringResource = screenState.error)
   }
 }
 

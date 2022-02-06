@@ -22,4 +22,5 @@
     <string name="friends">Friends</string>
     <string name="emptyFriendsMessage">There are no friends available yet :(</string>
     <string name="follow">Follow</string>
+    <string name="fetchingFriendsError">Failed fetching friends :(</string>
 </resources>
