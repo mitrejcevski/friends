@@ -37,11 +37,11 @@ class FriendsScreenTest {
 
   @Test
   fun showsLoadingIndicator() {
-    val loadFriends: suspend () -> List<Friend> = {
+    val loadFriendsFunction: suspend () -> List<Friend> = {
       delay(1000)
       listOf(friendAna, friendBob)
     }
-    replaceUserCatalogWith(ControllableUserCatalog(loadFriendsFunction = loadFriends))
+    replaceUserCatalogWith(ControllableUserCatalog(loadFriendsFunction = loadFriendsFunction))
 
     launchFriends(rule) {
       //no operation
@@ -75,7 +75,8 @@ class FriendsScreenTest {
 
   @Test
   fun showsBackendError() {
-    replaceUserCatalogWith(ControllableUserCatalog(loadFriendsFunction = { throw BackendException() }))
+    val loadFriendsFunction: suspend () -> List<Friend> = { throw BackendException() }
+    replaceUserCatalogWith(ControllableUserCatalog(loadFriendsFunction = loadFriendsFunction))
 
     launchFriends(rule) {
       //no operation
@@ -86,7 +87,8 @@ class FriendsScreenTest {
 
   @Test
   fun showsOfflineError() {
-    replaceUserCatalogWith(ControllableUserCatalog(loadFriendsFunction = { throw ConnectionUnavailableException() }))
+    val loadFriendsFunction: suspend () -> List<Friend> = { throw ConnectionUnavailableException() }
+    replaceUserCatalogWith(ControllableUserCatalog(loadFriendsFunction = loadFriendsFunction))
 
     launchFriends(rule) {
       //no operation
