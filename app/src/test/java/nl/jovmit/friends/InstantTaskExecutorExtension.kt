@@ -12,7 +12,7 @@ import org.junit.jupiter.api.extension.ExtensionContext
 
 class InstantTaskExecutorExtension : BeforeAllCallback, AfterAllCallback {
 
-  @ExperimentalCoroutinesApi
+  @OptIn(ExperimentalCoroutinesApi::class)
   override fun beforeAll(context: ExtensionContext?) {
     Dispatchers.setMain(Dispatchers.Unconfined)
     ArchTaskExecutor.getInstance().setDelegate(object : TaskExecutor() {
@@ -30,7 +30,7 @@ class InstantTaskExecutorExtension : BeforeAllCallback, AfterAllCallback {
     })
   }
 
-  @ExperimentalCoroutinesApi
+  @OptIn(ExperimentalCoroutinesApi::class)
   override fun afterAll(context: ExtensionContext?) {
     Dispatchers.resetMain()
     ArchTaskExecutor.getInstance().setDelegate(null)
