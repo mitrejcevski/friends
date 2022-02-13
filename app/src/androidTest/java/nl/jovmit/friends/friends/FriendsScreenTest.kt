@@ -37,11 +37,11 @@ class FriendsScreenTest {
 
   @Test
   fun showsLoadingIndicator() {
-    val loadFriendsFunction: suspend () -> List<Friend> = {
+    val delayedFriendsLoad: suspend () -> List<Friend> = {
       delay(1000)
       listOf(friendAna, friendBob)
     }
-    replaceUserCatalogWith(ControllableUserCatalog(loadFriendsFunction = loadFriendsFunction))
+    replaceUserCatalogWith(ControllableUserCatalog(friendsLoad = delayedFriendsLoad))
 
     launchFriends(rule) {
       //no operation
@@ -75,8 +75,8 @@ class FriendsScreenTest {
 
   @Test
   fun showsBackendError() {
-    val loadFriendsFunction: suspend () -> List<Friend> = { throw BackendException() }
-    replaceUserCatalogWith(ControllableUserCatalog(loadFriendsFunction = loadFriendsFunction))
+    val friendsLoad: suspend () -> List<Friend> = { throw BackendException() }
+    replaceUserCatalogWith(ControllableUserCatalog(friendsLoad = friendsLoad))
 
     launchFriends(rule) {
       //no operation
@@ -87,8 +87,8 @@ class FriendsScreenTest {
 
   @Test
   fun showsOfflineError() {
-    val loadFriendsFunction: suspend () -> List<Friend> = { throw ConnectionUnavailableException() }
-    replaceUserCatalogWith(ControllableUserCatalog(loadFriendsFunction = loadFriendsFunction))
+    val friendsLoad: suspend () -> List<Friend> = { throw ConnectionUnavailableException() }
+    replaceUserCatalogWith(ControllableUserCatalog(friendsLoad = friendsLoad))
 
     launchFriends(rule) {
       //no operation
@@ -110,8 +110,8 @@ class FriendsScreenTest {
   }
 
   private class ControllableUserCatalog(
-    private val followedByFunction: suspend () -> List<String> = { emptyList() },
-    private val loadFriendsFunction: suspend () -> List<Friend> = { emptyList() }
+    private val followedByLoad: suspend () -> List<String> = { emptyList() },
+    private val friendsLoad: suspend () -> List<Friend> = { emptyList() }
   ) : UserCatalog {
 
     override suspend fun createUser(email: String, password: String, about: String): User {
@@ -119,11 +119,11 @@ class FriendsScreenTest {
     }
 
     override suspend fun followedBy(userId: String): List<String> {
-      return followedByFunction()
+      return followedByLoad()
     }
 
     override suspend fun loadFriendsFor(userId: String): List<Friend> {
-      return loadFriendsFunction()
+      return friendsLoad()
     }
   }
 }
