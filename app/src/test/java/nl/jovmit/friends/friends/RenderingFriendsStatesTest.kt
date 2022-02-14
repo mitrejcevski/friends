@@ -1,13 +1,14 @@
 package nl.jovmit.friends.friends
 
+import androidx.lifecycle.SavedStateHandle
 import nl.jovmit.friends.InstantTaskExecutorExtension
 import nl.jovmit.friends.app.TestDispatchers
 import nl.jovmit.friends.domain.friends.FriendsRepository
 import nl.jovmit.friends.domain.user.Following
 import nl.jovmit.friends.domain.user.Friend
 import nl.jovmit.friends.domain.user.InMemoryUserCatalog
-import nl.jovmit.friends.infrastructure.builder.UserBuilder.Companion.aUser
 import nl.jovmit.friends.friends.state.FriendsState
+import nl.jovmit.friends.infrastructure.builder.UserBuilder.Companion.aUser
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -27,7 +28,8 @@ class RenderingFriendsStatesTest {
   )
   private val viewModel = FriendsViewModel(
     FriendsRepository(userCatalog),
-    TestDispatchers()
+    TestDispatchers(),
+    SavedStateHandle()
   )
 
   @Test

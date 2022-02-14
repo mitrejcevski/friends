@@ -1,11 +1,13 @@
 package nl.jovmit.friends.friends
 
+import androidx.lifecycle.SavedStateHandle
 import nl.jovmit.friends.InstantTaskExecutorExtension
 import nl.jovmit.friends.app.TestDispatchers
 import nl.jovmit.friends.domain.friends.FriendsRepository
 import nl.jovmit.friends.domain.user.Following
 import nl.jovmit.friends.domain.user.Friend
 import nl.jovmit.friends.domain.user.InMemoryUserCatalog
+import nl.jovmit.friends.friends.state.FriendsScreenState
 import nl.jovmit.friends.friends.state.FriendsState
 import nl.jovmit.friends.infrastructure.builder.UserBuilder.Companion.aUser
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -26,11 +28,16 @@ class LoadFriendsTest {
   @Test
   fun noFriendsExisting() {
     val userCatalog = InMemoryUserCatalog()
-    val viewModel = FriendsViewModel(FriendsRepository(userCatalog), TestDispatchers())
+    val viewModel = FriendsViewModel(
+      FriendsRepository(userCatalog),
+      TestDispatchers(),
+      SavedStateHandle()
+    )
 
     viewModel.loadFriends(sara.id)
 
     assertEquals(FriendsState.Loaded(emptyList()), viewModel.friendsState.value)
+    assertEquals(FriendsScreenState(), viewModel.screenState.value)
   }
 
   @Test
@@ -38,7 +45,11 @@ class LoadFriendsTest {
     val userCatalog = InMemoryUserCatalog(
       usersForPassword = mutableMapOf(":irrelevant" to mutableListOf(tom))
     )
-    val viewModel = FriendsViewModel(FriendsRepository(userCatalog), TestDispatchers())
+    val viewModel = FriendsViewModel(
+      FriendsRepository(userCatalog),
+      TestDispatchers(),
+      SavedStateHandle()
+    )
 
     viewModel.loadFriends(anna.id)
 
@@ -51,7 +62,11 @@ class LoadFriendsTest {
       usersForPassword = mutableMapOf(":irrelevant:" to mutableListOf(anna, sara, tom)),
       followings = mutableListOf(Following(lucy.id, anna.id))
     )
-    val viewModel = FriendsViewModel(FriendsRepository(userCatalog), TestDispatchers())
+    val viewModel = FriendsViewModel(
+      FriendsRepository(userCatalog),
+      TestDispatchers(),
+      SavedStateHandle()
+    )
 
     viewModel.loadFriends(lucy.id)
 
@@ -66,7 +81,11 @@ class LoadFriendsTest {
     val userCatalog = InMemoryUserCatalog(
       usersForPassword = mutableMapOf(":irrelevant:" to mutableListOf(tom))
     )
-    val viewModel = FriendsViewModel(FriendsRepository(userCatalog), TestDispatchers())
+    val viewModel = FriendsViewModel(
+      FriendsRepository(userCatalog),
+      TestDispatchers(),
+      SavedStateHandle()
+    )
 
     viewModel.loadFriends(tom.id)
 

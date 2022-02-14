@@ -1,5 +1,6 @@
 package nl.jovmit.friends.friends
 
+import androidx.lifecycle.SavedStateHandle
 import nl.jovmit.friends.InstantTaskExecutorExtension
 import nl.jovmit.friends.app.TestDispatchers
 import nl.jovmit.friends.domain.friends.FriendsRepository
@@ -18,7 +19,7 @@ class FailFriendsLoadingTest {
     val viewModel = FriendsViewModel(
       FriendsRepository(
         UnavailableUserCatalog()
-      ), TestDispatchers()
+      ), TestDispatchers(), SavedStateHandle()
     )
 
     viewModel.loadFriends(":irrelevant:")
@@ -32,7 +33,8 @@ class FailFriendsLoadingTest {
       FriendsRepository(
         OfflineUserCatalog()
       ),
-      TestDispatchers()
+      TestDispatchers(),
+      SavedStateHandle()
     )
 
     viewModel.loadFriends(":irrelevant:")
