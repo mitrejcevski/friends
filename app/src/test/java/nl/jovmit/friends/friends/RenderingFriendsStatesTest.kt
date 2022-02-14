@@ -7,7 +7,7 @@ import nl.jovmit.friends.domain.friends.FriendsRepository
 import nl.jovmit.friends.domain.user.Following
 import nl.jovmit.friends.domain.user.Friend
 import nl.jovmit.friends.domain.user.InMemoryUserCatalog
-import nl.jovmit.friends.friends.state.FriendsState
+import nl.jovmit.friends.friends.state.FriendsScreenState
 import nl.jovmit.friends.infrastructure.builder.UserBuilder.Companion.aUser
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -34,14 +34,13 @@ class RenderingFriendsStatesTest {
 
   @Test
   fun friendsStatesDeliveredToAnObserverInParticularOrder() {
-    val deliveredStates = mutableListOf<FriendsState>()
-    viewModel.friendsState.observeForever { deliveredStates.add(it) }
+    val loading = FriendsScreenState(isLoading = true)
+    val loaded = FriendsScreenState(friends = listOf(friendTom, friendAnna))
+    val deliveredStates = mutableListOf<FriendsScreenState>()
+    viewModel.screenState.observeForever { deliveredStates.add(it) }
 
     viewModel.loadFriends(jov.id)
 
-    assertEquals(
-      listOf(FriendsState.Loading, FriendsState.Loaded(listOf(friendTom, friendAnna))),
-      deliveredStates
-    )
+    assertEquals(listOf(loading, loaded), deliveredStates)
   }
 }
