@@ -31,16 +31,23 @@ import org.koin.androidx.compose.getViewModel
 fun FriendsScreen(
   userId: String
 ) {
-
   val friendsViewModel = getViewModel<FriendsViewModel>()
+  val screenState = friendsViewModel.screenState.observeAsState().value ?: FriendsScreenState()
   if (friendsViewModel.screenState.value == null) {
     friendsViewModel.loadFriends(userId)
   }
+  FriendsScreenContent(screenState = screenState) {
+    friendsViewModel.loadFriends(userId)
+  }
+}
 
-  val screenState = friendsViewModel.screenState.observeAsState().value
-    ?: FriendsScreenState()
-
-  Box {
+@Composable
+fun FriendsScreenContent(
+  modifier: Modifier = Modifier,
+  screenState: FriendsScreenState,
+  onRefresh: () -> Unit
+) {
+  Box(modifier = modifier) {
     Column(
       modifier = Modifier
         .fillMaxSize()
@@ -51,7 +58,7 @@ fun FriendsScreen(
       FriendsList(
         isRefreshing = screenState.isLoading,
         friends = screenState.friends,
-        onRefresh = { friendsViewModel.loadFriends(userId) }
+        onRefresh = { onRefresh() }
       )
     }
     InfoMessage(stringResource = screenState.error)
