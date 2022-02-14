@@ -3,6 +3,7 @@ package nl.jovmit.friends.friends
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import nl.jovmit.friends.R
 import nl.jovmit.friends.app.CoroutineDispatchers
 import nl.jovmit.friends.domain.friends.FriendsRepository
 import nl.jovmit.friends.friends.state.FriendsScreenState
@@ -23,11 +24,27 @@ class FriendsViewModel(
   fun loadFriends(userId: String) {
     viewModelScope.launch {
       mutableFriendsState.value = FriendsState.Loading
-      mutableFriendsState.value = withContext(dispatchers.background) {
+      updateScreenState(FriendsState.Loading)
+      val result = withContext(dispatchers.background) {
         friendsRepository.loadFriendsFor(userId)
       }
-      savedStateHandle[SCREEN_STATE_KEY] = FriendsScreenState()
+      mutableFriendsState.value = result
+      updateScreenState(result)
     }
+  }
+
+  private fun updateScreenState(friendsState: FriendsState) {
+    val currentState = savedStateHandle[SCREEN_STATE_KEY] ?: FriendsScreenState()
+    val newState = when (friendsState) {
+      is FriendsState.Loading -> currentState.copy(isLoading = true)
+      is FriendsState.Loaded -> currentState.copy(isLoading = false, friends = friendsState.friends)
+      is FriendsState.BackendError -> currentState.copy(
+        isLoading = false,
+        error = R.string.fetchingFriendsError
+      )
+      is FriendsState.Offline -> currentState.copy(isLoading = false, error = R.string.offlineError)
+    }
+    savedStateHandle[SCREEN_STATE_KEY] = newState
   }
 
   private companion object {
