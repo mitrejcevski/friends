@@ -8,7 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,7 +23,6 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import nl.jovmit.friends.R
 import nl.jovmit.friends.domain.user.Friend
 import nl.jovmit.friends.friends.state.FriendsScreenState
-import nl.jovmit.friends.friends.state.FriendsState
 import nl.jovmit.friends.ui.composables.InfoMessage
 import nl.jovmit.friends.ui.composables.ScreenTitle
 import org.koin.androidx.compose.getViewModel
@@ -34,25 +33,12 @@ fun FriendsScreen(
 ) {
 
   val friendsViewModel = getViewModel<FriendsViewModel>()
-  if (friendsViewModel.friendsState.value == null) {
+  if (friendsViewModel.screenState.value == null) {
     friendsViewModel.loadFriends(userId)
   }
 
-  var screenState by remember { mutableStateOf(FriendsScreenState()) }
-  val friendsState = friendsViewModel.friendsState.observeAsState().value
-
-  if (friendsState is FriendsState.Loading) {
-    screenState = screenState.copy(isLoading = true)
-  }
-  if (friendsState is FriendsState.Loaded) {
-    screenState = screenState.copy(isLoading = false, friends = friendsState.friends)
-  }
-  if (friendsState is FriendsState.BackendError) {
-    screenState = screenState.copy(isLoading = false, error = R.string.fetchingFriendsError)
-  }
-  if (friendsState is FriendsState.Offline) {
-    screenState = screenState.copy(isLoading = false, error = R.string.offlineError)
-  }
+  val screenState = friendsViewModel.screenState.observeAsState().value
+    ?: FriendsScreenState()
 
   Box {
     Column(
