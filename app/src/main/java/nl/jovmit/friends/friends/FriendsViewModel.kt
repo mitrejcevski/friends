@@ -1,6 +1,9 @@
 package nl.jovmit.friends.friends
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import nl.jovmit.friends.R
@@ -33,10 +36,8 @@ class FriendsViewModel(
     val newState = when (friendsState) {
       is FriendsState.Loading -> currentState.copy(isLoading = true)
       is FriendsState.Loaded -> currentState.copy(isLoading = false, friends = friendsState.friends)
-      is FriendsState.BackendError -> currentState.copy(
-        isLoading = false,
-        error = R.string.fetchingFriendsError
-      )
+      is FriendsState.BackendError ->
+        currentState.copy(isLoading = false, error = R.string.fetchingFriendsError)
       is FriendsState.Offline -> currentState.copy(isLoading = false, error = R.string.offlineError)
     }
     savedStateHandle[SCREEN_STATE_KEY] = newState
