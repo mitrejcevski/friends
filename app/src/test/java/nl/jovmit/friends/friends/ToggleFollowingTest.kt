@@ -15,14 +15,15 @@ import org.junit.jupiter.api.extension.ExtendWith
 @ExtendWith(InstantTaskExecutorExtension::class)
 class ToggleFollowingTest {
 
+  private val dispatchers = TestDispatchers()
+  private val savedStateHandle = SavedStateHandle()
+
+  private val anna = aUser().withId("annaId").build()
+  private val tom = aUser().withId("tomId").build()
+  private val users = mutableMapOf(":irrelevant:" to mutableListOf(anna, tom))
+
   @Test
   fun follow() {
-    val anna = aUser().withId("annaId").build()
-    val tom = aUser().withId("tomId").build()
-    val users = mutableMapOf(":irrelevant:" to mutableListOf(anna, tom))
-
-    val dispatchers = TestDispatchers()
-    val savedStateHandle = SavedStateHandle()
     val repository = FriendsRepository(InMemoryUserCatalog(users))
     val viewModel = FriendsViewModel(repository, dispatchers, savedStateHandle).apply {
       loadFriends(anna.id)
