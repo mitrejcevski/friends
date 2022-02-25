@@ -10,6 +10,7 @@ import nl.jovmit.friends.R
 import nl.jovmit.friends.app.CoroutineDispatchers
 import nl.jovmit.friends.domain.friends.FriendsRepository
 import nl.jovmit.friends.domain.user.Following
+import nl.jovmit.friends.friends.state.FollowState
 import nl.jovmit.friends.friends.state.FriendsScreenState
 import nl.jovmit.friends.friends.state.FriendsState
 
@@ -33,9 +34,9 @@ class FriendsViewModel(
   }
 
   fun toggleFollowing(userId: String, followeeId: String) {
-    when(val result = updateFollowing(userId, followeeId)) {
+    when (val result = updateFollowing(userId, followeeId)) {
       is FollowState.Followed -> updateFollowingState(result.following.followedId, true)
-      is FollowState.Unfollowed-> updateFollowingState(result.following.followedId, false)
+      is FollowState.Unfollowed -> updateFollowingState(result.following.followedId, false)
     }
   }
 
@@ -55,13 +56,6 @@ class FriendsViewModel(
       .apply { set(index, matchingUser.copy(isFollowee = isFollowee)) }
     val updatedState = currentState.copy(friends = updatedFriends)
     savedStateHandle[SCREEN_STATE_KEY] = updatedState
-  }
-
-  sealed class FollowState {
-
-    data class Followed(val following: Following) : FollowState()
-
-    data class Unfollowed(val following: Following) : FollowState()
   }
 
   private fun updateScreenState(friendsState: FriendsState) {
