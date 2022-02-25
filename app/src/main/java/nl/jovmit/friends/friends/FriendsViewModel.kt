@@ -9,7 +9,6 @@ import kotlinx.coroutines.withContext
 import nl.jovmit.friends.R
 import nl.jovmit.friends.app.CoroutineDispatchers
 import nl.jovmit.friends.domain.friends.FriendsRepository
-import nl.jovmit.friends.domain.user.Following
 import nl.jovmit.friends.friends.state.FollowState
 import nl.jovmit.friends.friends.state.FriendsScreenState
 import nl.jovmit.friends.friends.state.FriendsState
@@ -34,17 +33,9 @@ class FriendsViewModel(
   }
 
   fun toggleFollowing(userId: String, followeeId: String) {
-    when (val result = updateFollowing(userId, followeeId)) {
+    when (val result = friendsRepository.updateFollowing(userId, followeeId)) {
       is FollowState.Followed -> updateFollowingState(result.following.followedId, true)
       is FollowState.Unfollowed -> updateFollowingState(result.following.followedId, false)
-    }
-  }
-
-  private fun updateFollowing(userId: String, followeeId: String): FollowState {
-    return if (userId == "annaId") {
-      FollowState.Followed(Following(userId, followeeId))
-    } else {
-      FollowState.Unfollowed(Following(userId, followeeId))
     }
   }
 
