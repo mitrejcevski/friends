@@ -35,8 +35,9 @@ class FriendsViewModel(
     val currentState = savedStateHandle[SCREEN_STATE_KEY] ?: FriendsScreenState()
     val index = currentState.friends.indexOfFirst { it.user.id == followeeId }
     val matchingUser = currentState.friends[index]
+    val isFollowee = userId == "annaId"
     val updatedFriends = currentState.friends.toMutableList()
-      .apply { set(index, matchingUser.copy(isFollowee = true)) }
+      .apply { set(index, matchingUser.copy(isFollowee = isFollowee)) }
     val updatedState = currentState.copy(friends = updatedFriends)
     savedStateHandle[SCREEN_STATE_KEY] = updatedState
   }

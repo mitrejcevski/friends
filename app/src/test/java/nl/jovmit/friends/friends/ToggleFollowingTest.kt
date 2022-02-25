@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import nl.jovmit.friends.InstantTaskExecutorExtension
 import nl.jovmit.friends.app.TestDispatchers
 import nl.jovmit.friends.domain.friends.FriendsRepository
+import nl.jovmit.friends.domain.user.Following
 import nl.jovmit.friends.domain.user.Friend
 import nl.jovmit.friends.domain.user.InMemoryUserCatalog
 import nl.jovmit.friends.friends.state.FriendsScreenState
@@ -33,6 +34,22 @@ class ToggleFollowingTest {
 
     assertEquals(
       FriendsScreenState(friends = listOf(Friend(tom, isFollowee = true))),
+      viewModel.screenState.value
+    )
+  }
+
+  @Test
+  fun unfollow() {
+    val followings = listOf(Following(tom.id, anna.id))
+    val repository = FriendsRepository(InMemoryUserCatalog(users, followings))
+    val viewModel = FriendsViewModel(repository, dispatchers, savedStateHandle).apply {
+      loadFriends(tom.id)
+    }
+
+    viewModel.toggleFollowing(tom.id, anna.id)
+
+    assertEquals(
+      FriendsScreenState(friends = listOf(Friend(anna, isFollowee = false))),
       viewModel.screenState.value
     )
   }
