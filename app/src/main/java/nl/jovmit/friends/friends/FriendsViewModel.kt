@@ -9,6 +9,8 @@ import kotlinx.coroutines.withContext
 import nl.jovmit.friends.R
 import nl.jovmit.friends.app.CoroutineDispatchers
 import nl.jovmit.friends.domain.friends.FriendsRepository
+import nl.jovmit.friends.domain.user.Friend
+import nl.jovmit.friends.domain.user.User
 import nl.jovmit.friends.friends.state.FriendsScreenState
 import nl.jovmit.friends.friends.state.FriendsState
 
@@ -29,6 +31,12 @@ class FriendsViewModel(
       }
       updateScreenState(result)
     }
+  }
+
+  fun toggleFollowing(userId: String, followeeId: String) {
+    val user = User(followeeId, "user@friends.com", "About User")
+    val newState = FriendsScreenState(friends = listOf(Friend(user, true)))
+    savedStateHandle[SCREEN_STATE_KEY] = newState
   }
 
   private fun updateScreenState(friendsState: FriendsState) {
