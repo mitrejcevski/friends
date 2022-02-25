@@ -19,8 +19,8 @@ class RenderingFriendsStatesTest {
   private val anna = aUser().withId("annaId").build()
   private val tom = aUser().withId("tomId").build()
   private val jov = aUser().withId("jovId").build()
-  private val friendAnna = Friend(anna, isFollower = true)
-  private val friendTom = Friend(tom, isFollower = true)
+  private val friendAnna = Friend(anna, isFollowee = true)
+  private val friendTom = Friend(tom, isFollowee = true)
 
   private val userCatalog = InMemoryUserCatalog(
     usersForPassword = mutableMapOf(":irrelevant:" to mutableListOf(tom, anna)),
