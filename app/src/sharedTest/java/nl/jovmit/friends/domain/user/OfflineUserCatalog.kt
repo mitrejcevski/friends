@@ -1,6 +1,7 @@
 package nl.jovmit.friends.domain.user
 
 import nl.jovmit.friends.domain.exceptions.ConnectionUnavailableException
+import nl.jovmit.friends.domain.friends.ToggleFollowing
 
 class OfflineUserCatalog : UserCatalog {
 
@@ -9,6 +10,10 @@ class OfflineUserCatalog : UserCatalog {
     password: String,
     about: String
   ): User {
+    throw ConnectionUnavailableException()
+  }
+
+  override fun toggleFollowing(userId: String, followeeId: String): ToggleFollowing {
     throw ConnectionUnavailableException()
   }
 

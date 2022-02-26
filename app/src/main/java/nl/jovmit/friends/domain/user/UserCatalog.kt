@@ -1,5 +1,7 @@
 package nl.jovmit.friends.domain.user
 
+import nl.jovmit.friends.domain.friends.ToggleFollowing
+
 interface UserCatalog {
 
   suspend fun createUser(
@@ -7,6 +9,8 @@ interface UserCatalog {
     password: String,
     about: String
   ): User
+
+  fun toggleFollowing(userId: String, followeeId: String): ToggleFollowing
 
   suspend fun followedBy(userId: String): List<String>
 

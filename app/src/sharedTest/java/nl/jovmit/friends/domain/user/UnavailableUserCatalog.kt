@@ -1,10 +1,15 @@
 package nl.jovmit.friends.domain.user
 
 import nl.jovmit.friends.domain.exceptions.BackendException
+import nl.jovmit.friends.domain.friends.ToggleFollowing
 
 class UnavailableUserCatalog : UserCatalog {
 
   override suspend fun createUser(email: String, password: String, about: String): User {
+    throw BackendException()
+  }
+
+  override fun toggleFollowing(userId: String, followeeId: String): ToggleFollowing {
     throw BackendException()
   }
 

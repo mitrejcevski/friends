@@ -2,7 +2,6 @@ package nl.jovmit.friends.domain.friends
 
 import nl.jovmit.friends.domain.exceptions.BackendException
 import nl.jovmit.friends.domain.exceptions.ConnectionUnavailableException
-import nl.jovmit.friends.domain.user.Following
 import nl.jovmit.friends.domain.user.UserCatalog
 import nl.jovmit.friends.friends.state.FollowState
 import nl.jovmit.friends.friends.state.FriendsState
@@ -23,10 +22,11 @@ class FriendsRepository(
   }
 
   fun updateFollowing(userId: String, followeeId: String): FollowState {
-    return if (userId == "annaId") {
-      FollowState.Followed(Following(userId, followeeId))
+    val toggleResult = userCatalog.toggleFollowing(userId, followeeId)
+    return if (toggleResult.isAdded) {
+      FollowState.Followed(toggleResult.following)
     } else {
-      FollowState.Unfollowed(Following(userId, followeeId))
+      FollowState.Unfollowed(toggleResult.following)
     }
   }
 }

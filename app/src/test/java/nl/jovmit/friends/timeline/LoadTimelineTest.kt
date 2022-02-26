@@ -65,11 +65,7 @@ class LoadTimelineTest {
 
   @Test
   fun postsFormFriends() {
-    val userCatalog = InMemoryUserCatalog(
-      followings = listOf(
-        Following(anna.id, lucy.id)
-      )
-    )
+    val userCatalog = InMemoryUserCatalog(followings = mutableListOf(Following(anna.id, lucy.id)))
     val postCatalog = InMemoryPostCatalog(availablePosts)
     val viewModel = TimelineViewModel(
       TimelineRepository(userCatalog, postCatalog),
@@ -83,11 +79,7 @@ class LoadTimelineTest {
 
   @Test
   fun postsFromFriendsAlongOwn() {
-    val userCatalog = InMemoryUserCatalog(
-      followings = listOf(
-        Following(sara.id, lucy.id)
-      )
-    )
+    val userCatalog = InMemoryUserCatalog(followings = mutableListOf(Following(sara.id, lucy.id)))
     val postCatalog = InMemoryPostCatalog(availablePosts)
     val viewModel = TimelineViewModel(
       TimelineRepository(userCatalog, postCatalog),

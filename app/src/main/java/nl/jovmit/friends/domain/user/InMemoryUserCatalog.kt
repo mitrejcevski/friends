@@ -1,10 +1,11 @@
 package nl.jovmit.friends.domain.user
 
 import nl.jovmit.friends.domain.exceptions.DuplicateAccountException
+import nl.jovmit.friends.domain.friends.ToggleFollowing
 
 class InMemoryUserCatalog(
   private val usersForPassword: MutableMap<String, MutableList<User>> = mutableMapOf(),
-  private val followings: List<Following> = mutableListOf()
+  private val followings: MutableList<Following> = mutableListOf()
 ) : UserCatalog {
 
   private val allUsers: List<User>
@@ -20,6 +21,17 @@ class InMemoryUserCatalog(
     val user = User(userId, email, about)
     saveUser(password, user)
     return user
+  }
+
+  override fun toggleFollowing(userId: String, followeeId: String): ToggleFollowing {
+    val following = Following(userId, followeeId)
+    return if (followings.contains(following)) {
+      followings.remove(following)
+      ToggleFollowing(following, false)
+    } else {
+      followings.add(following)
+      ToggleFollowing(following, true)
+    }
   }
 
   override suspend fun followedBy(userId: String): List<String> {

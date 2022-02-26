@@ -1,5 +1,7 @@
 package nl.jovmit.friends.domain.user
 
+import nl.jovmit.friends.domain.friends.ToggleFollowing
+
 class ControllableUserCatalog(
     private val userCreate: suspend (String, String, String) -> User = { email, _, about ->
       User(email.takeWhile { it == '@' } + "Id", email, about)
@@ -12,7 +14,11 @@ class ControllableUserCatalog(
       return userCreate(email, password, about)
     }
 
-    override suspend fun followedBy(userId: String): List<String> {
+  override fun toggleFollowing(userId: String, followeeId: String): ToggleFollowing {
+    TODO("Not yet implemented")
+  }
+
+  override suspend fun followedBy(userId: String): List<String> {
       return followedByLoad()
     }
 
