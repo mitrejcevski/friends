@@ -26,4 +26,5 @@
     <string name="fetchingFriendsError">Failed fetching friends :(</string>
     <string name="followFriend">Follow %1$s</string>
     <string name="unfollowFriend">Unfollow %1$s</string>
+    <string name="updatingFriendship">Updating friendship for %1$s</string>
 </resources>

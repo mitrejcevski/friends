@@ -106,4 +106,10 @@ class FriendsVerificationRobot(
     rule.onNode(hasText(follow).and(hasContentDescription(followFriend)))
       .assertIsDisplayed()
   }
+
+  fun loadingIndicatorIsShownWhenTogglingFriendshipFor(friend: Friend) {
+    val updatingFriendship = rule.activity.getString(R.string.updatingFriendship, friend.user.id)
+    rule.onNodeWithContentDescription(updatingFriendship)
+      .assertIsDisplayed()
+  }
 }

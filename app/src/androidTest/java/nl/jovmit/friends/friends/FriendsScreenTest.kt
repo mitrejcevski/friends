@@ -5,6 +5,7 @@ import kotlinx.coroutines.delay
 import nl.jovmit.friends.MainActivity
 import nl.jovmit.friends.domain.exceptions.BackendException
 import nl.jovmit.friends.domain.exceptions.ConnectionUnavailableException
+import nl.jovmit.friends.domain.friends.ToggleFollowing
 import nl.jovmit.friends.domain.user.*
 import org.junit.After
 import org.junit.Rule
@@ -114,6 +115,22 @@ class FriendsScreenTest {
       tapOnUnfollowFor(friendBob)
     } verify {
       followingIsRemovedFor(friendBob)
+    }
+  }
+
+  @Test
+  fun showsLoadingIndicatorWhenUpdatingFriendship() {
+    val friendsLoad: suspend () -> List<Friend> = { listOf(friendAna, friendBob) }
+    val toggleFollow: suspend (String, String) -> ToggleFollowing = { userId, followingId ->
+      delay(1000)
+      ToggleFollowing(Following(userId, followingId), true)
+    }
+    replaceUserCatalogWith(ControllableUserCatalog(friendsLoad = friendsLoad, followToggle = toggleFollow))
+
+    launchFriends(rule) {
+      tapOnFollowFor(friendAna)
+    } verify {
+      loadingIndicatorIsShownWhenTogglingFriendshipFor(friendAna)
     }
   }
 
