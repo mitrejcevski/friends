@@ -1,10 +1,7 @@
 package nl.jovmit.friends.friends
 
-import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.AndroidComposeTestRule
-import androidx.compose.ui.test.onNodeWithContentDescription
-import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import nl.jovmit.friends.MainActivity
 import nl.jovmit.friends.R
@@ -29,6 +26,12 @@ class FriendsRobot(private val rule: MainActivityRule) {
   fun tapOnFriends() {
     val friends = rule.activity.getString(R.string.friends)
     rule.onNodeWithText(friends)
+      .performClick()
+  }
+
+  fun tapOnFollowFor(friend: Friend) {
+    val followFriend = rule.activity.getString(R.string.followFriend, friend.user.id)
+    rule.onNodeWithContentDescription(followFriend)
       .performClick()
   }
 
@@ -81,6 +84,13 @@ class FriendsVerificationRobot(
   fun offlineErrorIsDisplayed() {
     val offlineError = rule.activity.getString(R.string.offlineError)
     rule.onNodeWithText(offlineError)
+      .assertIsDisplayed()
+  }
+
+  fun followingIsAddedFor(friend: Friend) {
+    val unfollow = rule.activity.getString(R.string.unfollow)
+    val unfollowFriend = rule.activity.getString(R.string.unfollowFriend, friend.user.id)
+    rule.onNode(hasText(unfollow).and(hasContentDescription(unfollowFriend)))
       .assertIsDisplayed()
   }
 }
