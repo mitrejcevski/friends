@@ -105,6 +105,18 @@ class FriendsScreenTest {
     }
   }
 
+  @Test
+  fun unfollowAFriend() {
+    replaceUserCatalogWith(InMemoryUserCatalog(users))
+
+    launchFriends(rule) {
+      tapOnFollowFor(friendBob)
+      tapOnUnfollowFor(friendBob)
+    } verify {
+      followingIsRemovedFor(friendBob)
+    }
+  }
+
   @After
   fun tearDown() {
     replaceUserCatalogWith(InMemoryUserCatalog())
@@ -116,5 +128,4 @@ class FriendsScreenTest {
     }
     loadKoinModules(replaceModule)
   }
-
 }

@@ -35,6 +35,12 @@ class FriendsRobot(private val rule: MainActivityRule) {
       .performClick()
   }
 
+  fun tapOnUnfollowFor(friend: Friend) {
+    val unfollowFriend = rule.activity.getString(R.string.unfollowFriend, friend.user.id)
+    rule.onNodeWithContentDescription(unfollowFriend)
+      .performClick()
+  }
+
   infix fun verify(
     block: FriendsVerificationRobot.() -> Unit
   ): FriendsVerificationRobot {
@@ -91,6 +97,13 @@ class FriendsVerificationRobot(
     val unfollow = rule.activity.getString(R.string.unfollow)
     val unfollowFriend = rule.activity.getString(R.string.unfollowFriend, friend.user.id)
     rule.onNode(hasText(unfollow).and(hasContentDescription(unfollowFriend)))
+      .assertIsDisplayed()
+  }
+
+  fun followingIsRemovedFor(friend: Friend) {
+    val follow = rule.activity.getString(R.string.follow)
+    val followFriend = rule.activity.getString(R.string.followFriend, friend.user.id)
+    rule.onNode(hasText(follow).and(hasContentDescription(followFriend)))
       .assertIsDisplayed()
   }
 }
