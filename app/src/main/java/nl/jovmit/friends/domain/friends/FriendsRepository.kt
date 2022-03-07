@@ -21,7 +21,7 @@ class FriendsRepository(
     }
   }
 
-  fun updateFollowing(userId: String, followeeId: String): FollowState {
+  suspend fun updateFollowing(userId: String, followeeId: String): FollowState {
     val toggleResult = userCatalog.toggleFollowing(userId, followeeId)
     return if (toggleResult.isAdded) {
       FollowState.Followed(toggleResult.following)

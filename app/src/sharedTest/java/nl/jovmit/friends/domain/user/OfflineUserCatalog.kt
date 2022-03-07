@@ -13,7 +13,7 @@ class OfflineUserCatalog : UserCatalog {
     throw ConnectionUnavailableException()
   }
 
-  override fun toggleFollowing(userId: String, followeeId: String): ToggleFollowing {
+  override suspend fun toggleFollowing(userId: String, followeeId: String): ToggleFollowing {
     throw ConnectionUnavailableException()
   }
 

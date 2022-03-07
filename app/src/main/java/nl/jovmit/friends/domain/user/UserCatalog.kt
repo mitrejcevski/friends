@@ -10,7 +10,7 @@ interface UserCatalog {
     about: String
   ): User
 
-  fun toggleFollowing(userId: String, followeeId: String): ToggleFollowing
+  suspend fun toggleFollowing(userId: String, followeeId: String): ToggleFollowing
 
   suspend fun followedBy(userId: String): List<String>
 

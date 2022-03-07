@@ -33,9 +33,14 @@ class FriendsViewModel(
   }
 
   fun toggleFollowing(userId: String, followeeId: String) {
-    when (val result = friendsRepository.updateFollowing(userId, followeeId)) {
-      is FollowState.Followed -> updateFollowingState(result.following.followedId, true)
-      is FollowState.Unfollowed -> updateFollowingState(result.following.followedId, false)
+    viewModelScope.launch {
+      val updateFollowing = withContext(dispatchers.background) {
+        friendsRepository.updateFollowing(userId, followeeId)
+      }
+      when (updateFollowing) {
+        is FollowState.Followed -> updateFollowingState(updateFollowing.following.followedId, true)
+        is FollowState.Unfollowed -> updateFollowingState(updateFollowing.following.followedId, false)
+      }
     }
   }
 
