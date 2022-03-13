@@ -23,16 +23,20 @@ class FriendsRepository(
 
   suspend fun updateFollowing(userId: String, followeeId: String): FollowState {
     return try {
-      val toggleResult = userCatalog.toggleFollowing(userId, followeeId)
-      if (toggleResult.isAdded) {
-        FollowState.Followed(toggleResult.following)
-      } else {
-        FollowState.Unfollowed(toggleResult.following)
-      }
+      toggleFollowing(userId, followeeId)
     } catch (backendException: BackendException) {
       FollowState.BackendError
     } catch (offlineException: ConnectionUnavailableException) {
       FollowState.Offline
+    }
+  }
+
+  private suspend fun toggleFollowing(userId: String, followeeId: String): FollowState {
+    val toggleResult = userCatalog.toggleFollowing(userId, followeeId)
+    return if (toggleResult.isAdded) {
+      FollowState.Followed(toggleResult.following)
+    } else {
+      FollowState.Unfollowed(toggleResult.following)
     }
   }
 }
