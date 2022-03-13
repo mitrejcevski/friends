@@ -9,4 +9,6 @@ sealed class FollowState {
   data class Unfollowed(val following: Following) : FollowState()
 
   object BackendError : FollowState()
+
+  object Offline : FollowState()
 }

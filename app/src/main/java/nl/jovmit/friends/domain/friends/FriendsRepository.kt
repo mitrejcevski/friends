@@ -31,6 +31,8 @@ class FriendsRepository(
       }
     } catch (backendException: BackendException) {
       FollowState.BackendError
+    } catch (offlineException: ConnectionUnavailableException) {
+      FollowState.Offline
     }
   }
 }
