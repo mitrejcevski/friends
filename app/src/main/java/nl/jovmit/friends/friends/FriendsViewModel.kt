@@ -37,11 +37,7 @@ class FriendsViewModel(
     viewModelScope.launch {
       updateListOfTogglingFriendships(followeeId)
       val updateFollowing = withContext(dispatchers.background) {
-        try {
           friendsRepository.updateFollowing(userId, followeeId)
-        } catch (e: ConnectionUnavailableException) {
-          errorUpdatingFollowing(followeeId, R.string.offlineError)
-        }
       }
       when (updateFollowing) {
         is FollowState.Followed -> updateFollowingState(updateFollowing.following.followedId, true)
