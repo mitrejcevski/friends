@@ -112,4 +112,10 @@ class FriendsVerificationRobot(
     rule.onNodeWithContentDescription(updatingFriendship)
       .assertIsDisplayed()
   }
+
+  fun backendErrorFollowingFriendIsDisplayed() {
+    val errorFollowingFriend = rule.activity.getString(R.string.errorFollowingFriend)
+    rule.onNodeWithText(errorFollowingFriend)
+      .assertIsDisplayed()
+  }
 }

@@ -134,6 +134,21 @@ class FriendsScreenTest {
     }
   }
 
+  @Test
+  fun showsBackendErrorWhenUpdatingFollowing() {
+    val friendsLoad: suspend () -> List<Friend> = { listOf(friendAna, friendBob) }
+    val toggleFollow: suspend (String, String) -> ToggleFollowing = { _, _ ->
+      throw BackendException()
+    }
+    replaceUserCatalogWith(ControllableUserCatalog(friendsLoad = friendsLoad, followToggle = toggleFollow))
+
+    launchFriends(rule) {
+      tapOnFollowFor(friendAna)
+    } verify {
+      backendErrorFollowingFriendIsDisplayed()
+    }
+  }
+
   @After
   fun tearDown() {
     replaceUserCatalogWith(InMemoryUserCatalog())
