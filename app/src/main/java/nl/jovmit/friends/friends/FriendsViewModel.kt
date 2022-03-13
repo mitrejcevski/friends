@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import nl.jovmit.friends.R
 import nl.jovmit.friends.app.CoroutineDispatchers
-import nl.jovmit.friends.domain.exceptions.BackendException
+import nl.jovmit.friends.domain.exceptions.ConnectionUnavailableException
 import nl.jovmit.friends.domain.friends.FriendsRepository
 import nl.jovmit.friends.friends.state.FollowState
 import nl.jovmit.friends.friends.state.FriendsScreenState
@@ -37,20 +37,24 @@ class FriendsViewModel(
     viewModelScope.launch {
       updateListOfTogglingFriendships(followeeId)
       val updateFollowing = withContext(dispatchers.background) {
+        try {
           friendsRepository.updateFollowing(userId, followeeId)
+        } catch (e: ConnectionUnavailableException) {
+          errorUpdatingFollowing(followeeId, R.string.offlineError)
+        }
       }
       when (updateFollowing) {
         is FollowState.Followed -> updateFollowingState(updateFollowing.following.followedId, true)
         is FollowState.Unfollowed -> updateFollowingState(updateFollowing.following.followedId, false)
-        is FollowState.BackendError -> errorUpdatingFollowing(followeeId)
+        is FollowState.BackendError -> errorUpdatingFollowing(followeeId, R.string.errorFollowingFriend)
       }
     }
   }
 
-  private fun errorUpdatingFollowing(followeeId: String) {
+  private fun errorUpdatingFollowing(followeeId: String, errorResource: Int) {
     val currentState = savedStateHandle[SCREEN_STATE_KEY] ?: FriendsScreenState()
     val newState = currentState.copy(
-      error = R.string.errorFollowingFriend,
+      error = errorResource,
       currentlyUpdatingFriends = currentState.currentlyUpdatingFriends - listOf(followeeId)
     )
     savedStateHandle[SCREEN_STATE_KEY] = newState
