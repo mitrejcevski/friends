@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import nl.jovmit.friends.domain.post.Post
 
-class TimelineScreenState {
+class TimelineScreenStateOld {
   var posts by mutableStateOf(emptyList<Post>())
   var loadedUserId by mutableStateOf("")
   var isLoading by mutableStateOf(false)

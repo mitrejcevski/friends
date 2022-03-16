@@ -25,7 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nl.jovmit.friends.R
 import nl.jovmit.friends.domain.post.Post
-import nl.jovmit.friends.timeline.state.TimelineScreenState
+import nl.jovmit.friends.timeline.state.TimelineScreenStateOld
 import nl.jovmit.friends.timeline.state.TimelineState
 import nl.jovmit.friends.ui.composables.BlockingLoading
 import nl.jovmit.friends.ui.composables.InfoMessage
@@ -40,7 +40,7 @@ fun TimelineScreen(
 ) {
 
   val timelineViewModel = getViewModel<TimelineViewModel>()
-  val screenState by remember { mutableStateOf(TimelineScreenState()) }
+  val screenState by remember { mutableStateOf(TimelineScreenStateOld()) }
   val timelineState by timelineViewModel.timelineState.observeAsState()
   if (screenState.shouldLoadPostsFor(userId)) {
     timelineViewModel.timelineFor(userId)
