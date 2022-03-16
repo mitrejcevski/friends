@@ -30,7 +30,7 @@ fun InfoMessage(
   var shouldShow by remember { mutableStateOf(false) }
   LaunchedEffect(stringResource) {
     shouldShow = true
-    delay(1500)
+    delay(2000)
     shouldShow = false
   }
 
