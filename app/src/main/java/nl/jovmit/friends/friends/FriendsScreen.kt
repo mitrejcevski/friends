@@ -62,7 +62,7 @@ fun FriendsScreenContent(
       FriendsList(
         isRefreshing = screenState.isLoading,
         friends = screenState.friends,
-        currentlyUpdatingFriends = screenState.currentlyUpdatingFriends,
+        currentlyUpdatingFriends = screenState.updatingFriends,
         onRefresh = { onRefresh() },
         toggleFollowingFor = { toggleFollowingFor(it) }
       )
