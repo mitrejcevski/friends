@@ -8,7 +8,7 @@ import nl.jovmit.friends.domain.timeline.TimelineRepository
 import nl.jovmit.friends.domain.user.Following
 import nl.jovmit.friends.domain.user.InMemoryUserCatalog
 import nl.jovmit.friends.infrastructure.builder.UserBuilder.Companion.aUser
-import nl.jovmit.friends.timeline.state.TimelineState
+import nl.jovmit.friends.timeline.state.TimelineScreenState
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -46,7 +46,7 @@ class LoadTimelineTest {
 
     viewModel.timelineFor("tomId")
 
-    assertEquals(TimelineState.Posts(emptyList()), viewModel.timelineState.value)
+    assertEquals(TimelineScreenState(posts = emptyList()), viewModel.timelineScreenState.value)
   }
 
   @Test
@@ -60,7 +60,7 @@ class LoadTimelineTest {
 
     viewModel.timelineFor(tim.id)
 
-    assertEquals(TimelineState.Posts(timPosts), viewModel.timelineState.value)
+    assertEquals(TimelineScreenState(posts = timPosts), viewModel.timelineScreenState.value)
   }
 
   @Test
@@ -74,7 +74,7 @@ class LoadTimelineTest {
 
     viewModel.timelineFor(anna.id)
 
-    assertEquals(TimelineState.Posts(lucyPosts), viewModel.timelineState.value)
+    assertEquals(TimelineScreenState(posts = lucyPosts), viewModel.timelineScreenState.value)
   }
 
   @Test
@@ -88,6 +88,9 @@ class LoadTimelineTest {
 
     viewModel.timelineFor(sara.id)
 
-    assertEquals(TimelineState.Posts(lucyPosts + saraPosts), viewModel.timelineState.value)
+    assertEquals(
+      TimelineScreenState(posts = lucyPosts + saraPosts),
+      viewModel.timelineScreenState.value
+    )
   }
 }
