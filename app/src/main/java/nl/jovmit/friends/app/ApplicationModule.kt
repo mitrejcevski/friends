@@ -35,7 +35,11 @@ val applicationModule = module {
   }
 
   viewModel {
-    TimelineViewModel(timelineRepository = get(), dispatchers = get())
+    TimelineViewModel(
+      timelineRepository = get(),
+      savedStateHandle = get(),
+      dispatchers = get()
+    )
   }
 
   viewModel { CreatePostViewModel(postRepository = get(), dispatchers = get()) }

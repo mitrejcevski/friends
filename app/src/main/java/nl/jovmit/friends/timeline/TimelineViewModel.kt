@@ -16,10 +16,10 @@ import nl.jovmit.friends.timeline.state.TimelineState
 
 class TimelineViewModel(
   private val timelineRepository: TimelineRepository,
+  private val savedStateHandle: SavedStateHandle,
   private val dispatchers: CoroutineDispatchers
 ) : ViewModel() {
 
-  private val savedStateHandle = SavedStateHandle()
   val timelineScreenState: LiveData<TimelineScreenState> =
     savedStateHandle.getLiveData(SCREEN_STATE_KEY)
 

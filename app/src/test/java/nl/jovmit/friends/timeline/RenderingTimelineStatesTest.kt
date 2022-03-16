@@ -1,5 +1,6 @@
 package nl.jovmit.friends.timeline
 
+import androidx.lifecycle.SavedStateHandle
 import nl.jovmit.friends.InstantTaskExecutorExtension
 import nl.jovmit.friends.app.TestDispatchers
 import nl.jovmit.friends.domain.post.InMemoryPostCatalog
@@ -19,6 +20,7 @@ class RenderingTimelineStatesTest {
   )
   private val viewModel = TimelineViewModel(
     timelineRepository,
+    SavedStateHandle(),
     TestDispatchers()
   )
 

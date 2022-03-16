@@ -1,5 +1,6 @@
 package nl.jovmit.friends.timeline
 
+import androidx.lifecycle.SavedStateHandle
 import nl.jovmit.friends.InstantTaskExecutorExtension
 import nl.jovmit.friends.R
 import nl.jovmit.friends.app.TestDispatchers
@@ -21,6 +22,7 @@ class FailTimelineLoadingTest {
     val postCatalog = UnavailablePostCatalog()
     val viewModel = TimelineViewModel(
       TimelineRepository(userCatalog, postCatalog),
+      SavedStateHandle(),
       TestDispatchers()
     )
 
@@ -38,6 +40,7 @@ class FailTimelineLoadingTest {
     val postCatalog = OfflinePostCatalog()
     val viewModel = TimelineViewModel(
       TimelineRepository(userCatalog, postCatalog),
+      SavedStateHandle(),
       TestDispatchers()
     )
 
