@@ -20,7 +20,7 @@ class CreatePostViewModel(
 ) : ViewModel() {
 
   private val savedStateHandle = SavedStateHandle()
-  val postScreenState: LiveData<CreateNewPostScreenState> =
+  val screenState: LiveData<CreateNewPostScreenState> =
     savedStateHandle.getLiveData(SCREEN_STATE_KEY)
 
   fun updatePostText(postText: String) {

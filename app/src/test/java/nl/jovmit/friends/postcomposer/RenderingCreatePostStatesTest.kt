@@ -33,7 +33,7 @@ class RenderingCreatePostStatesTest {
   @Test
   fun uiStatesAreDeliveredInParticularOrder() {
     val deliveredStates = mutableListOf<CreateNewPostScreenState>()
-    viewModel.postScreenState.observeForever { deliveredStates.add(it) }
+    viewModel.screenState.observeForever { deliveredStates.add(it) }
 
     viewModel.createPost(text)
 

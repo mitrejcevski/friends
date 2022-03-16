@@ -35,7 +35,7 @@ class CreateAPostTest {
 
     viewModel.createPost(postText)
 
-    assertEquals(CreateNewPostScreenState(createdPostId = post.id), viewModel.postScreenState.value)
+    assertEquals(CreateNewPostScreenState(createdPostId = post.id), viewModel.screenState.value)
   }
 
   @Test
@@ -59,7 +59,7 @@ class CreateAPostTest {
 
     assertEquals(
       CreateNewPostScreenState(createdPostId = anotherPost.id),
-      viewModel.postScreenState.value
+      viewModel.screenState.value
     )
   }
 }

@@ -29,7 +29,7 @@ class FailedPostCreationTest {
 
     assertEquals(
       CreateNewPostScreenState(error = R.string.creatingPostError),
-      viewModel.postScreenState.value
+      viewModel.screenState.value
     )
   }
 
@@ -47,7 +47,7 @@ class FailedPostCreationTest {
 
     assertEquals(
       CreateNewPostScreenState(error = R.string.offlineError),
-      viewModel.postScreenState.value
+      viewModel.screenState.value
     )
   }
 }

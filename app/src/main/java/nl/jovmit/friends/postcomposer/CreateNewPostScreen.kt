@@ -28,16 +28,16 @@ import org.koin.androidx.compose.getViewModel
 fun CreateNewPostScreen(
   onPostCreated: () -> Unit
 ) {
-  val createPostViewModel = getViewModel<CreatePostViewModel>()
-  val createPostState = createPostViewModel.postScreenState.observeAsState().value ?: CreateNewPostScreenState()
+  val viewModel = getViewModel<CreatePostViewModel>()
+  val createPostState = viewModel.screenState.observeAsState().value ?: CreateNewPostScreenState()
 
   if (createPostState.createdPostId.isNotBlank()) {
     onPostCreated()
   }
   CreateNewPostScreenContent(
     screenState = createPostState,
-    onPostTextUpdated = createPostViewModel::updatePostText,
-    onSubmitPost = { createPostViewModel.createPost(it) }
+    onPostTextUpdated = viewModel::updatePostText,
+    onSubmitPost = { viewModel.createPost(it) }
   )
 }
 
