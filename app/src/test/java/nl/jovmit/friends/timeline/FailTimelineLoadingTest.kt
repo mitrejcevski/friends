@@ -1,12 +1,13 @@
 package nl.jovmit.friends.timeline
 
 import nl.jovmit.friends.InstantTaskExecutorExtension
+import nl.jovmit.friends.R
 import nl.jovmit.friends.app.TestDispatchers
 import nl.jovmit.friends.domain.post.OfflinePostCatalog
 import nl.jovmit.friends.domain.post.UnavailablePostCatalog
 import nl.jovmit.friends.domain.timeline.TimelineRepository
 import nl.jovmit.friends.domain.user.InMemoryUserCatalog
-import nl.jovmit.friends.timeline.state.TimelineState
+import nl.jovmit.friends.timeline.state.TimelineScreenState
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -25,7 +26,10 @@ class FailTimelineLoadingTest {
 
     viewModel.timelineFor(":irrelevant:")
 
-    assertEquals(TimelineState.BackendError, viewModel.timelineState.value)
+    assertEquals(
+      TimelineScreenState(error = R.string.fetchingTimelineError),
+      viewModel.timelineScreenState.value
+    )
   }
 
   @Test
@@ -39,6 +43,9 @@ class FailTimelineLoadingTest {
 
     viewModel.timelineFor(":irrelevant:")
 
-    assertEquals(TimelineState.OfflineError, viewModel.timelineState.value)
+    assertEquals(
+      TimelineScreenState(error = R.string.offlineError),
+      viewModel.timelineScreenState.value
+    )
   }
 }
