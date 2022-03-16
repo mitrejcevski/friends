@@ -15,7 +15,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import nl.jovmit.friends.R
-import nl.jovmit.friends.postcomposer.state.CreateNewPostScreenState
+import nl.jovmit.friends.postcomposer.state.CreateNewPostScreenStateOld
 import nl.jovmit.friends.postcomposer.state.CreatePostState
 import nl.jovmit.friends.ui.composables.BlockingLoading
 import nl.jovmit.friends.ui.composables.InfoMessage
@@ -28,7 +28,7 @@ fun CreateNewPostScreen(
 ) {
 
   val createPostViewModel = getViewModel<CreatePostViewModel>()
-  val screenState by remember { mutableStateOf(CreateNewPostScreenState()) }
+  val screenState by remember { mutableStateOf(CreateNewPostScreenStateOld()) }
   var postText by remember { mutableStateOf("") }
   val createPostState by createPostViewModel.postState.observeAsState()
 

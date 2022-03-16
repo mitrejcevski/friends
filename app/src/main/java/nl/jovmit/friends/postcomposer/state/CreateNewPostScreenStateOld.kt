@@ -5,7 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 
-class CreateNewPostScreenState {
+class CreateNewPostScreenStateOld {
 
   var isLoading by mutableStateOf(false)
   var currentMessage by mutableStateOf(0)
