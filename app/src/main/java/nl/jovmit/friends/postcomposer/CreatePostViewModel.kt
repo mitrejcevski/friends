@@ -1,7 +1,10 @@
 package nl.jovmit.friends.postcomposer
 
 import androidx.annotation.StringRes
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import nl.jovmit.friends.R
@@ -16,9 +19,6 @@ class CreatePostViewModel(
   private val dispatchers: CoroutineDispatchers
 ) : ViewModel() {
 
-  private val mutablePostState = MutableLiveData<CreatePostState>()
-  val postState: LiveData<CreatePostState> = mutablePostState
-
   private val savedStateHandle = SavedStateHandle()
   val postScreenState: LiveData<CreateNewPostScreenState> =
     savedStateHandle.getLiveData(SCREEN_STATE_KEY)
@@ -30,12 +30,10 @@ class CreatePostViewModel(
 
   fun createPost(postText: String) {
     viewModelScope.launch {
-      mutablePostState.value = CreatePostState.Loading
       setLoading()
       val result = withContext(dispatchers.background) {
         postRepository.createNewPost(postText)
       }
-      mutablePostState.value = result
       updateScreenStateFor(result)
     }
   }
