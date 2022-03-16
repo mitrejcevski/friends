@@ -1,8 +1,10 @@
 package nl.jovmit.friends.postcomposer
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import nl.jovmit.friends.R
 import nl.jovmit.friends.app.CoroutineDispatchers
 import nl.jovmit.friends.domain.post.Post
 import nl.jovmit.friends.domain.post.PostRepository
@@ -35,12 +37,19 @@ class CreatePostViewModel(
   private fun updateScreenStateFor(createPostState: CreatePostState) {
     when (createPostState) {
       is CreatePostState.Created -> setPostCreated(createPostState.post)
+      is CreatePostState.BackendError -> setError(R.string.creatingPostError)
+      is CreatePostState.Offline -> setError(R.string.offlineError)
     }
   }
 
   private fun setPostCreated(post: Post) {
     val currentState = currentScreenState()
     updateScreenState(currentState.copy(createdPostId = post.id))
+  }
+
+  private fun setError(@StringRes errorResource: Int) {
+    val currentState = currentScreenState()
+    updateScreenState(currentState.copy(error = errorResource))
   }
 
   private fun currentScreenState(): CreateNewPostScreenState {
