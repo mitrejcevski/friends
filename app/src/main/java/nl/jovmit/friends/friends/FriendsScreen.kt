@@ -45,7 +45,7 @@ fun FriendsScreen(
 }
 
 @Composable
-fun FriendsScreenContent(
+private fun FriendsScreenContent(
   modifier: Modifier = Modifier,
   screenState: FriendsScreenState,
   onRefresh: () -> Unit,
