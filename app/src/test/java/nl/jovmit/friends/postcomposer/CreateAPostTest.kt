@@ -8,7 +8,7 @@ import nl.jovmit.friends.domain.post.PostRepository
 import nl.jovmit.friends.domain.user.InMemoryUserDataStore
 import nl.jovmit.friends.infrastructure.ControllableClock
 import nl.jovmit.friends.infrastructure.ControllableIdGenerator
-import nl.jovmit.friends.postcomposer.state.CreatePostState
+import nl.jovmit.friends.postcomposer.state.CreateNewPostScreenState
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -35,7 +35,7 @@ class CreateAPostTest {
 
     viewModel.createPost(postText)
 
-    assertEquals(CreatePostState.Created(post), viewModel.postState.value)
+    assertEquals(CreateNewPostScreenState(createdPostId = post.id), viewModel.postScreenState.value)
   }
 
   @Test
@@ -57,6 +57,9 @@ class CreateAPostTest {
 
     viewModel.createPost(postText)
 
-    assertEquals(CreatePostState.Created(anotherPost), viewModel.postState.value)
+    assertEquals(
+      CreateNewPostScreenState(createdPostId = anotherPost.id),
+      viewModel.postScreenState.value
+    )
   }
 }
