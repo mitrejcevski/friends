@@ -30,7 +30,7 @@ class FailTimelineLoadingTest {
 
     assertEquals(
       TimelineScreenState(error = R.string.fetchingTimelineError),
-      viewModel.timelineScreenState.value
+      viewModel.screenState.value
     )
   }
 
@@ -48,7 +48,7 @@ class FailTimelineLoadingTest {
 
     assertEquals(
       TimelineScreenState(error = R.string.offlineError),
-      viewModel.timelineScreenState.value
+      viewModel.screenState.value
     )
   }
 }

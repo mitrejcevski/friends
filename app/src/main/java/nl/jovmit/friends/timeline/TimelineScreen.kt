@@ -37,7 +37,7 @@ fun TimelineScreen(
 
   val timelineViewModel = getViewModel<TimelineViewModel>()
   var loadedUserId by remember { mutableStateOf("") }
-  val screenState = timelineViewModel.timelineScreenState.observeAsState().value ?: TimelineScreenState()
+  val screenState = timelineViewModel.screenState.observeAsState().value ?: TimelineScreenState()
 
   if (loadedUserId != userId) {
     loadedUserId = userId

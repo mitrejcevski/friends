@@ -27,7 +27,7 @@ class RenderingTimelineStatesTest {
   @Test
   fun timelineStatesDeliveredToAnObserverInParticularOrder() {
     val renderedStates = mutableListOf<TimelineScreenState>()
-    viewModel.timelineScreenState.observeForever { renderedStates.add(it) }
+    viewModel.screenState.observeForever { renderedStates.add(it) }
 
     viewModel.timelineFor(":irrelevant:")
 

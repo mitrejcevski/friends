@@ -20,7 +20,7 @@ class TimelineViewModel(
   private val dispatchers: CoroutineDispatchers
 ) : ViewModel() {
 
-  val timelineScreenState: LiveData<TimelineScreenState> =
+  val screenState: LiveData<TimelineScreenState> =
     savedStateHandle.getLiveData(SCREEN_STATE_KEY)
 
   fun timelineFor(userId: String) {

@@ -48,7 +48,7 @@ class LoadTimelineTest {
 
     viewModel.timelineFor("tomId")
 
-    assertEquals(TimelineScreenState(posts = emptyList()), viewModel.timelineScreenState.value)
+    assertEquals(TimelineScreenState(posts = emptyList()), viewModel.screenState.value)
   }
 
   @Test
@@ -63,7 +63,7 @@ class LoadTimelineTest {
 
     viewModel.timelineFor(tim.id)
 
-    assertEquals(TimelineScreenState(posts = timPosts), viewModel.timelineScreenState.value)
+    assertEquals(TimelineScreenState(posts = timPosts), viewModel.screenState.value)
   }
 
   @Test
@@ -78,7 +78,7 @@ class LoadTimelineTest {
 
     viewModel.timelineFor(anna.id)
 
-    assertEquals(TimelineScreenState(posts = lucyPosts), viewModel.timelineScreenState.value)
+    assertEquals(TimelineScreenState(posts = lucyPosts), viewModel.screenState.value)
   }
 
   @Test
@@ -93,9 +93,6 @@ class LoadTimelineTest {
 
     viewModel.timelineFor(sara.id)
 
-    assertEquals(
-      TimelineScreenState(posts = lucyPosts + saraPosts),
-      viewModel.timelineScreenState.value
-    )
+    assertEquals(TimelineScreenState(posts = lucyPosts + saraPosts), viewModel.screenState.value)
   }
 }
