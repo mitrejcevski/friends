@@ -5,7 +5,7 @@ import nl.jovmit.friends.app.TestDispatchers
 import nl.jovmit.friends.domain.post.InMemoryPostCatalog
 import nl.jovmit.friends.domain.timeline.TimelineRepository
 import nl.jovmit.friends.domain.user.InMemoryUserCatalog
-import nl.jovmit.friends.timeline.state.TimelineState
+import nl.jovmit.friends.timeline.state.TimelineScreenState
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -24,13 +24,13 @@ class RenderingTimelineStatesTest {
 
   @Test
   fun timelineStatesDeliveredToAnObserverInParticularOrder() {
-    val renderedStates = mutableListOf<TimelineState>()
-    viewModel.timelineState.observeForever { renderedStates.add(it) }
+    val renderedStates = mutableListOf<TimelineScreenState>()
+    viewModel.timelineScreenState.observeForever { renderedStates.add(it) }
 
     viewModel.timelineFor(":irrelevant:")
 
     assertEquals(
-      listOf(TimelineState.Loading, TimelineState.Posts(emptyList())),
+      listOf(TimelineScreenState(isLoading = true), TimelineScreenState(posts = emptyList())),
       renderedStates
     )
   }

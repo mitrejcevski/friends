@@ -26,6 +26,7 @@ class TimelineViewModel(
   fun timelineFor(userId: String) {
     viewModelScope.launch {
       mutableTimelineState.value = TimelineState.Loading
+      setLoading()
       val result = withContext(dispatchers.background) {
         timelineRepository.getTimelineFor(userId)
       }
@@ -42,14 +43,19 @@ class TimelineViewModel(
     }
   }
 
-  private fun setError(@StringRes errorResource: Int) {
+  private fun setLoading() {
     val screenState = currentScreenState()
-    updateScreenState(screenState.copy(error = errorResource))
+    updateScreenState(screenState.copy(isLoading = true))
   }
 
   private fun setPosts(posts: List<Post>) {
     val screenState = currentScreenState()
-    updateScreenState(screenState.copy(posts = posts))
+    updateScreenState(screenState.copy(isLoading = false, posts = posts))
+  }
+
+  private fun setError(@StringRes errorResource: Int) {
+    val screenState = currentScreenState()
+    updateScreenState(screenState.copy(isLoading = false, error = errorResource))
   }
 
   private fun currentScreenState(): TimelineScreenState {
