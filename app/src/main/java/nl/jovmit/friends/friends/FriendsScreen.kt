@@ -9,7 +9,7 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,9 +33,12 @@ fun FriendsScreen(
   userId: String
 ) {
   val friendsViewModel = getViewModel<FriendsViewModel>()
+  var loadedUserId by remember { mutableStateOf("") }
   val screenState = friendsViewModel.screenState.observeAsState().value ?: FriendsScreenState()
-  if (friendsViewModel.screenState.value == null) {
-    friendsViewModel.loadFriends(userId)
+
+  if (loadedUserId != userId) {
+    loadedUserId = userId
+    friendsViewModel.loadFriends(loadedUserId)
   }
   FriendsScreenContent(
     screenState = screenState,
