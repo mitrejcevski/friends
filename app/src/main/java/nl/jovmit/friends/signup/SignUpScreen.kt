@@ -1,19 +1,24 @@
 package nl.jovmit.friends.signup
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import nl.jovmit.friends.R
 import nl.jovmit.friends.signup.state.SignUpScreenState
-import nl.jovmit.friends.signup.state.SignUpState
 import nl.jovmit.friends.ui.composables.BlockingLoading
 import nl.jovmit.friends.ui.composables.InfoMessage
 import nl.jovmit.friends.ui.composables.ScreenTitle
@@ -23,26 +28,32 @@ import org.koin.androidx.compose.getViewModel
 fun SignUpScreen(
   onSignedUp: (String) -> Unit
 ) {
-
   val signUpViewModel = getViewModel<SignUpViewModel>()
-  val screenState by remember { mutableStateOf(SignUpScreenState()) }
-  val signUpState by signUpViewModel.signUpState.observeAsState()
-  if (screenState.didUserSignUp()) { return }
+  var signedUpUser by remember { mutableStateOf("") }
+  val signUpScreenState = signUpViewModel.screenState.observeAsState().value ?: SignUpScreenState()
 
-  when (signUpState) {
-    is SignUpState.Loading -> screenState.toggleLoading()
-    is SignUpState.SignedUp -> {
-      val signedUpUserId = (signUpState as SignUpState.SignedUp).user.id
-      screenState.setSignedUpUser(signedUpUserId)
-      onSignedUp(signedUpUserId)
-    }
-    is SignUpState.BadEmail -> screenState.showBadEmail()
-    is SignUpState.BadPassword -> screenState.showBadPassword()
-    is SignUpState.DuplicateAccount -> screenState.toggleInfoMessage(R.string.duplicateAccountError)
-    is SignUpState.BackendError -> screenState.toggleInfoMessage(R.string.createAccountError)
-    is SignUpState.Offline -> screenState.toggleInfoMessage(R.string.offlineError)
+  if (signUpScreenState.signedUpUserId != signedUpUser) {
+    signedUpUser = signUpScreenState.signedUpUserId
+    onSignedUp(signedUpUser)
+  } else {
+    SignUpScreenContent(
+      screenState = signUpScreenState,
+      onEmailChange = signUpViewModel::updateEmail,
+      onPasswordChange = signUpViewModel::updatePassword,
+      onAboutChange = signUpViewModel::updateAbout,
+      onSignUp = signUpViewModel::createAccount
+    )
   }
+}
 
+@Composable
+private fun SignUpScreenContent(
+  screenState: SignUpScreenState,
+  onEmailChange: (String) -> Unit,
+  onPasswordChange: (String) -> Unit,
+  onAboutChange: (String) -> Unit,
+  onSignUp: (email: String, password: String, about: String) -> Unit
+) {
   Box(modifier = Modifier.fillMaxSize()) {
     Column(
       modifier = Modifier
@@ -51,34 +62,36 @@ fun SignUpScreen(
     ) {
       ScreenTitle(R.string.createAnAccount)
       Spacer(modifier = Modifier.height(16.dp))
+      val passwordFocusRequester = FocusRequester()
+      val aboutFocusRequester = FocusRequester()
       EmailField(
         value = screenState.email,
-        isError = screenState.showBadEmail,
-        onValueChange = { screenState.email = it }
+        isError = screenState.isBadEmail,
+        onValueChange = { onEmailChange(it) },
+        onNextClicked = { passwordFocusRequester.requestFocus() }
       )
       PasswordField(
+        modifier = Modifier.focusRequester(passwordFocusRequester),
         value = screenState.password,
-        isError = screenState.showBadPassword,
-        onValueChange = { screenState.password = it }
+        isError = screenState.isBadPassword,
+        onValueChange = { onPasswordChange(it) },
+        onNextClicked = { aboutFocusRequester.requestFocus() }
       )
       AboutField(
+        modifier = Modifier.focusRequester(aboutFocusRequester),
         value = screenState.about,
-        onValueChange = { screenState.about = it }
+        onValueChange = { onAboutChange(it) },
+        onDoneClicked = { with(screenState) { onSignUp(email, password, about) } }
       )
       Spacer(modifier = Modifier.height(8.dp))
       Button(
         modifier = Modifier.fillMaxWidth(),
-        onClick = {
-          screenState.resetUiState()
-          with(screenState) {
-            signUpViewModel.createAccount(email, password, about)
-          }
-        }
+        onClick = { with(screenState) { onSignUp(email, password, about) } }
       ) {
         Text(text = stringResource(id = R.string.signUp))
       }
     }
-    InfoMessage(stringResource = screenState.currentInfoMessage)
+    InfoMessage(stringResource = screenState.error)
     BlockingLoading(screenState.isLoading)
   }
 }
@@ -87,7 +100,8 @@ fun SignUpScreen(
 private fun EmailField(
   value: String,
   isError: Boolean,
-  onValueChange: (String) -> Unit
+  onValueChange: (String) -> Unit,
+  onNextClicked: () -> Unit
 ) {
   OutlinedTextField(
     modifier = Modifier
@@ -99,15 +113,22 @@ private fun EmailField(
       val resource = if (isError) R.string.badEmailError else R.string.email
       Text(text = stringResource(id = resource))
     },
-    onValueChange = onValueChange
+    onValueChange = onValueChange,
+    keyboardOptions = KeyboardOptions(
+      keyboardType = KeyboardType.Email,
+      imeAction = ImeAction.Next
+    ),
+    keyboardActions = KeyboardActions(onNext = { onNextClicked() })
   )
 }
 
 @Composable
 private fun PasswordField(
+  modifier: Modifier = Modifier,
   value: String,
   isError: Boolean,
-  onValueChange: (String) -> Unit
+  onValueChange: (String) -> Unit,
+  onNextClicked: () -> Unit
 ) {
   var isVisible by remember { mutableStateOf(false) }
   val visualTransformation = if (isVisible) {
@@ -116,7 +137,7 @@ private fun PasswordField(
     PasswordVisualTransformation()
   }
   OutlinedTextField(
-    modifier = Modifier
+    modifier = modifier
       .fillMaxWidth()
       .testTag(stringResource(id = R.string.password)),
     value = value,
@@ -131,7 +152,12 @@ private fun PasswordField(
       val resource = if (isError) R.string.badPasswordError else R.string.password
       Text(text = stringResource(id = resource))
     },
-    onValueChange = onValueChange
+    onValueChange = onValueChange,
+    keyboardOptions = KeyboardOptions(
+      imeAction = ImeAction.Next,
+      keyboardType = KeyboardType.Password
+    ),
+    keyboardActions = KeyboardActions(onNext = { onNextClicked() })
   )
 }
 
@@ -153,15 +179,21 @@ private fun VisibilityToggle(
 
 @Composable
 fun AboutField(
+  modifier: Modifier = Modifier,
   value: String,
-  onValueChange: (String) -> Unit
+  onValueChange: (String) -> Unit,
+  onDoneClicked: () -> Unit
 ) {
   OutlinedTextField(
-    modifier = Modifier.fillMaxWidth(),
+    modifier = modifier.fillMaxWidth(),
     value = value,
     label = {
       Text(text = stringResource(id = R.string.about))
     },
-    onValueChange = onValueChange
+    onValueChange = onValueChange,
+    keyboardOptions = KeyboardOptions(
+      imeAction = ImeAction.Done
+    ),
+    keyboardActions = KeyboardActions(onDone = { onDoneClicked() })
   )
 }

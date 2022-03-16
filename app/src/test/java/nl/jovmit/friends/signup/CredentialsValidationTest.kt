@@ -1,5 +1,6 @@
 package nl.jovmit.friends.signup
 
+import androidx.lifecycle.SavedStateHandle
 import nl.jovmit.friends.InstantTaskExecutorExtension
 import nl.jovmit.friends.app.TestDispatchers
 import nl.jovmit.friends.domain.user.InMemoryUserCatalog
@@ -7,7 +8,7 @@ import nl.jovmit.friends.domain.user.InMemoryUserDataStore
 import nl.jovmit.friends.domain.user.UserRepository
 import nl.jovmit.friends.domain.validation.CredentialsValidationResult
 import nl.jovmit.friends.domain.validation.RegexCredentialsValidator
-import nl.jovmit.friends.signup.state.SignUpState
+import nl.jovmit.friends.signup.state.SignUpScreenState
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -30,12 +31,13 @@ class CredentialsValidationTest {
     val viewModel = SignUpViewModel(
       RegexCredentialsValidator(),
       UserRepository(InMemoryUserCatalog(), InMemoryUserDataStore()),
+      SavedStateHandle(),
       TestDispatchers()
     )
 
     viewModel.createAccount(email, ":password:", ":about:")
 
-    assertEquals(SignUpState.BadEmail, viewModel.signUpState.value)
+    assertEquals(SignUpScreenState(isBadEmail = true), viewModel.screenState.value)
   }
 
   @ParameterizedTest
@@ -52,12 +54,13 @@ class CredentialsValidationTest {
     val viewModel = SignUpViewModel(
       RegexCredentialsValidator(),
       UserRepository(InMemoryUserCatalog(), InMemoryUserDataStore()),
+      SavedStateHandle(),
       TestDispatchers()
     )
 
     viewModel.createAccount("anna@friends.com", password, ":about:")
 
-    assertEquals(SignUpState.BadPassword, viewModel.signUpState.value)
+    assertEquals(SignUpScreenState(isBadPassword = true), viewModel.screenState.value)
   }
 
   @Test
