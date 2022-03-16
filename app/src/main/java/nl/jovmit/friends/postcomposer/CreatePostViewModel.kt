@@ -16,10 +16,10 @@ import nl.jovmit.friends.postcomposer.state.CreatePostState
 
 class CreatePostViewModel(
   private val postRepository: PostRepository,
+  private val savedStateHandle: SavedStateHandle,
   private val dispatchers: CoroutineDispatchers
 ) : ViewModel() {
 
-  private val savedStateHandle = SavedStateHandle()
   val screenState: LiveData<CreateNewPostScreenState> =
     savedStateHandle.getLiveData(SCREEN_STATE_KEY)
 

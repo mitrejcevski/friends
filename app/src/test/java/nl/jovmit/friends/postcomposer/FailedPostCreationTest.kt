@@ -1,5 +1,6 @@
 package nl.jovmit.friends.postcomposer
 
+import androidx.lifecycle.SavedStateHandle
 import nl.jovmit.friends.InstantTaskExecutorExtension
 import nl.jovmit.friends.R
 import nl.jovmit.friends.app.TestDispatchers
@@ -22,6 +23,7 @@ class FailedPostCreationTest {
         InMemoryUserDataStore("userId"),
         UnavailablePostCatalog()
       ),
+      SavedStateHandle(),
       TestDispatchers()
     )
 
@@ -40,6 +42,7 @@ class FailedPostCreationTest {
         InMemoryUserDataStore("userId"),
         OfflinePostCatalog()
       ),
+      SavedStateHandle(),
       TestDispatchers()
     )
 

@@ -1,5 +1,6 @@
 package nl.jovmit.friends.postcomposer
 
+import androidx.lifecycle.SavedStateHandle
 import nl.jovmit.friends.InstantTaskExecutorExtension
 import nl.jovmit.friends.app.TestDispatchers
 import nl.jovmit.friends.domain.post.InMemoryPostCatalog
@@ -30,6 +31,7 @@ class CreateAPostTest {
           clock = clock
         )
       ),
+      SavedStateHandle(),
       TestDispatchers()
     )
 
@@ -52,6 +54,7 @@ class CreateAPostTest {
           clock = clock
         )
       ),
+      SavedStateHandle(),
       TestDispatchers()
     )
 

@@ -1,5 +1,6 @@
 package nl.jovmit.friends.postcomposer
 
+import androidx.lifecycle.SavedStateHandle
 import nl.jovmit.friends.InstantTaskExecutorExtension
 import nl.jovmit.friends.app.TestDispatchers
 import nl.jovmit.friends.domain.post.InMemoryPostCatalog
@@ -27,8 +28,9 @@ class RenderingCreatePostStatesTest {
   private val postCatalog = InMemoryPostCatalog(idGenerator = idGenerator, clock = clock)
   private val userData = InMemoryUserDataStore(loggedInUserId)
   private val postRepository = PostRepository(userData, postCatalog)
+  private val savedStateHandle = SavedStateHandle()
   private val dispatchers = TestDispatchers()
-  private val viewModel = CreatePostViewModel(postRepository, dispatchers)
+  private val viewModel = CreatePostViewModel(postRepository, savedStateHandle, dispatchers)
 
   @Test
   fun uiStatesAreDeliveredInParticularOrder() {
