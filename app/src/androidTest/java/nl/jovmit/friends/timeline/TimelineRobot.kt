@@ -72,7 +72,7 @@ class TimelineVerificationRobot(
 
   fun loadingIndicatorIsDisplayed() {
     val loading = rule.activity.getString(R.string.loading)
-    rule.onNodeWithTag(loading)
+    rule.onNodeWithContentDescription(loading)
       .assertIsDisplayed()
   }
 
