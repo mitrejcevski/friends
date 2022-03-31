@@ -85,7 +85,9 @@ private fun FriendsList(
 ) {
   val loadingContentDescription = stringResource(id = R.string.loading)
   SwipeRefresh(
-    modifier = modifier.semantics { contentDescription = loadingContentDescription },
+    modifier = modifier
+      .fillMaxSize()
+      .semantics { contentDescription = loadingContentDescription },
     state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
     onRefresh = { onRefresh() }
   ) {
