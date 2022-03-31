@@ -12,6 +12,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,16 +41,13 @@ fun TimelineScreen(
 ) {
 
   val timelineViewModel = getViewModel<TimelineViewModel>()
-  var loadedUserId by remember { mutableStateOf("") }
   val screenState = timelineViewModel.screenState.observeAsState().value ?: TimelineScreenState()
 
-  if (loadedUserId != userId) {
-    loadedUserId = userId
-    timelineViewModel.timelineFor(loadedUserId)
-  }
+  LaunchedEffect(key1 = userId, block = { timelineViewModel.timelineFor(userId) })
   TimelineScreenContent(
     screenState = screenState,
-    onCreateNewPost = { onCreateNewPost() }
+    onCreateNewPost = { onCreateNewPost() },
+    onRefresh = { timelineViewModel.timelineFor(userId) }
   )
 }
 
