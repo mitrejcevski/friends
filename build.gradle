@@ -1,7 +1,7 @@
 buildscript {
     ext {
-        kotlinVersion = '1.6.10'
-        composeVersion = '1.1.1'
+        kotlinVersion = '1.7.10'
+        composeVersion = '1.2.1'
         koinVersion = '3.1.4'
         jUnitVersion = '5.8.2'
     }

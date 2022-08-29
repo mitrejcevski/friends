@@ -64,6 +64,7 @@ class SignUpViewModel(
       is SignUpState.BackendError -> setError(R.string.createAccountError)
       is SignUpState.Offline -> setError(R.string.offlineError)
       is SignUpState.DuplicateAccount -> setError(R.string.duplicateAccountError)
+      else -> {}
     }
   }
 

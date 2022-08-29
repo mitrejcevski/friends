@@ -25,7 +25,7 @@ class TimelineViewModel(
 
   fun timelineFor(userId: String) {
     viewModelScope.launch {
-      setLoading()
+      updateScreenStateFor(TimelineState.Loading)
       val result = withContext(dispatchers.background) {
         timelineRepository.getTimelineFor(userId)
       }
@@ -35,6 +35,7 @@ class TimelineViewModel(
 
   private fun updateScreenStateFor(timelineState: TimelineState) {
     when (timelineState) {
+      is TimelineState.Loading -> setLoading()
       is TimelineState.Posts -> setPosts(timelineState.posts)
       is TimelineState.BackendError -> setError(R.string.fetchingTimelineError)
       is TimelineState.OfflineError -> setError(R.string.offlineError)
