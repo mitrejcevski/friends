@@ -21,9 +21,7 @@
 - see posts from us and from friends
 - post stuff (text)
 
-### Folks
-- find people
-- follow people
-
 ### Friends
 - see friends
+- find people
+- follow/unfollow people
