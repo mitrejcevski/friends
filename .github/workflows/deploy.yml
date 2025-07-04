@@ -127,12 +127,12 @@ jobs:
       - name: Setup authorization with Google Play Store
         run: echo '${{ secrets.GOOGLE_SERVICES_API }}' > service_account.json
 
-      - name: Deploy to alpha
+      - name: Deploy to Internal Track
         uses: r0adkll/upload-google-play@v1.1.3
         with:
           serviceAccountJson: service_account.json
           packageName: nl.jovmit.friends
           releaseFiles: app/build/outputs/bundle/release/app-release.aab
-          track: alpha
+          track: internal
           status: 'completed'
           whatsNewDirectory: whatsNewDirectory/
