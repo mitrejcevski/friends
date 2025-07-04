@@ -11,15 +11,7 @@ local.properties
 .gradle/
 
 # Android Studio
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/misc.xml
-/.idea/assetWizardSettings.xml
-/.idea/jarRepositories.xml
-/.idea/deploymentTargetDropDown.xml
+/.idea
 *.iml
 
 # Update localization script needs node modules
