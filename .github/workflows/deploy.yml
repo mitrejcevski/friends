@@ -89,7 +89,7 @@ jobs:
         run: gcloud info
 
       - name: Run instrumentation tests in Firebase Test Lab
-        run: gcloud firebase test android run --type instrumentation --app app-debug/app-debug.apk --test app-debug-androidTest/app-debug-androidTest.apk --device model=blueline,version=28
+        run: gcloud firebase test android run --type instrumentation --app app-debug/app-debug.apk --test app-debug-androidTest/app-debug-androidTest.apk --device model=shiba,version=35
 
   distribute:
     name: Distribute app bundle to Play Store
