@@ -1,28 +1,10 @@
-# Generated files
-build/
-*.apk
-*.aab
-output.json
-
-# Local configuration file (sdk path, etc)
-local.properties
-
-# Gradle generated files
-.gradle/
-
-# Android Studio
-/.idea
 *.iml
-
-# Update localization script needs node modules
-node_modules/
-
-# OS-specific files
+.gradle
+/local.properties
+.idea
 .DS_Store
-
-# Android Studio captures folder. This is where profiling captures are saved.
-captures/
-
-# Misc
+/build
+/captures
 .externalNativeBuild
 .cxx
+local.properties
