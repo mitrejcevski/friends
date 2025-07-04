@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace 'nl.jovmit.friends'
-    compileSdk 34
+    compileSdk 36
 
     defaultConfig {
         applicationId "nl.jovmit.friends"
         minSdkVersion 24
-        targetSdkVersion 34
+        targetSdkVersion 36
         versionCode 1
         versionName "1.0"
 
