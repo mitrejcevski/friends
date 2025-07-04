@@ -83,7 +83,7 @@ jobs:
           credentials_json: ${{ secrets.FRIENDS_FIREBASE_TEST_LAB_AUTH }}
 
       - name: Set up Google Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
+        uses: google-github-actions/setup-gcloud@v1
 
       - name: Use gcloud CLI
         run: gcloud info
