@@ -34,4 +34,6 @@ android {
 
 dependencies {
   implementation(projects.app)
+  api(libs.bundles.unit.testing)
+  api(libs.bundles.ui.testing)
 }

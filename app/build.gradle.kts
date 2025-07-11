@@ -59,36 +59,20 @@ android {
         resources {
             excludes += "META-INF/AL2.0"
             excludes += "META-INF/LGPL2.1"
+            excludes += "META-INF/LICENSE.md"
+            excludes += "META-INF/LICENSE-notice.md"
         }
     }
 }
 
 dependencies {
-    val composeVersion = "1.5.0"
-    val koinVersion = "3.1.4"
-    val jUnitVersion = "5.9.2"
-
-    implementation("androidx.core:core-ktx:1.10.1")
-    implementation("com.google.android.material:material:1.9.0")
-    implementation("androidx.compose.ui:ui:$composeVersion")
-    implementation("androidx.compose.material:material:$composeVersion")
-    implementation("androidx.compose.ui:ui-tooling:$composeVersion")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
-    implementation("androidx.activity:activity-compose:1.7.2")
-    implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
-    implementation("androidx.navigation:navigation-compose:2.7.0")
-    implementation("io.insert-koin:koin-android:$koinVersion")
-    implementation("io.insert-koin:koin-androidx-compose:$koinVersion")
-    implementation("com.google.accompanist:accompanist-swiperefresh:0.24.1-alpha")
+    implementation(libs.bundles.androidx)
+    implementation(libs.bundles.compose)
+    implementation(libs.bundles.koin)
 
     androidTestImplementation(projects.testutils)
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
-    androidTestImplementation("androidx.test.ext:junit-ktx:1.1.5")
 
     testImplementation(projects.testutils)
-    testImplementation("org.junit.jupiter:junit-jupiter-api:$jUnitVersion")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:$jUnitVersion")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
 
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$jUnitVersion")
+    testRuntimeOnly(libs.jupiter.engine)
 }
