@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 rootProject.name = "Friends"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
+include(":testutils")

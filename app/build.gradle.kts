@@ -55,16 +55,6 @@ android {
         }
     }
 
-    sourceSets {
-        val sharedTestDirectory = "src/sharedTest/java"
-        getByName("test") {
-            java.srcDir(sharedTestDirectory)
-        }
-        getByName("androidTest") {
-            java.srcDir(sharedTestDirectory)
-        }
-    }
-
     packaging {
         resources {
             excludes += "META-INF/AL2.0"
@@ -91,9 +81,11 @@ dependencies {
     implementation("io.insert-koin:koin-androidx-compose:$koinVersion")
     implementation("com.google.accompanist:accompanist-swiperefresh:0.24.1-alpha")
 
+    androidTestImplementation(projects.testutils)
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
     androidTestImplementation("androidx.test.ext:junit-ktx:1.1.5")
 
+    testImplementation(projects.testutils)
     testImplementation("org.junit.jupiter:junit-jupiter-api:$jUnitVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$jUnitVersion")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
