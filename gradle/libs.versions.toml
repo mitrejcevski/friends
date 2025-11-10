@@ -4,7 +4,7 @@ targetSdkVersion = "36"
 javaVersion = "17"
 gradlePluginVersion = "8.13.0"
 kotlinVersion = "2.2.21"
-composeVersion = "1.5.0"
+composeVersion = "1.9.4"
 coroutinesVersion = "1.6.1"
 koinVersion = "3.1.4"
 jUnitVersion = "5.9.2"
@@ -15,6 +15,7 @@ androidMaterialVersion = "1.9.0"
 composeNavigationVersion = "2.7.0"
 swipeRefreshVersion = "0.24.1-alpha"
 junitExtVersion = "1.1.5"
+composeMaterialIconsExtVersion = "1.7.8"
 
 
 [libraries]
@@ -29,6 +30,7 @@ compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = 
 compose-livedata = { module = "androidx.compose.runtime:runtime-livedata", version.ref = "composeVersion" }
 compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "composeNavigationVersion" }
 swipe-refresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "swipeRefreshVersion" }
+compose-material-icons-ext={ module=" androidx.compose.material:material-icons-extended", version.ref="composeMaterialIconsExtVersion"}
 
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinVersion" }
 koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koinVersion" }
@@ -43,7 +45,7 @@ coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", ve
 
 [bundles]
 androidx = ["androidx-core-ktx", "androidx-lifecycle", "androidx-activity", "android-material"]
-compose = ["compose-ui", "compose-material", "compose-ui-tooling", "compose-livedata", "compose-navigation", "swipe-refresh"]
+compose = ["compose-ui", "compose-material","compose-material-icons-ext", "compose-ui-tooling", "compose-livedata", "compose-navigation", "swipe-refresh"]
 koin = ["koin-android", "koin-compose"]
 unit-testing = ["jupiter-api", "jupiter-params", "coroutines-test"]
 ui-testing = ["ui-test-junit4", "junit-ext"]
