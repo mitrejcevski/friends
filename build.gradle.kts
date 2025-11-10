@@ -3,4 +3,5 @@ plugins {
   alias(libs.plugins.android.library) apply false
   alias(libs.plugins.kotlin.android) apply false
   alias(libs.plugins.parcelable) apply false
+  alias(libs.plugins.compose.plugin) apply false
 }

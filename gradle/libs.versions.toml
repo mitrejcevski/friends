@@ -3,7 +3,7 @@ minSdkVersion = "24"
 targetSdkVersion = "36"
 javaVersion = "17"
 gradlePluginVersion = "8.13.0"
-kotlinVersion = "1.9.0"
+kotlinVersion = "2.2.21"
 composeVersion = "1.5.0"
 coroutinesVersion = "1.6.1"
 koinVersion = "3.1.4"
@@ -53,3 +53,4 @@ android-application = { id = "com.android.application", version.ref = "gradlePlu
 android-library = { id = "com.android.library", version.ref = "gradlePluginVersion" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinVersion" }
 parcelable = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlinVersion" }
+compose-plugin = {id="org.jetbrains.kotlin.plugin.compose", version.ref="kotlinVersion"}
