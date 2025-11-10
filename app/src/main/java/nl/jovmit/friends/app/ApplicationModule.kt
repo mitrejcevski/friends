@@ -11,7 +11,7 @@ import nl.jovmit.friends.friends.FriendsViewModel
 import nl.jovmit.friends.postcomposer.CreatePostViewModel
 import nl.jovmit.friends.signup.SignUpViewModel
 import nl.jovmit.friends.timeline.TimelineViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val applicationModule = module {
