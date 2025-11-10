@@ -34,16 +34,14 @@ android {
         targetCompatibility = JavaVersion.toVersion(javaVersion)
     }
 
-    kotlinOptions {
-        jvmTarget = libs.versions.javaVersion.get()
+    kotlin {
+        compileOptions {
+            jvmToolchain(libs.versions.javaVersion.get().toInt())
+        }
     }
 
     buildFeatures {
         compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composeVersion.get()
     }
 
     testOptions.unitTests {
