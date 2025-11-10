@@ -6,9 +6,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
@@ -20,8 +24,6 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import nl.jovmit.friends.R
 import nl.jovmit.friends.domain.user.Friend
 import nl.jovmit.friends.friends.state.FriendsScreenState
@@ -71,6 +73,7 @@ private fun FriendsScreenContent(
   }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun FriendsList(
   modifier: Modifier = Modifier,
@@ -81,12 +84,14 @@ private fun FriendsList(
   toggleFollowingFor: (String) -> Unit
 ) {
   val loadingContentDescription = stringResource(id = R.string.loading)
-  SwipeRefresh(
+  val state = rememberPullRefreshState(refreshing = isRefreshing, onRefresh = { onRefresh() })
+
+  Box(
     modifier = modifier
       .fillMaxSize()
-      .semantics { contentDescription = loadingContentDescription },
-    state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
-    onRefresh = { onRefresh() }
+      .semantics { contentDescription = loadingContentDescription }
+      .pullRefresh(state)
+
   ) {
     if (friends.isEmpty()) {
       Text(
@@ -106,6 +111,7 @@ private fun FriendsList(
         }
       }
     }
+    PullRefreshIndicator(isRefreshing, state, Modifier.align(Alignment.TopCenter))
   }
 }
 
