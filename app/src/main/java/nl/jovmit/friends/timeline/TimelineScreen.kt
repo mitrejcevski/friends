@@ -32,7 +32,7 @@ import nl.jovmit.friends.timeline.state.TimelineScreenState
 import nl.jovmit.friends.ui.composables.InfoMessage
 import nl.jovmit.friends.ui.composables.ScreenTitle
 import nl.jovmit.friends.ui.extensions.toDateTime
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun TimelineScreen(
@@ -40,7 +40,7 @@ fun TimelineScreen(
   onCreateNewPost: () -> Unit
 ) {
 
-  val timelineViewModel = getViewModel<TimelineViewModel>()
+  val timelineViewModel = koinViewModel<TimelineViewModel>()
   val screenState = timelineViewModel.screenState.observeAsState().value ?: TimelineScreenState()
 
   LaunchedEffect(key1 = userId, block = { timelineViewModel.timelineFor(userId) })

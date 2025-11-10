@@ -27,13 +27,13 @@ import nl.jovmit.friends.domain.user.Friend
 import nl.jovmit.friends.friends.state.FriendsScreenState
 import nl.jovmit.friends.ui.composables.InfoMessage
 import nl.jovmit.friends.ui.composables.ScreenTitle
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun FriendsScreen(
   userId: String
 ) {
-  val friendsViewModel = getViewModel<FriendsViewModel>()
+  val friendsViewModel = koinViewModel<FriendsViewModel>()
   val screenState = friendsViewModel.screenState.observeAsState().value ?: FriendsScreenState()
 
   LaunchedEffect(key1 = userId, block = { friendsViewModel.loadFriends(userId) })

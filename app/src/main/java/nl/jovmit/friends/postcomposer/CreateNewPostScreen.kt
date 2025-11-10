@@ -22,13 +22,13 @@ import nl.jovmit.friends.postcomposer.state.CreateNewPostScreenState
 import nl.jovmit.friends.ui.composables.BlockingLoading
 import nl.jovmit.friends.ui.composables.InfoMessage
 import nl.jovmit.friends.ui.composables.ScreenTitle
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun CreateNewPostScreen(
   onPostCreated: () -> Unit
 ) {
-  val viewModel = getViewModel<CreatePostViewModel>()
+  val viewModel = koinViewModel<CreatePostViewModel>()
   val createPostState = viewModel.screenState.observeAsState().value ?: CreateNewPostScreenState()
 
   if (createPostState.createdPostId.isNotBlank()) {

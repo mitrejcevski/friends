@@ -22,13 +22,13 @@ import nl.jovmit.friends.signup.state.SignUpScreenState
 import nl.jovmit.friends.ui.composables.BlockingLoading
 import nl.jovmit.friends.ui.composables.InfoMessage
 import nl.jovmit.friends.ui.composables.ScreenTitle
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SignUpScreen(
   onSignedUp: (String) -> Unit
 ) {
-  val signUpViewModel = getViewModel<SignUpViewModel>()
+  val signUpViewModel = koinViewModel<SignUpViewModel>()
   val signUpScreenState = signUpViewModel.screenState.observeAsState().value ?: SignUpScreenState()
 
   if (signUpScreenState.signedUpUserId.isNotBlank()) {
